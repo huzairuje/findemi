@@ -10,22 +10,27 @@ use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite;
+use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
     protected $apiLib;
+    protected $model;
     protected $notificationUser;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
+        $this->model = new User();
         $this->notificationUser = new SignUpActivate;
+        $this->middleware('auth', ['only' => ['logout', 'issueToken']]);
+        $this->middleware('auth', ['except' => ['signUp', 'signupActivate', 'login', 'loginFacebook']]);
 
     }
 
     /**
-     * Create user
+     * Create user(Register User)
      *
      * @param [string] username
      * @param [string] first_name
@@ -36,13 +41,14 @@ class AuthController extends Controller
      * @param  [string] password_confirmation
      * @return Response message
      */
-    public function signup(Request $request)
+    public function signUp(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
-                'username' => 'required|string',
+                'username' => 'required|string|unique:users',
                 'first_name' => 'required|string',
                 'last_name' => 'required|string',
+                'phone' => 'unique:users|string',
                 'gender' => 'required|boolean',
                 'email' => 'required|string|email|unique:users',
                 'password' => 'required|string|confirmed'
@@ -61,11 +67,11 @@ class AuthController extends Controller
             $data->email = $request->email;
             $data->phone = $request->phone;
             $data->password = bcrypt($request->password);
-            $data->activation_token = str_random(60);
+//            $data->activation_token = str_random(60);
 
             $data->save();
 
-            $data->notify($this->notificationUser($data));
+//            $data->notify($this->notificationUser($data));
 
             $return = $this->apiLib->singleData($data, []);
             return response($return);
@@ -76,6 +82,12 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Method For Activate USer Trough Email
+     * @param Request $request
+     *
+     * return [string] message
+     */
     public function signupActivate($token)
     {
         $user = User::where('activation_token', $token)->first();
@@ -92,6 +104,12 @@ class AuthController extends Controller
         return $user;
     }
 
+    /**
+     * Login For User
+     * @param Request $request
+     *
+     * return [string] message
+     */
     public function login(Request $request)
     {
         try {
@@ -137,13 +155,18 @@ class AuthController extends Controller
 
     }
 
+    /**
+     * Login For User Using Social Account (Facebook)
+     * @param Request $request
+     *
+     * return [string] message
+     */
     public function loginFacebook(Request $request) {
         try {
 
             $facebook = Socialite::driver('facebook')->userFromToken($request->accessToken);
             if(!$exist = SocialAccount::where('provider',  SocialAccount::SERVICE_FACEBOOK)->where('provider_user_id', $facebook->getId())->first()){
 
-                // create user account
             }
             return response()->json($this->issueToken($request, 'facebook', $request->accessToken));
         }
@@ -176,6 +199,42 @@ class AuthController extends Controller
         $response = Route::dispatch($requestToken);
 
         return json_decode((string) $response->getBody(), true);
+    }
+
+    /**
+     * Logout user (Revoke the token)
+     *
+     * @return [string] message
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->token()->revoke();
+
+        return response()->json([
+            'message' => 'Successfully logged out'
+        ]);
+    }
+
+    /**
+     * method for realtime checking email trough form on android
+     * @param Request $request
+     *
+     * return
+     */
+    public function checkEmail(Request $request)
+    {
+        //TODO
+    }
+
+    /**
+     * method for realtime checking username trough form on android
+     * @param Request $request
+     *
+     * return
+     */
+    public function checkUsername(Request $request)
+    {
+        //TODO
     }
 
 
