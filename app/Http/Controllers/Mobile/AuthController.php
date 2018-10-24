@@ -27,6 +27,60 @@ class AuthController extends Controller
     }
 
     /**
+     * method for realtime checking email and username trough form on android
+     * @param Request $request
+     *
+     * return
+     */
+    public function checkEmailRegister(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->only('email'), [
+                'email' => 'required|string|email|unique:users'
+            ]);
+
+            if ($validator->fails()) {
+                $response = $this->apiLib->emailRegistered();
+                return response($response, Response::HTTP_BAD_REQUEST);
+            } else {
+                $response = $this->apiLib->emailIsAvailable();
+                return response($response, Response::HTTP_OK);
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    /**
+     * method for realtime checking username trough form on android
+     * @param Request $request
+     *
+     * return
+     */
+    public function checkUserNameRegister(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->only('username'), [
+                'username' => 'required|string|unique:users'
+            ]);
+
+            if ($validator->fails()) {
+                $response = $this->apiLib->userNameRegistered();
+                return response($response, Response::HTTP_BAD_REQUEST);
+            } else {
+                $response = $this->apiLib->userNameIsAvailable();
+                return response($response, Response::HTTP_OK);
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    /**
      * Create user(Register User)
      *
      * @param [string] username
@@ -80,7 +134,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Method For Activate USer Trough Email
+     * Method For Activate User Trough Email
      * @param Request $request
      *
      * return [string] message
@@ -137,13 +191,14 @@ class AuthController extends Controller
 
             $token->save();
 
-            return response()->json([
+            $response = [
                 'access_token' => $tokenResult->accessToken,
                 'token_type' => 'Bearer',
                 'expires_at' => Carbon::parse(
                     $tokenResult->token->expires_at
                 )->toDateTimeString()
-            ]);
+            ];
+            return response($this->apiLib->singleData($response, []), Response::HTTP_OK);
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
@@ -214,28 +269,5 @@ class AuthController extends Controller
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
     }
-
-    /**
-     * method for realtime checking email trough form on android
-     * @param Request $request
-     *
-     * return
-     */
-    public function checkEmail(Request $request)
-    {
-        //TODO
-    }
-
-    /**
-     * method for realtime checking username trough form on android
-     * @param Request $request
-     *
-     * return
-     */
-    public function checkUsername(Request $request)
-    {
-        //TODO
-    }
-
 
 }

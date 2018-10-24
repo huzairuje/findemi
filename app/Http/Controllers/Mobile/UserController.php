@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -27,7 +28,8 @@ class UserController extends Controller
      */
     public function getAuthenticatedUser(Request $request)
     {
-        return response()->json($request->user());
+        $response = $this->apiLib->singleData($request->user(), []);
+        return response($response, Response::HTTP_OK);
     }
 
     public function updateProfile(Request $request)
@@ -46,12 +48,12 @@ class UserController extends Controller
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response);
+                return response($response, Response::HTTP_BAD_REQUEST);
             }
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response);
+            return response($response, Response::HTTP_BAD_GATEWAY);
         }
     }
 

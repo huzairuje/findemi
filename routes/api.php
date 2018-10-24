@@ -17,8 +17,8 @@ Route::group(['prefix' => 'v1.0'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'Mobile\AuthController@login');
         Route::post('signup', 'Mobile\AuthController@signup');
-        Route::post('check-email', 'Mobile\AuthController@checkEmail');
-        Route::post('check-username', 'Mobile\AuthController@checkUsername');
+        Route::post('check-email', 'Mobile\AuthController@checkEmailRegister');
+        Route::post('check-username', 'Mobile\AuthController@checkUserNameRegister');
     });
     Route::group([
         'middleware' => 'auth:api'

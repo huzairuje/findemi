@@ -28,6 +28,11 @@ return [
         'successLogout' => 'Successfully Logout',
         'error' => 'Error executing request',
         'unauthorized' => 'Unauthorized',
-        'invalidToken' => 'This activation token is invalid.'
+        'invalidToken' => 'This activation token is invalid.',
+        'emailRegistered' => 'this email address you have entered is already registered',
+        'emailIsAvailable' => 'email is available',
+        'userNameRegistered' => 'this username you have entered is already registered',
+        'userNameIsAvailable' => 'username is available'
+
     ]
 ];

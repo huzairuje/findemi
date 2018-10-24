@@ -117,4 +117,40 @@ class ApiResponseLibrary
         return $return;
     }
 
+    public function emailRegistered()
+    {
+        $return = [];
+        $return['meta']['status'] = 400;
+        $return['meta']['message'] = trans('message.api.emailRegistered');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
+    public function emailIsAvailable()
+    {
+        $return = [];
+        $return['meta']['status'] = 200;
+        $return['meta']['message'] = trans('message.api.emailIsAvailable');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
+    public function userNameRegistered()
+    {
+        $return = [];
+        $return['meta']['status'] = 400;
+        $return['meta']['message'] = trans('message.api.userNameRegistered');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
+    public function userNameIsAvailable()
+    {
+        $return = [];
+        $return['meta']['status'] = 200;
+        $return['meta']['message'] = trans('message.api.userNameIsAvailable');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
 }
