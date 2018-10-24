@@ -25,6 +25,7 @@ return [
     'api' => [
         'success' => 'Operation successfully executed',
         'badRequest' => 'Bad Request',
+        'successLogout' => 'Successfully Logout',
         'error' => 'Error executing request',
         'unauthorized' => 'Unauthorized',
         'invalidToken' => 'This activation token is invalid.'

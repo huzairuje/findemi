@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $this->apiLib = new ApiResponseLibrary;
         $this->model = new User();
-        $this->middleware('auth', ['only' => ['getAuthenticatedUser', 'updateProfile', 'safeDeleteAccount']]);
+//        $this->middleware('auth', ['only' => ['getAuthenticatedUser', 'updateProfile', 'safeDeleteAccount']]);
     }
 
     /**

@@ -17,7 +17,7 @@ class ApiResponseLibrary
         $return = [];
         $paginated = $collection->paginate($this->LIMIT);
         $return['meta']['error'] = 0;
-        $return['meta']['code'] = 200;
+        $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.success');
         $return['meta']['total'] = $paginated->total();
         $return['meta']['per_page'] = $paginated->perPage();
@@ -37,7 +37,7 @@ class ApiResponseLibrary
     {
         $return = [];
         $return['meta']['error'] = 0;
-        $return['meta']['code'] = 200;
+        $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.success');
         $return['data'] = $data;
         $return = $this->generateRelations($return, $relations);
@@ -58,7 +58,7 @@ class ApiResponseLibrary
     {
         $return = [];
         $return['meta']['error'] = 0;
-        $return['meta']['code'] = 200;
+        $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.success');
         $return['data']['id'] = $id;
         return $return;
@@ -67,7 +67,7 @@ class ApiResponseLibrary
     public function errorResponse(\Exception $e)
     {
         $return = [];
-        $return['meta']['code'] = 500;
+        $return['meta']['status'] = 500;
         $return['meta']['message'] = trans('message.api.error');
         $return['meta']['error'] = $e->getMessage();
         return $return;
@@ -76,7 +76,7 @@ class ApiResponseLibrary
     public function validationFailResponse($errors)
     {
         $return = [];
-        $return['meta']['code'] = 400;
+        $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.badRequest');
         $return['data'] = $errors;
         return $return;
@@ -85,7 +85,7 @@ class ApiResponseLibrary
     public function unauthorizedResponse($errors)
     {
         $return = [];
-        $return['meta']['code'] = 400;
+        $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.unauthorized');
         $return['data'] = $errors;
         return $return;
@@ -94,7 +94,7 @@ class ApiResponseLibrary
     public function badRequest($errors)
     {
         $return = [];
-        $return['meta']['code'] = 400;
+        $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.badRequest');
         $return['data'] = $errors;
         return $return;
@@ -103,9 +103,18 @@ class ApiResponseLibrary
     public function invalidToken($errors)
     {
         $return = [];
-        $return['meta']['code'] = 400;
+        $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.invalidToken');
         $return['data'] = $errors;
         return $return;
     }
+
+    public function successLogout()
+    {
+        $return = [];
+        $return['meta']['status'] = 200;
+        $return['meta']['message'] = trans('message.api.successLogout');
+        return $return;
+    }
+
 }

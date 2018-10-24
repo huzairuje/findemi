@@ -4,13 +4,13 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Models\User;
 
-use http\Env\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
 
 class AuthController extends Controller
@@ -24,9 +24,6 @@ class AuthController extends Controller
         $this->apiLib = new ApiResponseLibrary;
         $this->model = new User();
         $this->notificationUser = new SignUpActivate;
-        $this->middleware('auth', ['only' => ['logout', 'issueToken']]);
-        $this->middleware('auth', ['except' => ['signUp', 'signupActivate', 'login', 'loginFacebook']]);
-
     }
 
     /**
@@ -56,7 +53,7 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response);
+                return response($response, Response::HTTP_BAD_REQUEST);
             }
 
             $data = $this->model;
@@ -74,11 +71,11 @@ class AuthController extends Controller
 //            $data->notify($this->notificationUser($data));
 
             $return = $this->apiLib->singleData($data, []);
-            return response($return);
+            return response($return, Response::HTTP_OK);
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response);
+            return response($response, Response::HTTP_BAD_GATEWAY);
         }
     }
 
@@ -120,15 +117,15 @@ class AuthController extends Controller
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response);
+                return response($response, Response::HTTP_BAD_REQUEST);
             }
 
             $credentials = request(['email', 'password']);
 
-            if(!Auth::attempt($credentials))
-                return response()->json([
-                    'message' => 'Unauthorized'
-                ], 401);
+            if(!Auth::attempt($credentials)){
+                $response = $this->apiLib->unauthorizedResponse($credentials);
+                return response($response, Response::HTTP_UNAUTHORIZED);
+            }
 
             $user = $request->user();
 
@@ -150,7 +147,7 @@ class AuthController extends Controller
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response);
+            return response($response, Response::HTTP_BAD_GATEWAY);
         }
 
     }
@@ -208,11 +205,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        try {
+            $request->user()->token()->revoke();
+            return response($this->apiLib->successLogout(), Response::HTTP_OK);
 
-        return response()->json([
-            'message' => 'Successfully logged out'
-        ]);
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
     }
 
     /**
