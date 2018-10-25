@@ -26,7 +26,7 @@ Route::group(['prefix' => 'v1.0'], function () {
         Route::group(['prefix' => 'user'], function () {
             Route::get('logout', 'Mobile\AuthController@logout');
             Route::get('profile', 'Mobile\UserController@getAuthenticatedUser');
-            Route::post('user/{id}', 'Mobile\UserController@getUserProfilePublic');
+            Route::post('account/{id}', 'Mobile\UserController@getUserProfilePublic');
             Route::post('update-profile', 'Mobile\UserController@updateProfile');
         });
         Route::group(['prefix' => 'activity'], function () {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
@@ -30,10 +31,12 @@ class UserController extends Controller
     {
         $response = $this->apiLib->singleData($request->user(), []);
         return response($response, Response::HTTP_OK);
+
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(Request $request, $id)
     {
+        $data = $this->model->findOrFail($id);
 
         try {
             $validator = Validator::make($request->all(), [
@@ -44,22 +47,56 @@ class UserController extends Controller
                 'gender' => 'boolean',
                 'email' => 'string|email|unique:users',
                 'password' => 'string|confirmed|min:6'
+
             ]);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
+
             }
+
+            $data->username = $request->username;
+            $data->first_name = $request->first_name;
+            $data->last_name = $request->last_name;
+            $data->gender = $request->gender;
+            $data->email = $request->email;
+            $data->phone = $request->phone;
+            $data->password = bcrypt($request->password);
+
+            $data->update();
+
+            $return = $this->apiLib->singleData($data, []);
+            return response($return, Response::HTTP_OK);
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
+
         }
     }
 
     public function getUserProfilePublic($id)
     {
-        //TODO
+        try {
+            $data = $this->model->find($id);
+
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+
+            } else {
+                $response = $this->apiLib->singleData($data, []);
+                return response($response, Response::HTTP_OK);
+
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+
+        }
     }
+
 
 }

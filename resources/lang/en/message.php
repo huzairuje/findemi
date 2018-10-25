@@ -25,6 +25,7 @@ return [
     'api' => [
         'success' => 'Operation successfully executed',
         'badRequest' => 'Bad Request',
+        'notFound' => 'Not Found',
         'successLogout' => 'Successfully Logout',
         'error' => 'Error executing request',
         'unauthorized' => 'Unauthorized',

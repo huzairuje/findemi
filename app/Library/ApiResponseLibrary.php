@@ -73,6 +73,15 @@ class ApiResponseLibrary
         return $return;
     }
 
+    public function notFoundResponse()
+    {
+        $return = [];
+        $return['meta']['status'] = 404;
+        $return['meta']['message'] = trans('message.api.notFound');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
     public function validationFailResponse($errors)
     {
         $return = [];
