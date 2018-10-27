@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCommunityCategoryTable extends Migration
+class CreateCommunityInterestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCommunityCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('community_category', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('community_interest', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->bigInteger('community_id');
-            $table->bigInteger('category_id');
+            $table->bigInteger('interest_id');
             $table->foreign('community_id')->references('id')->on('communities');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('interest_id')->references('id')->on('interests');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCommunityCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('community_category');
+        Schema::dropIfExists('community_interest');
     }
 }

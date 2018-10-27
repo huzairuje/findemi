@@ -33,9 +33,9 @@ class UserController extends Controller
 
     }
 
-    public function updateProfile(Request $request, $id)
+    public function updateProfile(Request $request)
     {
-        $data = $this->model->findOrFail($id);
+        $data = $this->model->findOrFail($request->user()->id);
 
         try {
             $validator = Validator::make($request->all(), [

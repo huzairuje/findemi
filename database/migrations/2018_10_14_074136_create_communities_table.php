@@ -15,12 +15,15 @@ class CreateCommunitiesTable extends Migration
     {
         Schema::create('communities', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('description');
-            $table->string('image_banner_url');
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
+            $table->string('image_banner_url')->nullable();
             $table->boolean('is_public')->default(true);
             $table->boolean('is_blocked')->default(false);
             $table->bigInteger('created_by');
+            $table->float('lat')->nullable();
+            $table->float('lon')->nullable();
+            $table->string('address_from_map')->nullable();
             $table->timestamps();
         });
     }

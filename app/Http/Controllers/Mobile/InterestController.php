@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use App\Models\Activity;
-
-use App\Library\ApiResponseLibrary;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Controllers\Controller;
+use App\Models\Interest;
 
-class ActivityController extends Controller
+class InterestController extends Controller
 {
     protected $apiLib;
     protected $model;
@@ -17,24 +14,33 @@ class ActivityController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Activity();
+        $this->model = new Interest();
 
     }
 
     public function index()
     {
         try {
-            $activityAll = $this->model->get();
-            $response = $this->apiLib->singleData($activityAll, []);
-            return response($response, Response::HTTP_OK);
+            $data = $this->model->get();
+
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+
+            } else {
+                $response = $this->apiLib->singleData($data, []);
+                return response($response, Response::HTTP_OK);
+
+            }
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
+
         }
     }
 
-    public function getActivityPublic($id)
+    public function getInterestPublic($id)
     {
         try {
             $data = $this->model->find($id);
@@ -62,13 +68,7 @@ class ActivityController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255',
                 'description' => 'required|max:255',
-                'start_date' => 'required',
-                'end_date' => 'required',
-                'address' => 'required|max:255',
-                'tag' => 'required|max:255',
-                'lat' => 'required',
-                'lon' => 'required',
-                'address_from_map' => 'required',
+
             ]);
 
             if ($validator->fails()) {
@@ -78,12 +78,7 @@ class ActivityController extends Controller
             $data = $this->model;
             $data->name = $request->name;
             $data->description = $request->description;
-            $data->start_date = $request->start_date;
-            $data->end_date = $request->end_date;
-            $data->address = $request->address;
-            $data->tag = $request->tag;
 
-            $data->created_by = auth()->user()->id;
             $data->save();
 
             $response = $this->apiLib->singleData($data, []);

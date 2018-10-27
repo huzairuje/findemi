@@ -15,8 +15,8 @@ class CreatePostsTable extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->BigIncrements('id');
-            $table->string('title');
-            $table->string('text');
+            $table->string('title')->nullable();
+            $table->string('text')->nullable();
             $table->bigInteger('created_by');
             $table->bigInteger('community_id');
             $table->boolean('is_blocked')->default(false);

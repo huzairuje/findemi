@@ -15,16 +15,19 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('description');
+            $table->string('name')->nullable();
+            $table->string('description')->nullable();
             $table->boolean('is_paid')->default(false);
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->string('image_banner_url');
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->string('image_banner_url')->nullable();
             $table->boolean('is_blocked')->default(false);
             $table->boolean('is_ended')->default(false);
-            $table->string('tag');
+            $table->string('tag')->nullable();
             $table->bigInteger('created_by');
+            $table->float('lat')->nullable();
+            $table->float('lon')->nullable();
+            $table->string('address_from_map')->nullable();
             $table->timestamps();
         });
     }

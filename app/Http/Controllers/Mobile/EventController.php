@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use App\Models\Activity;
-
-use App\Library\ApiResponseLibrary;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Http\Controllers\Controller;
+use App\Models\Event;
 
-class ActivityController extends Controller
+class EventController extends Controller
 {
     protected $apiLib;
     protected $model;
@@ -17,24 +14,33 @@ class ActivityController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Activity();
+        $this->model = new Event();
 
     }
 
     public function index()
     {
         try {
-            $activityAll = $this->model->get();
-            $response = $this->apiLib->singleData($activityAll, []);
-            return response($response, Response::HTTP_OK);
+            $data = $this->model->get();
+
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+
+            } else {
+                $response = $this->apiLib->singleData($data, []);
+                return response($response, Response::HTTP_OK);
+
+            }
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
+
         }
     }
 
-    public function getActivityPublic($id)
+    public function getEventPublic($id)
     {
         try {
             $data = $this->model->find($id);

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateActivityCategoryTable extends Migration
+class CreateActivityInterestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateActivityCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('activity_category', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('activity_interest', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->bigInteger('activity_id');
-            $table->bigInteger('category_id');
+            $table->bigInteger('interest_id');
             $table->foreign('activity_id')->references('id')->on('activities');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('interest_id')->references('id')->on('interests');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +30,6 @@ class CreateActivityCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('activity_category');
+        Schema::dropIfExists('activity_interest');
     }
 }

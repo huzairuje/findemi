@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventCategoryTable extends Migration
+class CreateEventInterestTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateEventCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::create('event_category', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('event_interest', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->bigInteger('event_id');
-            $table->bigInteger('category_id');
+            $table->bigInteger('interest_id');
             $table->foreign('event_id')->references('id')->on('events');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('interest_id')->references('id')->on('interests');
+            $table->timestamps();
         });
     }
 
@@ -29,6 +30,6 @@ class CreateEventCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('event_category');
+        Schema::dropIfExists('event_interest');
     }
 }

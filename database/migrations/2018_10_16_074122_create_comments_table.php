@@ -15,8 +15,8 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->BigIncrements('id');
-            $table->string('title');
-            $table->string('text');
+            $table->string('title')->nullable();
+            $table->string('text')->nullable();
             $table->bigInteger('created_by');
             $table->bigInteger('post_id');
             $table->bigInteger('parent_id')->nullable();
