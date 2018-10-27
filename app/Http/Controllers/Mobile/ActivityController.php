@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Library\ApiResponseLibrary;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ActivityController extends Controller
 {
@@ -22,12 +23,12 @@ class ActivityController extends Controller
     {
         try {
             $activityAll = Activity::get();
-            $return = $this->apiLib->singleData($activityAll, []);
-            return response($return);
+            $response = $this->apiLib->singleData($activityAll, []);
+            return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response);
+            return response($response, Response::HTTP_BAD_GATEWAY);
         }
     }
 
@@ -45,7 +46,7 @@ class ActivityController extends Controller
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response);
+                return response($response, Response::HTTP_BAD_REQUEST);
             }
             $data = $this->model;
             $data->name = $request->name;
@@ -58,12 +59,12 @@ class ActivityController extends Controller
             $data->created_by = auth()->user()->id;
             $data->save();
 
-            $return = $this->apiLib->singleData($data, []);
-            return response($return);
+            $response = $this->apiLib->singleData($data, []);
+            return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response);
+            return response($response, Response::HTTP_BAD_GATEWAY);
         }
 
 
