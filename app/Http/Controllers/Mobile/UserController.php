@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
