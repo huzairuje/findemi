@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('image_url')->nullable();
             $table->boolean('gender')->nullable();
             $table->boolean('is_blocked')->default(false);
+            $table->boolean('is_public')->default(true);
             $table->boolean('is_show_interest')->default(true);
             $table->boolean('is_show_community')->default(true);
             $table->boolean('is_show_reminder')->default(false);

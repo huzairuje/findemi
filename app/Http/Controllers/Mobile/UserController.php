@@ -61,6 +61,7 @@ class UserController extends Controller
             $data->first_name = $request->first_name;
             $data->last_name = $request->last_name;
             $data->gender = $request->gender;
+            $data->is_public = $request->is_public;
             $data->email = $request->email;
             $data->phone = $request->phone;
             $data->password = bcrypt($request->password);
