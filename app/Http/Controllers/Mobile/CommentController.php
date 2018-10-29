@@ -4,28 +4,22 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Models\Comment;
-use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
 use App\Library\ApiResponseLibrary;
+use Symfony\Component\HttpFoundation\Response;
 
-class PostController extends Controller
+class CommentController extends Controller
 {
     protected $apiLib;
     protected $model;
-    protected $commentModel;
-    protected $communityPostModel;
 
     public function __construct()
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Post();
-        $this->commentModel = new Comment();
-
+        $this->apiLib = new ApiResponseLibrary();
+        $this->model = new Comment();
     }
 
-    public function store(Request $request)
+    public function storeComment(Request $request)
     {
         DB::beginTransaction();
         try {
@@ -46,9 +40,11 @@ class PostController extends Controller
             $data->name = $request->name;
             $data->title = $request->title;
             $data->text = $request->text;
-            $data->community_id = $request->community_id;
+            $data->post_id = $request->post_id;
+            $data->parent_id = $request->parent_id;
             $data->created_by = auth()->user()->id;
             $data->save();
+
             DB::commit();
 
         } catch (\Exception $e) {
@@ -57,7 +53,6 @@ class PostController extends Controller
             return response($response, Response::HTTP_BAD_GATEWAY);
 
         }
-
     }
 
 }

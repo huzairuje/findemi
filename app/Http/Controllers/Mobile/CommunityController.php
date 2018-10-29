@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use App\Models\Activity;
-
-use App\Library\ApiResponseLibrary;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\Community;
+use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 
-class ActivityController extends Controller
+class CommunityController extends Controller
 {
     protected $apiLib;
     protected $model;
@@ -18,7 +17,7 @@ class ActivityController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Activity();
+        $this->model = new Community();
 
     }
 
@@ -64,8 +63,8 @@ class ActivityController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => 'required|max:255',
                 'description' => 'required|max:255',
-                'start_date' => 'required',
-                'end_date' => 'required',
+                'image_banner_url' => 'required',
+                'base_camp_address' => 'required',
                 'address' => 'required|max:255',
                 'tag' => 'required|max:255',
                 'lat' => 'required',
@@ -80,9 +79,7 @@ class ActivityController extends Controller
             $data = $this->model;
             $data->name = $request->name;
             $data->description = $request->description;
-            $data->start_date = $request->start_date;
-            $data->end_date = $request->end_date;
-            $data->address = $request->address;
+            $data->address_from_map = $request->address_from_map;
             $data->tag = $request->tag;
             $data->lat = $request->lat;
             $data->lon = $request->lon;
@@ -96,7 +93,7 @@ class ActivityController extends Controller
             return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {
-            DB::rollBack();
+            DB::rollback();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
@@ -107,7 +104,6 @@ class ActivityController extends Controller
     {
         DB::beginTransaction();
         try {
-
             $data = $this->model->find($id);
 
             if (is_null($data)){
@@ -130,10 +126,9 @@ class ActivityController extends Controller
                 }
 
                 $data->name = $request->name;
-                $data->description = $request->first_name;
-                $data->start_date = $request->start_date;
-                $data->end_date = $request->end_date;
-                $data->address = $request->address;
+                $data->description = $request->description;
+                $data->address_from_map = $request->address_from_map;
+                $data->is_public = $request->is_public;
                 $data->tag = $request->tag;
                 $data->lat = $request->lat;
                 $data->lon = $request->lon;
@@ -155,5 +150,4 @@ class ActivityController extends Controller
         }
 
     }
-
 }

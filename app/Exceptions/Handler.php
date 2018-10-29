@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use App\Library\ApiResponseLibrary;
 
 class Handler extends ExceptionHandler
 {
@@ -37,6 +38,18 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
+//    /**
+//     * Render an exception into an HTTP response.
+//     *
+//     * @param  \Illuminate\Http\Request  $request
+//     * @param  \Exception  $exception
+//     * @return \Illuminate\Http\Response
+//     */
+//    public function render($request, Exception $exception)
+//    {
+//        return parent::render($request, $exception);
+//    }
+
     /**
      * Render an exception into an HTTP response.
      *
@@ -46,6 +59,14 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        return response()->json(
+            [
+                'meta' => [
+                    'status' => 401,
+                    'message' => 'Unauthenticated',
+                ]
+            ], 401
+        );
     }
+
 }

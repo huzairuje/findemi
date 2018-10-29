@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,6 +36,7 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
+        DB::beginTransaction();
         $data = $this->model->findOrFail($request->user()->id);
 
         try {
@@ -64,11 +66,13 @@ class UserController extends Controller
             $data->password = bcrypt($request->password);
 
             $data->update();
+            DB::commit();
 
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
 
@@ -96,6 +100,5 @@ class UserController extends Controller
 
         }
     }
-
 
 }

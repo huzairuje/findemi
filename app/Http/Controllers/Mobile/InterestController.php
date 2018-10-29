@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Mobile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Interest;
+use App\Library\ApiResponseLibrary;
+use Symfony\Component\HttpFoundation\Response;
 
 class InterestController extends Controller
 {
