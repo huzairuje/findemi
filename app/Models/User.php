@@ -19,7 +19,7 @@ class User extends Authenticatable implements UserSocialAccount
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password', 'first_name', 'last_name', 'phone' , 'gender'
     ];
 
     /**
@@ -48,4 +48,9 @@ class User extends Authenticatable implements UserSocialAccount
         }
         return;
     }
+
+    public function findForPassport($identifier) {
+        return $this->orWhere('email', $identifier)->orWhere('username', $identifier)->first();
+    }
+
 }

@@ -9,23 +9,37 @@ use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 
+use App\Services\Community\CreateCommunityService;
+use App\Services\Community\UpdateCommunityService;
+use App\Services\Community\FindCommunityService;
+
+use App\Validators\CommunityValidator;
+
 class CommunityController extends Controller
 {
     protected $apiLib;
     protected $model;
+    protected $createCommunityService;
+    protected $updateCommunityService;
+    protected $findCommunityService;
+    protected $communityValidator;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
         $this->model = new Community();
+        $this->createCommunityService = new CreateCommunityService();
+        $this->updateCommunityService = new UpdateCommunityService();
+        $this->findCommunityService = new FindCommunityService();
+        $this->communityValidator = new CommunityValidator();
 
     }
 
     public function index()
     {
         try {
-            $activityAll = $this->model->get();
-            $response = $this->apiLib->singleData($activityAll, []);
+            $data = $this->findCommunityService->getAllCommunity();
+            $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {
@@ -34,10 +48,10 @@ class CommunityController extends Controller
         }
     }
 
-    public function getActivityPublic($id)
+    public function getCommunityPublic($id)
     {
         try {
-            $data = $this->model->find($id);
+            $data = $this->findCommunityService->findCommunity($id);
 
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
@@ -60,33 +74,14 @@ class CommunityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'description' => 'required|max:255',
-                'image_banner_url' => 'required',
-                'base_camp_address' => 'required',
-                'address' => 'required|max:255',
-                'tag' => 'required|max:255',
-                'lat' => 'required',
-                'lon' => 'required',
-                'address_from_map' => 'required',
-            ]);
+            $validator = $this->communityValidator->validateCreate($request);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
-            $data = $this->model;
-            $data->name = $request->name;
-            $data->description = $request->description;
-            $data->address_from_map = $request->address_from_map;
-            $data->tag = $request->tag;
-            $data->lat = $request->lat;
-            $data->lon = $request->lon;
-            $data->address_from_map = $request->address_from_map;
 
-            $data->created_by = auth()->user()->id;
-            $data->save();
+            $data = $this->createCommunityService->createCommunity($request);
             DB::commit();
 
             $response = $this->apiLib->singleData($data, []);
@@ -104,20 +99,14 @@ class CommunityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $data = $this->model->find($id);
+            $data = $this->findCommunityService->findCommunity($id);
 
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
 
             } else {
-                $validator = Validator::make($request->all(), [
-                    'name' => 'max:255',
-                    'description' => 'max:255',
-                    'address' => 'max:255',
-                    'tag' => 'max:255',
-
-                ]);
+                $validator = $this->communityValidator->validateUpdate($request);
 
                 if ($validator->fails()) {
                     $response = $this->apiLib->validationFailResponse($validator->errors());
@@ -125,16 +114,7 @@ class CommunityController extends Controller
 
                 }
 
-                $data->name = $request->name;
-                $data->description = $request->description;
-                $data->address_from_map = $request->address_from_map;
-                $data->is_public = $request->is_public;
-                $data->tag = $request->tag;
-                $data->lat = $request->lat;
-                $data->lon = $request->lon;
-                $data->address_from_map = $request->address_from_map;
-
-                $data->update();
+                $data = $this->updateCommunityService->updateCommunity($request, $id);
                 DB::commit();
 
                 $return = $this->apiLib->singleData($data, []);

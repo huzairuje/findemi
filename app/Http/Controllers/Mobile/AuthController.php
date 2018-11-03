@@ -9,21 +9,27 @@ use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
+use App\Services\User\CreateUserService;
+use App\Validators\UserValidator;
 
 class AuthController extends Controller
 {
     protected $apiLib;
     protected $model;
     protected $notificationUser;
+    protected $username = 'username';
+    protected $createUserService;
+    protected $userValidator;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
         $this->model = new User();
         $this->notificationUser = new SignUpActivate;
+        $this->createUserService = new CreateUserService();
+        $this->userValidator = new UserValidator();
     }
 
     /**
@@ -35,9 +41,7 @@ class AuthController extends Controller
     public function checkEmailRegister(Request $request)
     {
         try {
-            $validator = Validator::make($request->only('email'), [
-                'email' => 'required|string|email|unique:users'
-            ]);
+            $validator = $this->userValidator->validateEmailRegistration($request);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->emailRegistered();
@@ -62,15 +66,13 @@ class AuthController extends Controller
     public function checkUserNameRegister(Request $request)
     {
         try {
-            $validator = Validator::make($request->only('username'), [
-                'username' => 'required|string|unique:users'
-            ]);
+            $validator = $this->userValidator->validateUsernameRegistration($request);
 
             if ($validator->fails()) {
-                $response = $this->apiLib->userNameRegistered();
+                $response = $this->apiLib->usernameRegistered();
                 return response($response, Response::HTTP_BAD_REQUEST);
             } else {
-                $response = $this->apiLib->userNameIsAvailable();
+                $response = $this->apiLib->usernameIsAvailable();
                 return response($response, Response::HTTP_OK);
             }
 
@@ -95,34 +97,14 @@ class AuthController extends Controller
     public function signUp(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'username' => 'required|string|unique:users',
-                'first_name' => 'required|string',
-                'last_name' => 'required|string',
-                'phone' => 'unique:users|string',
-                'gender' => 'required|boolean',
-                'email' => 'required|string|email|unique:users',
-                'password' => 'required|string|confirmed'
-            ]);
+            $validator = $this->userValidator->validateRegistration($request);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
 
-            $data = $this->model;
-            $data->username = $request->username;
-            $data->first_name = $request->first_name;
-            $data->last_name = $request->last_name;
-            $data->gender = $request->gender;
-            $data->email = $request->email;
-            $data->phone = $request->phone;
-            $data->password = bcrypt($request->password);
-//            $data->activation_token = str_random(60);
-
-            $data->save();
-
-//            $data->notify($this->notificationUser($data));
+            $data = $this->createUserService->create($request);
 
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
@@ -161,20 +143,18 @@ class AuthController extends Controller
      *
      * return [string] message
      */
+
     public function login(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required|string|email',
-                'password' => 'required|string',
-            ]);
+            $validator = $this->userValidator->validateLogin($request);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
 
-            $credentials = request(['email', 'password']);
+            $credentials = request(['email', 'password', 'username']);
 
             if(!Auth::attempt($credentials)){
                 $response = $this->apiLib->unauthorizedResponse($credentials);

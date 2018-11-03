@@ -144,7 +144,7 @@ class ApiResponseLibrary
         return $return;
     }
 
-    public function userNameRegistered()
+    public function usernameRegistered()
     {
         $return = [];
         $return['meta']['status'] = 400;
@@ -153,7 +153,7 @@ class ApiResponseLibrary
         return $return;
     }
 
-    public function userNameIsAvailable()
+    public function usernameIsAvailable()
     {
         $return = [];
         $return['meta']['status'] = 200;

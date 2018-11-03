@@ -8,6 +8,8 @@ use App\Models\Comment;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
 
+use App\Services\Comment\CreateCommentService;
+
 class CommentController extends Controller
 {
     protected $apiLib;
@@ -19,7 +21,7 @@ class CommentController extends Controller
         $this->model = new Comment();
     }
 
-    public function storeComment(Request $request)
+    public function store(Request $request)
     {
         DB::beginTransaction();
         try {
