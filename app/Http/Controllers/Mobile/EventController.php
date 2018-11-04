@@ -60,7 +60,7 @@ class EventController extends Controller
     public function getEventPublic($id)
     {
         try {
-            $data = $this->findEventService->findEvent($id);
+            $data = $this->findEventService->findEventById($id);
 
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
@@ -104,7 +104,7 @@ class EventController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $data = $this->findEventService->findEvent($id);
+            $data = $this->findEventService->findEventById($id);
 
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();

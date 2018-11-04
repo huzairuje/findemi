@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: huzairuje
- * Date: 03/11/2018
- * Time: 21:48
+ * Date: 04/11/2018
+ * Time: 10:31
  */
 
 namespace App\Services\Comment;
@@ -11,7 +11,7 @@ namespace App\Services\Comment;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 
-class FindCommentService
+class UpdateCommentService
 {
     protected $model;
 
@@ -20,9 +20,9 @@ class FindCommentService
         $this->model = new Comment();
     }
 
-    public function findById($id)
+    public function updateComment(Request $request)
     {
-        $data = $this->model->find($id);
-        return $data;
+        //TODO
     }
+
 }

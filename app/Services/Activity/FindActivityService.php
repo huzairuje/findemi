@@ -19,7 +19,7 @@ class FindActivityService
         $this->model = new Activity();
     }
 
-    public function findActivity($id)
+    public function findActivityById($id)
     {
         $data = $this->model->find($id);
         return $data;

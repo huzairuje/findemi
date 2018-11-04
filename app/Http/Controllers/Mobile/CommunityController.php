@@ -51,7 +51,7 @@ class CommunityController extends Controller
     public function getCommunityPublic($id)
     {
         try {
-            $data = $this->findCommunityService->findCommunity($id);
+            $data = $this->findCommunityService->findCommunityById($id);
 
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
@@ -99,7 +99,7 @@ class CommunityController extends Controller
     {
         DB::beginTransaction();
         try {
-            $data = $this->findCommunityService->findCommunity($id);
+            $data = $this->findCommunityService->findCommunityById($id);
 
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();

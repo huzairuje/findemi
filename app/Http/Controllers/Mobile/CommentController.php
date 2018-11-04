@@ -7,47 +7,50 @@ use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 
 use App\Services\Comment\CreateCommentService;
+use App\Services\Comment\FindCommentService;
+use App\Services\Comment\UpdateCommentService;
+
+use App\Validators\CommentValidator;
 
 class CommentController extends Controller
 {
     protected $apiLib;
     protected $model;
+    protected $commentValidator;
+    protected $createCommentService;
+    protected $findCommentService;
+    protected $updateCommentService;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary();
         $this->model = new Comment();
+        $this->createCommentService = new CreateCommentService();
+        $this->findCommentService = new FindCommentService();
+        $this->updateCommentService = new UpdateCommentService();
+        $this->commentValidator = new CommentValidator();
     }
 
     public function store(Request $request)
     {
         DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'title' => 'required|max:255',
-                'text' => 'max:255',
-
-            ]);
+            $validator = $this->commentValidator->validateStoreComment($request);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
 
             }
-
-            $data = $this->model;
-            $data->name = $request->name;
-            $data->title = $request->title;
-            $data->text = $request->text;
-            $data->post_id = $request->post_id;
-            $data->parent_id = $request->parent_id;
-            $data->created_by = auth()->user()->id;
-            $data->save();
-
+            $data = $this->createCommentService->createComment($request);
             DB::commit();
+
+            $response = $this->apiLib->singleData($data, []);
+            return response($response, Response::HTTP_OK);
+
 
         } catch (\Exception $e) {
             DB::rollBack();

@@ -20,7 +20,7 @@ class FindCommunityService
         $this->model = new Community();
     }
 
-    public function findCommunity($id)
+    public function findCommunityById($id)
     {
         $data = $this->model->find($id);
         return $data;

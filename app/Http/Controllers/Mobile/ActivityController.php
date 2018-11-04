@@ -58,7 +58,7 @@ class ActivityController extends Controller
     public function getActivityPublic($id)
     {
         try {
-            $data = $this->findActivityService->findActivity($id);
+            $data = $this->findActivityService->findActivityById($id);
 
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
@@ -107,7 +107,7 @@ class ActivityController extends Controller
         DB::beginTransaction();
         try {
 
-            $data = $this->findActivityService->findActivity($id);
+            $data = $this->findActivityService->findActivityById($id);
 
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();

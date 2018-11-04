@@ -19,4 +19,10 @@ class FindPostService
     {
         $this->model = new Post();
     }
+
+    public function findPostById($id)
+    {
+        $data = $this->model->find($id);
+        return $data;
+    }
 }

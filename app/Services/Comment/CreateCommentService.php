@@ -19,4 +19,18 @@ class CreateCommentService
     {
         $this->model = new Comment();
     }
+
+    public function createComment(Request $request)
+    {
+        $data = $this->model;
+        $data->name = $request->name;
+        $data->title = $request->title;
+        $data->text = $request->text;
+        $data->post_id = $request->post_id;
+        $data->parent_id = $request->parent_id;
+        $data->created_by = auth()->user()->id;
+        $data->save();
+
+        return $data;
+    }
 }

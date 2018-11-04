@@ -19,7 +19,7 @@ class FindUserService
         $this->model = new User();
     }
 
-    public function find($id)
+    public function findUserById($id)
     {
         $data = $this->model->find($id);
         return $data;
