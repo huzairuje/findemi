@@ -22,10 +22,11 @@ class CreateActivitiesTable extends Migration
             $table->date('end_date')->nullable();
             $table->string('address')->nullable();
             $table->string('tag')->nullable();
-            $table->bigInteger('created_by');
             $table->float('lat')->nullable();
             $table->float('lon')->nullable();
             $table->string('address_from_map')->nullable();
+            $table->bigInteger('created_by')->unsigned()->nullable();
+            $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

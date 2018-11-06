@@ -6,5 +6,46 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-    //
+    protected $table = 'events';
+    protected $primaryKay = 'id';
+
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
+    protected $fillable = [
+        'name',
+        'description',
+        'image_banner_url',
+        'start_date',
+        'end_date',
+        'address',
+        'lat',
+        'lon',
+        'address_from_map',
+        'tag',
+        'created_by',
+    ];
+
+    protected $casts = [
+        'is_paid' => 'boolean',
+        'is_ended' => 'boolean',
+    ];
+
+    protected $dates = [
+        'start_date',
+        'end_date',
+    ];
+
+    public function user()
+    {
+        return $this->belongsToMany('App\Models\User', 'user_event')
+            ->withTimestamps();
+    }
+
+
+    public function interest()
+    {
+        return $this->belongsToMany('App\Models\Interest', 'event_interest')
+            ->withTimestamps();
+    }
 }

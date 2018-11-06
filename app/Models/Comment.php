@@ -6,5 +6,46 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    //
+    protected $table = 'comments';
+    protected $primaryKay = 'id';
+
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
+
+    protected $fillable = [
+        'title',
+        'text',
+        'created_by',
+        'post_id',
+        'parent_id ',
+        'community_id',
+    ];
+
+    protected $casts = [
+        'is_one_trip' => 'boolean'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'created_by');
+    }
+
+    public function community()
+    {
+        return $this->belongsTo('App\Models\Interest', 'community_id');
+    }
+
+    public function post()
+    {
+        return $this->belongsTo('App\Models\Post', 'post_id');
+    }
+
+    public function parent(){
+        return $this->hasOne( 'App\Models\Comment', 'id', 'parent_id' );
+    }
+
+    public function children(){
+        return $this->hasMany( 'App\Models\Comment', 'parent_id', 'id' );
+    }
+
 }

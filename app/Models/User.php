@@ -53,4 +53,29 @@ class User extends Authenticatable implements UserSocialAccount
         return $this->orWhere('email', $identifier)->orWhere('username', $identifier)->first();
     }
 
+
+    public function activity()
+    {
+        return $this->belongsToMany('App\Models\Activity', 'user_activity')
+            ->withTimestamps();
+    }
+
+    public function community()
+    {
+        return $this->belongsToMany('App\Models\Community', 'user_community')
+            ->withTimestamps();
+    }
+
+    public function event()
+    {
+        return $this->belongsToMany('App\Models\Event', 'user_event')
+            ->withTimestamps();
+    }
+
+    public function interest()
+    {
+        return $this->belongsToMany('App\Models\Interest', 'user_interest')
+            ->withTimestamps();
+    }
+
 }

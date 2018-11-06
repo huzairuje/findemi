@@ -17,6 +17,9 @@ class Activity extends Model
         'description',
         'start_date',
         'end_date',
+        'lat',
+        'lon',
+        'address_from_map',
         'address',
         'tag',
         'created_by',
@@ -31,10 +34,22 @@ class Activity extends Model
         'end_date',
     ];
 
-    public function sql()
+    public function user()
     {
-        return  $this->select(self::all($this->table)
-        );
+        return $this->belongsToMany('App\Models\User', 'user_activity')
+            ->withTimestamps();
+    }
+
+    public function interest()
+    {
+        return $this->belongsToMany('App\Models\Interest', 'activity_interest')
+            ->withTimestamps();
+    }
+
+    public function community()
+    {
+        return $this->belongsToMany('App\Models\Community', 'activity_community')
+            ->withTimestamps();
     }
 
 }

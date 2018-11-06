@@ -17,9 +17,9 @@ class CreateCommentsTable extends Migration
             $table->BigIncrements('id');
             $table->string('title')->nullable();
             $table->string('text')->nullable();
-            $table->bigInteger('created_by');
+            $table->bigInteger('created_by')->unsigned()->nullable();
             $table->bigInteger('post_id');
-            $table->bigInteger('parent_id')->nullable();
+            $table->bigInteger('parent_id')->unsigned()->nullable()->after('id');
             $table->boolean('is_blocked')->default(false);
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('post_id')->references('id')->on('posts');

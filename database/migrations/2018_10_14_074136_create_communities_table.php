@@ -21,11 +21,12 @@ class CreateCommunitiesTable extends Migration
             $table->string('tag')->nullable();
             $table->boolean('is_public')->default(true);
             $table->boolean('is_blocked')->default(false);
-            $table->bigInteger('created_by');
             $table->float('lat')->nullable();
             $table->float('lon')->nullable();
             $table->string('address_from_map')->nullable();
             $table->string('base_camp_address')->nullable();
+            $table->bigInteger('created_by')->unsigned()->nullable();
+            $table->foreign('created_by')->references('id')->on('users');
             $table->timestamps();
         });
     }

@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('location')->nullable();
             $table->string('auth_key')->nullable();
-            $table->timestamp('comfirmed_at')->nullable();
+            $table->timestamp('confirmed_at')->nullable();
             $table->date('birthday')->nullable();
             $table->string('provider')->nullable();
             $table->string('provider_user_id')->nullable();
@@ -36,6 +36,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_show_interest')->default(true);
             $table->boolean('is_show_community')->default(true);
             $table->boolean('is_show_reminder')->default(false);
+            $table->string('fcm_token')->nullable();
             $table->timestamps();
         });
     }
