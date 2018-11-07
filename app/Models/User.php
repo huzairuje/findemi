@@ -56,25 +56,25 @@ class User extends Authenticatable implements UserSocialAccount
 
     public function activity()
     {
-        return $this->belongsToMany('App\Models\Activity', 'user_activity')
+        return $this->belongsToMany(Activity::class, 'user_activity')
             ->withTimestamps();
     }
 
     public function community()
     {
-        return $this->belongsToMany('App\Models\Community', 'user_community')
+        return $this->belongsToMany(Community::class, 'user_community')
             ->withTimestamps();
     }
 
     public function event()
     {
-        return $this->belongsToMany('App\Models\Event', 'user_event')
+        return $this->belongsToMany(Event::class, 'user_event')
             ->withTimestamps();
     }
 
     public function interest()
     {
-        return $this->belongsToMany('App\Models\Interest', 'user_interest')
+        return $this->belongsToMany(Interest::class, 'user_interest')
             ->withTimestamps();
     }
 

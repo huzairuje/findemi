@@ -36,19 +36,19 @@ class Activity extends Model
 
     public function user()
     {
-        return $this->belongsToMany('App\Models\User', 'user_activity')
+        return $this->belongsToMany(User::class, 'user_activity')
             ->withTimestamps();
     }
 
     public function interest()
     {
-        return $this->belongsToMany('App\Models\Interest', 'activity_interest')
+        return $this->belongsToMany(Interest::class, 'activity_interest')
             ->withTimestamps();
     }
 
     public function community()
     {
-        return $this->belongsToMany('App\Models\Community', 'activity_community')
+        return $this->belongsToMany(Community::class, 'activity_community')
             ->withTimestamps();
     }
 

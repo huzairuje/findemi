@@ -25,16 +25,16 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function community()
     {
-        return $this->belongsTo('App\Models\Interest', 'community_id');
+        return $this->belongsTo(Community::class, 'community_id');
     }
 
     public function comment()
     {
-        return $this->hasMany('App\Models\Comment');
+        return $this->hasMany(Comment::class);
     }
 }

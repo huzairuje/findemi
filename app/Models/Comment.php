@@ -27,25 +27,25 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'created_by');
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function community()
     {
-        return $this->belongsTo('App\Models\Interest', 'community_id');
+        return $this->belongsTo(Interest::class, 'community_id');
     }
 
     public function post()
     {
-        return $this->belongsTo('App\Models\Post', 'post_id');
+        return $this->belongsTo(Post::class, 'post_id');
     }
 
     public function parent(){
-        return $this->hasOne( 'App\Models\Comment', 'id', 'parent_id' );
+        return $this->hasOne( Comment::class, 'id', 'parent_id' );
     }
 
     public function children(){
-        return $this->hasMany( 'App\Models\Comment', 'parent_id', 'id' );
+        return $this->hasMany( Comment::class, 'parent_id', 'id' );
     }
 
 }

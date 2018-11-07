@@ -29,30 +29,35 @@ class Community extends Model
 
     public function user()
     {
-        return $this->belongsToMany('App\Models\User', 'user_community')
+        return $this->belongsToMany(User::class, 'user_community')
             ->withTimestamps();
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function interest()
     {
-        return $this->belongsToMany('App\Models\Interest', 'community_interest')
+        return $this->belongsToMany(Interest::class, 'community_interest')
             ->withTimestamps();
     }
 
     public function activity()
     {
-        return $this->belongsToMany('App\Models\Activity', 'activity_community')
+        return $this->belongsToMany(Activity::class, 'activity_community')
             ->withTimestamps();
     }
 
     public function post()
     {
-        return $this->hasMany('App\Models\Post');
+        return $this->hasMany(Post::class);
     }
 
     public function event()
     {
-        return $this->belongsToMany('App\Models\Event', 'event_community')
+        return $this->belongsToMany(Event::class, 'event_community')
             ->withTimestamps();
     }
 

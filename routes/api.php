@@ -54,6 +54,30 @@ Route::group(['prefix' => 'v1.0'], function () {
             Route::post('create', 'Mobile\EventController@store');
             Route::post('update', 'Mobile\EventController@update');
         });
+
+
+        //store interest on each modul
+        Route::group(['prefix' => 'interest'], function () {
+            Route::get('index', 'Mobile\InterestController@index');
+            Route::post('create', 'Mobile\InterestController@store');
+
+            //store user interest
+            Route::post('user', 'Mobile\InterestController@createUserInterest');
+//            Route::post('user/{id}', 'Mobile\InterestController@update');
+
+            //store Activity Interest
+            Route::post('activity', 'Mobile\InterestController@createActivityInterest');
+//            Route::post('activity/{id}', 'Mobile\InterestController@updateActivityInterest');
+
+            //store Community Interest
+            Route::post('community', 'Mobile\InterestController@createCommunityInterest');
+//            Route::post('community/{id}', 'Mobile\InterestController@updateCommunityInterest');
+
+            //store Event Interest
+            Route::post('event', 'Mobile\InterestController@createEventInterest');
+//            Route::post('event/{id}', 'Mobile\InterestController@updateEventInterest');
+
+        });
     });
 });
 

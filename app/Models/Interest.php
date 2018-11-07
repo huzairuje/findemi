@@ -19,25 +19,25 @@ class Interest extends Model
 
     public function user()
     {
-        return $this->belongsToMany('App\Models\User', 'user_interest')
+        return $this->belongsToMany(User::class, 'user_interest')
             ->withTimestamps();
     }
 
     public function event()
     {
-        return $this->belongsToMany('App\Models\Event', 'event_interest')
+        return $this->belongsToMany(Event::class, 'event_interest')
             ->withTimestamps();
     }
 
     public function community()
     {
-        return $this->belongsToMany('App\Models\Community', 'community_interest')
+        return $this->belongsToMany(Community::class, 'community_interest')
             ->withTimestamps();
     }
 
     public function activity()
     {
-        return $this->belongsToMany('App\Models\Activity', 'activity_interest')
+        return $this->belongsToMany(Activity::class, 'activity_interest')
             ->withTimestamps();
     }
 

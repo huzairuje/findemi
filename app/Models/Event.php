@@ -38,20 +38,24 @@ class Event extends Model
 
     public function user()
     {
-        return $this->belongsToMany('App\Models\User', 'user_event')
+        return $this->belongsToMany(User::class, 'user_event')
             ->withTimestamps();
     }
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function interest()
     {
-        return $this->belongsToMany('App\Models\Interest', 'event_interest')
+        return $this->belongsToMany(Interest::class, 'event_interest')
             ->withTimestamps();
     }
 
     public function community()
     {
-        return $this->belongsToMany('App\Models\Community', 'event_community')
+        return $this->belongsToMany(Community::class, 'event_community')
             ->withTimestamps();
     }
 
