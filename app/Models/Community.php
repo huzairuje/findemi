@@ -49,4 +49,11 @@ class Community extends Model
     {
         return $this->hasMany('App\Models\Post');
     }
+
+    public function event()
+    {
+        return $this->belongsToMany('App\Models\Event', 'event_community')
+            ->withTimestamps();
+    }
+
 }

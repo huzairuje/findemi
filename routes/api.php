@@ -31,26 +31,22 @@ Route::group(['prefix' => 'v1.0'], function () {
             Route::post('update-profile', 'Mobile\UserController@updateProfile');
         });
         Route::group(['prefix' => 'activity'], function () {
-            Route::post('create', 'Mobile\ActivityController@create');
+            Route::post('create', 'Mobile\ActivityController@store');
             Route::post('update', 'Mobile\ActivityController@update');
         });
         Route::group(['prefix' => 'community'], function () {
 
-            Route::post('create', 'Mobile\CommunityController@create');
+            Route::post('create', 'Mobile\CommunityController@store');
             Route::post('update', 'Mobile\CommunityController@update');
 
             Route::group(['prefix' => 'post'], function () {
-                Route::post('create-post', 'Mobile\PostController@create');
-                Route::post('create-reply', 'Mobile\PostController@createReply');
-                Route::post('create-reply-by-reply', 'Mobile\PostController@createReplyByReply');
+                Route::post('create-post', 'Mobile\PostController@store');
+                Route::post('create-comment', 'Mobile\CommentController@store');
             });
         });
         Route::group(['prefix' => 'event'], function () {
-            Route::post('create', 'Mobile\EventController@create');
+            Route::post('create', 'Mobile\EventController@store');
             Route::post('update', 'Mobile\EventController@update');
-        });
-        Route::group(['prefix' => 'timeline'], function () {
-            Route::post('index', 'Mobile\TimeLineController@create');
         });
     });
 });

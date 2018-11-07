@@ -48,4 +48,11 @@ class Event extends Model
         return $this->belongsToMany('App\Models\Interest', 'event_interest')
             ->withTimestamps();
     }
+
+    public function community()
+    {
+        return $this->belongsToMany('App\Models\Community', 'event_community')
+            ->withTimestamps();
+    }
+
 }
