@@ -6,24 +6,39 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Interest;
 use App\Library\ApiResponseLibrary;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+
+use App\Services\Interest\CreateInterestService;
+use App\Services\Interest\UpdateInterestService;
+use App\Services\Interest\FindInterestService;
+
+use App\Validators\InterestValidator;
 
 class InterestController extends Controller
 {
     protected $apiLib;
     protected $model;
+    protected $createInterestService;
+    protected $updateInterestService;
+    protected $findInterestService;
+    protected $interestValidator;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
         $this->model = new Interest();
+        $this->createInterestService = new CreateInterestService();
+        $this->updateInterestService = new UpdateInterestService();
+        $this->findInterestService = new FindInterestService();
+        $this->interestValidator = new InterestValidator();
 
     }
 
     public function index()
     {
         try {
-            $data = $this->model->get();
+            $data = $this->findInterestService->getAllInterest();
 
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
@@ -45,7 +60,7 @@ class InterestController extends Controller
     public function getInterestPublic($id)
     {
         try {
-            $data = $this->model->find($id);
+            $data = $this->findInterestService->findInterestById($id);
 
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
@@ -66,27 +81,22 @@ class InterestController extends Controller
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
         try {
-            $validator = Validator::make($request->all(), [
-                'name' => 'required|max:255',
-                'description' => 'required|max:255',
-
-            ]);
+            $validator = $this->interestValidator->validateCreate($request);
 
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
-            $data = $this->model;
-            $data->name = $request->name;
-            $data->description = $request->description;
-
-            $data->save();
+            $data = $this->createInterestService->createInterest($request);
+            DB::commit();
 
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
