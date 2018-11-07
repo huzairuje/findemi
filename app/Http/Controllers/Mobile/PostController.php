@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Library\ApiResponseLibrary;
@@ -17,7 +16,6 @@ use App\Validators\PostValidator;
 class PostController extends Controller
 {
     protected $apiLib;
-    protected $model;
     protected $createPostService;
     protected $findPostService;
     protected $postValidator;
@@ -25,7 +23,6 @@ class PostController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Post();
         $this->createPostService = new CreatePostService();
         $this->findPostService = new FindPostService();
         $this->postValidator = new PostValidator();

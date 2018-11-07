@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Event;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +16,6 @@ use App\Validators\EventValidator;
 class EventController extends Controller
 {
     protected $apiLib;
-    protected $model;
     protected $eventValidator;
     protected $createEventService;
     protected $updateEventService;
@@ -26,7 +24,6 @@ class EventController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Event();
         $this->eventValidator = new EventValidator();
         $this->createEventService = new CreateEventService();
         $this->updateEventService = new UpdateEventService();

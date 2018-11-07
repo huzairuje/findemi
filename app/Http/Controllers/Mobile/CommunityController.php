@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Community;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +17,6 @@ use App\Validators\CommunityValidator;
 class CommunityController extends Controller
 {
     protected $apiLib;
-    protected $model;
     protected $createCommunityService;
     protected $updateCommunityService;
     protected $findCommunityService;
@@ -27,7 +25,6 @@ class CommunityController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Community();
         $this->createCommunityService = new CreateCommunityService();
         $this->updateCommunityService = new UpdateCommunityService();
         $this->findCommunityService = new FindCommunityService();

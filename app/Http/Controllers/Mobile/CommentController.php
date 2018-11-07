@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Comment;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +17,6 @@ use App\Validators\CommentValidator;
 class CommentController extends Controller
 {
     protected $apiLib;
-    protected $model;
     protected $commentValidator;
     protected $createCommentService;
     protected $findCommentService;
@@ -27,7 +25,6 @@ class CommentController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary();
-        $this->model = new Comment();
         $this->createCommentService = new CreateCommentService();
         $this->findCommentService = new FindCommentService();
         $this->updateCommentService = new UpdateCommentService();

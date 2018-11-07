@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use App\Models\Activity;
-
 use App\Library\ApiResponseLibrary;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
-use App\Validators\ActivityValidator;
+
 use App\Services\Activity\CreateActivityService;
 use App\Services\Activity\UpdateActivityService;
 use App\Services\Activity\FindActivityService;
 
+use App\Validators\ActivityValidator;
+
 class ActivityController extends Controller
 {
     protected $apiLib;
-    protected $model;
     protected $eventValidator;
     protected $createActivityService;
     protected $updateActivityService;
@@ -26,7 +25,6 @@ class ActivityController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Activity();
         $this->eventValidator = new ActivityValidator();
         $this->createActivityService = new CreateActivityService();
         $this->updateActivityService = new UpdateActivityService();

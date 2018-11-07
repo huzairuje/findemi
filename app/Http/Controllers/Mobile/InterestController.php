@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Interest;
 use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +22,6 @@ use App\Validators\InterestValidator;
 class InterestController extends Controller
 {
     protected $apiLib;
-    protected $model;
     protected $createInterestService;
     protected $updateInterestService;
     protected $findInterestService;
@@ -37,7 +35,6 @@ class InterestController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->model = new Interest();
         $this->createInterestService = new CreateInterestService();
         $this->updateInterestService = new UpdateInterestService();
         $this->findInterestService = new FindInterestService();
