@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Library\ApiResponseLibrary;
 
 use App\Services\Post\CreatePostService;
+use App\Services\Post\FindPostService;
 
 use App\Validators\PostValidator;
 
@@ -18,6 +19,7 @@ class PostController extends Controller
     protected $apiLib;
     protected $model;
     protected $createPostService;
+    protected $findPostService;
     protected $postValidator;
 
     public function __construct()
@@ -25,8 +27,31 @@ class PostController extends Controller
         $this->apiLib = new ApiResponseLibrary;
         $this->model = new Post();
         $this->createPostService = new CreatePostService();
+        $this->findPostService = new FindPostService();
         $this->postValidator = new PostValidator();
 
+    }
+
+    public function getPostPublic($id)
+    {
+        try {
+            $data = $this->findPostService->findPostById($id);
+
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+
+            } else {
+                $response = $this->apiLib->singleData($data, []);
+                return response($response, Response::HTTP_OK);
+
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+
+        }
     }
 
     public function store(Request $request)

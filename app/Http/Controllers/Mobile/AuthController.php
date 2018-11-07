@@ -157,7 +157,7 @@ class AuthController extends Controller
             $credentials = request(['email', 'password', 'username']);
 
             if(!Auth::attempt($credentials)){
-                $response = $this->apiLib->unauthorizedResponse($credentials);
+                $response = $this->apiLib->unauthorizedEmailAndPassword($credentials);
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
 

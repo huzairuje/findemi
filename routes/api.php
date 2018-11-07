@@ -31,20 +31,26 @@ Route::group(['prefix' => 'v1.0'], function () {
             Route::post('update-profile', 'Mobile\UserController@updateProfile');
         });
         Route::group(['prefix' => 'activity'], function () {
+            Route::get('index', 'Mobile\ActivityController@index');
+            Route::get('{id}', 'Mobile\ActivityController@getActivityPublic');
             Route::post('create', 'Mobile\ActivityController@store');
             Route::post('update', 'Mobile\ActivityController@update');
         });
         Route::group(['prefix' => 'community'], function () {
-
+            Route::get('index', 'Mobile\CommunityController@index');
+            Route::get('{id}', 'Mobile\CommunityController@getCommunityPublic');
             Route::post('create', 'Mobile\CommunityController@store');
             Route::post('update', 'Mobile\CommunityController@update');
 
             Route::group(['prefix' => 'post'], function () {
                 Route::post('create-post', 'Mobile\PostController@store');
+                Route::get('{id}', 'Mobile\PostController@getPostPublic');
                 Route::post('create-comment', 'Mobile\CommentController@store');
             });
         });
         Route::group(['prefix' => 'event'], function () {
+            Route::get('index', 'Mobile\EventController@index');
+            Route::get('{id}', 'Mobile\EventController@getEventPublic');
             Route::post('create', 'Mobile\EventController@store');
             Route::post('update', 'Mobile\EventController@update');
         });
