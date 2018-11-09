@@ -28,7 +28,7 @@ class FindCommunityService
 
     public function getAllCommunity()
     {
-        $data = $this->model->get();
+        $data = $this->model;
         return $data;
     }
 

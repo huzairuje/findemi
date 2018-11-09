@@ -25,4 +25,10 @@ class FindPostService
         $data = $this->model->find($id);
         return $data;
     }
+
+    public function getAllPost()
+    {
+        $data = $this->model;
+        return $data;
+    }
 }

@@ -27,7 +27,7 @@ class FindActivityService
 
     public function getAllActivity()
     {
-        $data = $this->model->get();
+        $data = $this->model;
         return $data;
     }
 

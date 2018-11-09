@@ -53,7 +53,6 @@ class User extends Authenticatable implements UserSocialAccount
         return $this->orWhere('email', $identifier)->orWhere('username', $identifier)->first();
     }
 
-
     public function activity()
     {
         return $this->belongsToMany(Activity::class, 'user_activity')

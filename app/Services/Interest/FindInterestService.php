@@ -27,7 +27,7 @@ class FindInterestService
 
     public function getAllInterest()
     {
-        $data = $this->model->get();
+        $data = $this->model;
         return $data;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -18,9 +19,11 @@ class UserController extends Controller
     protected $userValidator;
     protected $updateUserService;
     protected $findUserService;
+    protected $model;
 
     public function __construct()
     {
+        $this->model = new User();
         $this->apiLib = new ApiResponseLibrary;
         $this->userValidator = new UserValidator();
         $this->updateUserService = new UpdateUserService();
@@ -85,6 +88,27 @@ class UserController extends Controller
             return response($response, Response::HTTP_BAD_GATEWAY);
 
         }
+    }
+
+    public function getAllUser()
+    {
+        try {
+            $data = $this->findUserService->getAllUser();
+
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+            } else {
+                $response = $this->apiLib->listPaginate($data);
+                return response($response, Response::HTTP_OK);
+
+            }
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+
+        }
+
     }
 
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 Route::group(['prefix' => 'v1.0'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'Mobile\AuthController@login');
@@ -25,10 +26,12 @@ Route::group(['prefix' => 'v1.0'], function () {
         'middleware' => 'auth:api'
     ], function() {
         Route::group(['prefix' => 'user'], function () {
+            Route::get('index', 'Mobile\UserController@getAllUser');
             Route::get('logout', 'Mobile\AuthController@logout');
             Route::get('profile', 'Mobile\UserController@getAuthenticatedUser');
             Route::post('account/{id}', 'Mobile\UserController@getUserProfilePublic');
             Route::post('update-profile', 'Mobile\UserController@updateProfile');
+
         });
         Route::group(['prefix' => 'activity'], function () {
             Route::get('index', 'Mobile\ActivityController@index');

@@ -36,7 +36,7 @@ class CommunityController extends Controller
     {
         try {
             $data = $this->findCommunityService->getAllCommunity();
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiLib->listPaginate($data);
             return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {

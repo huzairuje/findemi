@@ -9,6 +9,7 @@
 namespace App\Services\User;
 
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class FindUserService
 {
@@ -23,5 +24,12 @@ class FindUserService
     {
         $data = $this->model->find($id);
         return $data;
+    }
+
+    public function getAllUser()
+    {
+        $data = $this->model;
+        return $data;
+
     }
 }

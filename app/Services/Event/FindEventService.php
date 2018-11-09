@@ -27,7 +27,7 @@ class FindEventService
 
     public function getAllEvent()
     {
-        $data = $this->model->get();
+        $data = $this->model;
         return $data;
     }
 
