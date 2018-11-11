@@ -9,32 +9,44 @@
 namespace App\Services\Event;
 
 use App\Models\Event;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CreateEventService
 {
     protected $model;
+    protected $userModel;
 
     public function __construct()
     {
         $this->model = new Event();
+        $this->userModel = new User();
+
     }
 
     public function createEvent(Request $request)
     {
+        DB::beginTransaction();
+
+        $user = Auth::id();
         $data = $this->model;
         $data->name = $request->name;
         $data->description = $request->description;
-        $data->start_date = $request->start_date;
-        $data->end_date = $request->end_date;
-        $data->address = $request->address;
+        $data->is_paid = $request->is_paid;
+        $data->start_date = new Carbon($request->get('start_date'));
+        $data->end_date = new Carbon($request->get('end_date'));
+        $data->image_banner_url = $request->image_banner_url;
         $data->tag = $request->tag;
         $data->lat = $request->lat;
         $data->lon = $request->lon;
         $data->address_from_map = $request->address_from_map;
 
-        $data->created_by = auth()->user()->id;
+        $data->created_by = $user;
         $data->save();
+        DB::commit();
 
         return $data;
     }

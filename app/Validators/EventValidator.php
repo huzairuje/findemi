@@ -20,7 +20,6 @@ class EventValidator extends Validator
             'description' => 'required|max:255',
             'start_date' => 'required',
             'end_date' => 'required',
-            'address' => 'required|max:255',
             'tag' => 'required|max:255',
             'lat' => 'required',
             'lon' => 'required',

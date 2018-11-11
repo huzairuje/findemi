@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mobile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Services\Event\CreateEventService;
@@ -92,6 +93,7 @@ class EventController extends Controller
             return response($response, Response::HTTP_OK);
 
         } catch (\Exception $e) {
+            DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }

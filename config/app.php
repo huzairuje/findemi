@@ -184,6 +184,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
         Schedula\Laravel\PassportSocialite\PassportSocialiteServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
 
