@@ -42,7 +42,7 @@ class ActivityController extends Controller
                 return response($response, Response::HTTP_NOT_FOUND);
 
             } else {
-                $response = $this->apiLib->singleData($data, []);
+                $response = $this->apiLib->listPaginate($data);
                 return response($response, Response::HTTP_OK);
 
             }
