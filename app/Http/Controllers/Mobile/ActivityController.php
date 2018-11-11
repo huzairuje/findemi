@@ -77,7 +77,6 @@ class ActivityController extends Controller
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
         try {
             $validator = $this->eventValidator->validateCreate($request);
 
@@ -87,7 +86,7 @@ class ActivityController extends Controller
             }
 
             $data = $this->createActivityService->createActivity($request);
-            DB::commit();
+
 
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);

@@ -10,6 +10,8 @@ namespace App\Services\Community;
 
 use App\Models\Community;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CreateCommunityService
 {
@@ -22,17 +24,23 @@ class CreateCommunityService
 
     public function createCommunity(Request $request)
     {
+        DB::beginTransaction();
+
+        $user = Auth::id();
         $data = $this->model;
         $data->name = $request->name;
         $data->description = $request->description;
-        $data->address_from_map = $request->address_from_map;
+        $data->image_banner_url = $request->image_banner_url;
+        $data->is_public = $request->is_public;
+        $data->base_camp_address = $request->base_camp_address;
         $data->tag = $request->tag;
         $data->lat = $request->lat;
         $data->lon = $request->lon;
         $data->address_from_map = $request->address_from_map;
 
-        $data->created_by = auth()->user()->id;
+        $data->created_by = $user;
         $data->save();
+        DB::commit();
 
         return $data;
     }

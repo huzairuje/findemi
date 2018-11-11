@@ -69,7 +69,6 @@ class CommunityController extends Controller
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
         try {
             $validator = $this->communityValidator->validateCreate($request);
 
@@ -79,7 +78,6 @@ class CommunityController extends Controller
             }
 
             $data = $this->createCommunityService->createCommunity($request);
-            DB::commit();
 
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);

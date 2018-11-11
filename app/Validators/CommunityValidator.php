@@ -20,7 +20,6 @@ class CommunityValidator extends Validator
             'description' => 'required|max:255',
             'image_banner_url' => 'required',
             'base_camp_address' => 'required',
-            'address' => 'required|max:255',
             'tag' => 'required|max:255',
             'lat' => 'required',
             'lon' => 'required',

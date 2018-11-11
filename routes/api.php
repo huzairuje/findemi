@@ -52,7 +52,7 @@ Route::group(['prefix' => 'v1.0'], function () {
             });
         });
         Route::group(['prefix' => 'event'], function () {
-            Route::get('index', 'Mobile\EventController@getAllEvent');
+            Route::get('index', 'Mobile\EventController@index');
             Route::get('{id}', 'Mobile\EventController@getEventPublic');
             Route::post('create', 'Mobile\EventController@store');
             Route::post('update', 'Mobile\EventController@update');
