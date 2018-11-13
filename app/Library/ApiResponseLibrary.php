@@ -100,12 +100,12 @@ class ApiResponseLibrary
         return $return;
     }
 
-    public function unauthorizedEmailAndPassword($errors)
+    public function unauthorizedEmailAndPassword()
     {
         $return = [];
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.unauthorizedEmailAndPassword');
-        $return['data'] = $errors;
+//        $return['data'] = $errors;
         return $return;
     }
 
