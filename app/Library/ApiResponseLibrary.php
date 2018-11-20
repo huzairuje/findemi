@@ -100,15 +100,6 @@ class ApiResponseLibrary
         return $return;
     }
 
-    public function unauthorizedEmailAndPassword()
-    {
-        $return = [];
-        $return['meta']['status'] = 401;
-        $return['meta']['message'] = trans('message.api.unauthorizedEmailAndPassword');
-//        $return['data'] = $errors;
-        return $return;
-    }
-
     public function badRequest($errors)
     {
         $return = [];
@@ -124,50 +115,6 @@ class ApiResponseLibrary
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.invalidToken');
         $return['data'] = $errors;
-        return $return;
-    }
-
-    public function successLogout()
-    {
-        $return = [];
-        $return['meta']['status'] = 200;
-        $return['meta']['message'] = trans('message.api.successLogout');
-        return $return;
-    }
-
-    public function emailRegistered()
-    {
-        $return = [];
-        $return['meta']['status'] = 400;
-        $return['meta']['message'] = trans('message.api.emailRegistered');
-//        $return['data'] = $errors;
-        return $return;
-    }
-
-    public function emailIsAvailable()
-    {
-        $return = [];
-        $return['meta']['status'] = 200;
-        $return['meta']['message'] = trans('message.api.emailIsAvailable');
-//        $return['data'] = $errors;
-        return $return;
-    }
-
-    public function usernameRegistered()
-    {
-        $return = [];
-        $return['meta']['status'] = 400;
-        $return['meta']['message'] = trans('message.api.userNameRegistered');
-//        $return['data'] = $errors;
-        return $return;
-    }
-
-    public function usernameIsAvailable()
-    {
-        $return = [];
-        $return['meta']['status'] = 200;
-        $return['meta']['message'] = trans('message.api.userNameIsAvailable');
-//        $return['data'] = $errors;
         return $return;
     }
 

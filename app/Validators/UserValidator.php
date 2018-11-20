@@ -13,14 +13,67 @@ use Illuminate\Support\Facades\Validator;
 
 class UserValidator extends Validator {
 
+    public function validateEmailRegistration(Request $request)
+    {
+        $validator = Validator::make($request->only('email'), [
+            'email' => 'required|string|email|unique:users'
+        ]);
+
+        return $validator;
+    }
+
+    public function validateUsernameRegistration(Request $request)
+    {
+        $validator = Validator::make($request->only('username'), [
+            'username' => 'required|string|unique:users'
+        ]);
+
+        return $validator;
+    }
+
+    public function validateFullNameRegistration(Request $request)
+    {
+        $validator = Validator::make($request->only('full_name'), [
+            'full_name' => 'required|string'
+        ]);
+
+        return $validator;
+    }
+
+    public function validatePhoneRegistration(Request $request)
+    {
+        $validator = Validator::make($request->only('phone'), [
+            'phone' => 'unique:users|string'
+        ]);
+
+        return $validator;
+    }
+
+    public function validateGenderRegistration(Request $request)
+    {
+        $validator = Validator::make($request->only('gender'), [
+            'gender' => 'required|in:L,P'
+        ]);
+
+        return $validator;
+    }
+
+    public function validatePasswordRegistration(Request $request)
+    {
+        $validator = Validator::make($request->only('password', 'password_confirmation'), [
+            'password' => 'required|string|confirmed'
+        ]);
+
+        return $validator;
+    }
+
     public function validateRegistration(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|unique:users',
-            'first_name' => 'required|string',
-            'last_name' => 'required|string',
+            'full_name' => 'required|string',
             'phone' => 'unique:users|string',
-            'gender' => 'required|boolean',
+            'gender' => 'required',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
@@ -46,7 +99,6 @@ class UserValidator extends Validator {
             'first_name' => 'string',
             'last_name' => 'string',
             'phone' => 'unique:users|string',
-            'gender' => 'boolean',
             'email' => 'string|email|unique:users',
             'password' => 'string|confirmed|min:6'
 
@@ -54,24 +106,5 @@ class UserValidator extends Validator {
 
         return $validator;
     }
-
-    public function validateEmailRegistration(Request $request)
-    {
-        $validator = Validator::make($request->only('email'), [
-            'email' => 'required|string|email|unique:users'
-        ]);
-
-        return $validator;
-    }
-
-    public function validateUsernameRegistration(Request $request)
-    {
-        $validator = Validator::make($request->only('username'), [
-            'username' => 'required|string|unique:users'
-        ]);
-
-        return $validator;
-    }
-
 
 }

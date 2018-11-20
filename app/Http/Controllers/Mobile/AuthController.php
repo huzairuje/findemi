@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
+use App\Library\UsersResponseLibrary;
 use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ use App\Validators\UserValidator;
 class AuthController extends Controller
 {
     protected $apiLib;
+    protected $userApiLib;
     protected $model;
     protected $notificationUser;
     protected $username = 'username';
@@ -26,6 +28,7 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
+        $this->userApiLib = new UsersResponseLibrary;
         $this->model = new User();
         $this->notificationUser = new SignUpActivate;
         $this->createUserService = new CreateUserService();
@@ -44,10 +47,10 @@ class AuthController extends Controller
             $validator = $this->userValidator->validateEmailRegistration($request);
 
             if ($validator->fails()) {
-                $response = $this->apiLib->emailRegistered();
+                $response = $this->userApiLib->emailRegistered();
                 return response($response, Response::HTTP_BAD_REQUEST);
             } else {
-                $response = $this->apiLib->emailIsAvailable();
+                $response = $this->userApiLib->emailIsAvailable();
                 return response($response, Response::HTTP_OK);
             }
 
@@ -69,10 +72,10 @@ class AuthController extends Controller
             $validator = $this->userValidator->validateUsernameRegistration($request);
 
             if ($validator->fails()) {
-                $response = $this->apiLib->usernameRegistered();
+                $response = $this->userApiLib->usernameRegistered();
                 return response($response, Response::HTTP_BAD_REQUEST);
             } else {
-                $response = $this->apiLib->usernameIsAvailable();
+                $response = $this->userApiLib->usernameIsAvailable();
                 return response($response, Response::HTTP_OK);
             }
 
@@ -80,6 +83,86 @@ class AuthController extends Controller
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
+    }
+
+    public function checkFullNameRegister(Request $request)
+    {
+        try{
+            $validator = $this->userValidator->validateFullNameRegistration($request);
+
+            if ($validator->fails()) {
+                $response = $this->userApiLib->fullNameIsWrongFormat();
+                return response($response, Response::HTTP_BAD_REQUEST);
+            } else {
+                $response = $this->userApiLib->fullNameIsOk();
+                return response($response, Response::HTTP_OK);
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+
+    }
+
+    public function checkPhoneNumberRegister(Request $request)
+    {
+        try{
+            $validator = $this->userValidator->validatePhoneRegistration($request);
+
+            if ($validator->fails()) {
+                $response = $this->userApiLib->phoneIsRegistered();
+                return response($response, Response::HTTP_BAD_REQUEST);
+            } else {
+                $response = $this->userApiLib->phoneIsOk();
+                return response($response, Response::HTTP_OK);
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+
+    }
+
+    public function checkGenderRegister(Request $request)
+    {
+        try{
+            $validator = $this->userValidator->validateGenderRegistration($request);
+
+            if ($validator->fails()) {
+                $response = $this->userApiLib->genderIsRequired();
+                return response($response, Response::HTTP_BAD_REQUEST);
+            } else {
+                $response = $this->userApiLib->genderIsOk();
+                return response($response, Response::HTTP_OK);
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+
+    }
+
+    public function checkPasswordRegister(Request $request)
+    {
+        try{
+            $validator = $this->userValidator->validatePasswordRegistration($request);
+
+            if ($validator->fails()) {
+                $response = $this->userApiLib->passwordErrorResponse();
+                return response($response, Response::HTTP_BAD_REQUEST);
+            } else {
+                $response = $this->userApiLib->passwordOkrResponse();
+                return response($response, Response::HTTP_OK);
+            }
+
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+
     }
 
     /**
@@ -157,7 +240,7 @@ class AuthController extends Controller
             $credentials = request(['email', 'password', 'username']);
 
             if(!Auth::attempt($credentials)){
-                $response = $this->apiLib->unauthorizedEmailAndPassword();
+                $response = $this->userApiLib->unauthorizedEmailAndPassword();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
 
@@ -242,7 +325,7 @@ class AuthController extends Controller
     {
         try {
             $request->user()->token()->revoke();
-            return response($this->apiLib->successLogout(), Response::HTTP_OK);
+            return response($this->userApiLib->successLogout(), Response::HTTP_OK);
 
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);

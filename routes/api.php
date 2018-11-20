@@ -21,6 +21,10 @@ Route::group(['prefix' => 'v1.0'], function () {
         Route::post('signup', 'Mobile\AuthController@signup');
         Route::post('check-email', 'Mobile\AuthController@checkEmailRegister');
         Route::post('check-username', 'Mobile\AuthController@checkUserNameRegister');
+        Route::post('check-fullname', 'Mobile\AuthController@checkFullNameRegister');
+        Route::post('check-phone', 'Mobile\AuthController@checkPhoneNumberRegister');
+        Route::post('check-gender', 'Mobile\AuthController@checkGenderRegister');
+        Route::post('check-password', 'Mobile\AuthController@checkPasswordRegister');
     });
     Route::group([
         'middleware' => 'auth:api'
