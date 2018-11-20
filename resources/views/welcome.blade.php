@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>findemi Official Website</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
@@ -51,7 +51,7 @@
             .links > a {
                 color: #636b6f;
                 padding: 0 25px;
-                font-size: 12px;
+                font-size: 15px;
                 font-weight: 600;
                 letter-spacing: .1rem;
                 text-decoration: none;
@@ -80,18 +80,19 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+                <div class="title m-b-md" style="font-size: 100px;">
+                    findemi
                 </div>
+                    <div class="m-b-md" style="font-size: 50px;">
+                        <q>there's nothing here</q>
+                    </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="links" style="font-size: 20px;">
+                    Go Find Us on
                 </div>
+                <a href="http://play.google.com/store/apps/details?id=com.kpp_technology.foodpot.beta" target="_blank">
+                    <img src="{{url('/image/google_play.png')}}" width="135" height="40" alt="findemi app"/>
+                </a>
             </div>
         </div>
     </body>
