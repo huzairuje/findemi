@@ -26,8 +26,7 @@ class UpdateUserService
         $data = $this->model->findOrFail($request->user()->id);
 
         $data->username = $request->username;
-        $data->first_name = $request->first_name;
-        $data->last_name = $request->last_name;
+        $data->full_name = $request->full_name;
         $data->gender = $request->gender;
         $data->email = $request->email;
         $data->phone = $request->phone;
