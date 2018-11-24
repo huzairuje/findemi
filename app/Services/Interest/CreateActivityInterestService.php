@@ -11,6 +11,7 @@ namespace App\Services\Interest;
 use App\Models\Interest;
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateActivityInterestService
 {
@@ -25,10 +26,12 @@ class CreateActivityInterestService
 
     public function createActivityInterest(Request $request)
     {
+        DB::beginTransaction();
         $user = $this->activityModel->findOrFail($request['activity_id']);
         $data = $this->model->findOrFail($request['interest_id']);
 
         $data->user()->attach($user);
+        DB::commit();
 
         return $data;
     }

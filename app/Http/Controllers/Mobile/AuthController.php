@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Models\User;
 
+use App\Services\User\LoginUserService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -23,6 +24,7 @@ class AuthController extends Controller
     protected $notificationUser;
     protected $username = 'username';
     protected $createUserService;
+    protected $loginUserService;
     protected $userValidator;
 
     public function __construct()
@@ -31,7 +33,8 @@ class AuthController extends Controller
         $this->userApiLib = new UsersResponseLibrary;
         $this->model = new User();
         $this->notificationUser = new SignUpActivate;
-        $this->createUserService = new CreateUserService();
+        $this->createUserService = new CreateUserService;
+        $this->loginUserService = new LoginUserService;
         $this->userValidator = new UserValidator();
     }
 
@@ -45,15 +48,12 @@ class AuthController extends Controller
     {
         try {
             $validator = $this->userValidator->validateEmailRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->userApiLib->emailRegistered();
                 return response($response, Response::HTTP_BAD_REQUEST);
-            } else {
-                $response = $this->userApiLib->emailIsAvailable();
-                return response($response, Response::HTTP_OK);
             }
-
+            $response = $this->userApiLib->emailIsAvailable();
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
@@ -70,15 +70,12 @@ class AuthController extends Controller
     {
         try {
             $validator = $this->userValidator->validateUsernameRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->userApiLib->usernameRegistered();
                 return response($response, Response::HTTP_BAD_REQUEST);
-            } else {
-                $response = $this->userApiLib->usernameIsAvailable();
-                return response($response, Response::HTTP_OK);
             }
-
+            $response = $this->userApiLib->usernameIsAvailable();
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
@@ -89,55 +86,44 @@ class AuthController extends Controller
     {
         try{
             $validator = $this->userValidator->validateFullNameRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->userApiLib->fullNameIsWrongFormat();
                 return response($response, Response::HTTP_BAD_REQUEST);
-            } else {
-                $response = $this->userApiLib->fullNameIsOk();
-                return response($response, Response::HTTP_OK);
             }
-
+            $response = $this->userApiLib->fullNameIsOk();
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
-
     }
 
     public function checkPhoneNumberRegister(Request $request)
     {
         try{
             $validator = $this->userValidator->validatePhoneRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->userApiLib->phoneIsRegistered();
                 return response($response, Response::HTTP_BAD_REQUEST);
-            } else {
-                $response = $this->userApiLib->phoneIsOk();
-                return response($response, Response::HTTP_OK);
             }
-
+            $response = $this->userApiLib->phoneIsOk();
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
-
     }
 
     public function checkGenderRegister(Request $request)
     {
         try{
             $validator = $this->userValidator->validateGenderRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->userApiLib->genderIsRequired();
                 return response($response, Response::HTTP_BAD_REQUEST);
-            } else {
+            }
                 $response = $this->userApiLib->genderIsOk();
                 return response($response, Response::HTTP_OK);
-            }
-
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
@@ -149,20 +135,16 @@ class AuthController extends Controller
     {
         try{
             $validator = $this->userValidator->validatePasswordRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->userApiLib->passwordErrorResponse();
                 return response($response, Response::HTTP_BAD_REQUEST);
-            } else {
-                $response = $this->userApiLib->passwordOkrResponse();
-                return response($response, Response::HTTP_OK);
             }
-
+            $response = $this->userApiLib->passwordOkrResponse();
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
-
     }
 
     /**
@@ -181,17 +163,13 @@ class AuthController extends Controller
     {
         try {
             $validator = $this->userValidator->validateRegistration($request);
-
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
-
             $data = $this->createUserService->create($request);
-
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
-
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
@@ -207,16 +185,13 @@ class AuthController extends Controller
     public function signupActivate($token)
     {
         $user = User::where('activation_token', $token)->first();
-
         if (!$user) {
             $response = $this->apiLib->invalidToken($user);
             return $response($response);
         }
-
         $user->active = true;
         $user->activation_token = '';
         $user->save();
-
         return $user;
     }
 
@@ -231,43 +206,22 @@ class AuthController extends Controller
     {
         try {
             $validator = $this->userValidator->validateLogin($request);
-
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
-
             $credentials = request(['email', 'password', 'username']);
-
             if(!Auth::attempt($credentials)){
                 $response = $this->userApiLib->unauthorizedEmailAndPassword();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
-
-            $user = $request->user();
-
-            $tokenResult = $user->createToken('Personal Access Token');
-            $token = $tokenResult->token;
-
-            if ($request->remember_me)
-                $token->expires_at = Carbon::now()->addWeeks(1);
-
-            $token->save();
-
-            $response = [
-                'access_token' => $tokenResult->accessToken,
-                'token_type' => 'Bearer',
-                'expires_at' => Carbon::parse(
-                    $tokenResult->token->expires_at
-                )->toDateTimeString()
-            ];
-            return response($this->apiLib->singleData($response, []), Response::HTTP_OK);
-
+            $data = $this->loginUserService->loginUser($request);
+            $return = $this->apiLib->singleData($data, []);
+            return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
         }
-
     }
 
     /**
@@ -326,7 +280,6 @@ class AuthController extends Controller
         try {
             $request->user()->token()->revoke();
             return response($this->userApiLib->successLogout(), Response::HTTP_OK);
-
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);

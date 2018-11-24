@@ -10,6 +10,7 @@ namespace App\Services\Comment;
 
 use App\Models\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateCommentService
 {
@@ -22,6 +23,7 @@ class CreateCommentService
 
     public function createComment(Request $request)
     {
+        DB::beginTransaction();
         $data = $this->model;
         $data->name = $request->name;
         $data->title = $request->title;
@@ -30,7 +32,7 @@ class CreateCommentService
         $data->parent_id = $request->parent_id;
         $data->created_by = auth()->user()->id;
         $data->save();
-
+        DB::commit();
         return $data;
     }
 }

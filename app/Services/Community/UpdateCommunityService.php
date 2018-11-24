@@ -10,6 +10,7 @@ namespace App\Services\Community;
 
 use App\Models\Community;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateCommunityService
 {
@@ -22,6 +23,7 @@ class UpdateCommunityService
 
     public function updateCommunity(Request $request, $id)
     {
+        DB::beginTransaction();
         $data = $this->model->find($id);
         $data->name = $request->name;
         $data->description = $request->description;
@@ -31,9 +33,8 @@ class UpdateCommunityService
         $data->lat = $request->lat;
         $data->lon = $request->lon;
         $data->address_from_map = $request->address_from_map;
-
         $data->update();
-
+        DB::commit();
         return $data;
     }
 

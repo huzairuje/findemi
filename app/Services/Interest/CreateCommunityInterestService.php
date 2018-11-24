@@ -11,6 +11,7 @@ namespace App\Services\Interest;
 use App\Models\Interest;
 use App\Models\Community;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateCommunityInterestService
 {
@@ -25,11 +26,12 @@ class CreateCommunityInterestService
 
     public function createCommunityInterest(Request $request)
     {
+        DB::beginTransaction();
         $community = $this->communityModel->findOrFail($request['community_id']);
         $data = $this->model->findOrFail($request['interest_id']);
 
         $data->user()->attach($community);
-
+        DB::commit();
         return $data;
     }
 }

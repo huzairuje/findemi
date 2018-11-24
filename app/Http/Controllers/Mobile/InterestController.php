@@ -51,17 +51,12 @@ class InterestController extends Controller
     {
         try {
             $data = $this->findInterestService->getAllInterest();
-
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
-
-            } else {
-                $response = $this->apiLib->listPaginate($data);
-                return response($response, Response::HTTP_OK);
-
             }
-
+            $response = $this->apiLib->listPaginate($data);
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
@@ -73,40 +68,29 @@ class InterestController extends Controller
     {
         try {
             $data = $this->findInterestService->findInterestById($id);
-
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
-
-            } else {
-                $response = $this->apiLib->singleData($data, []);
-                return response($response, Response::HTTP_OK);
-
             }
-
+            $response = $this->apiLib->singleData($data, []);
+            return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
-
         }
     }
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
         try {
             $validator = $this->interestValidator->validateCreate($request);
-
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
             $data = $this->createInterestService->createInterest($request);
-            DB::commit();
-
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
-
         } catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
@@ -117,15 +101,10 @@ class InterestController extends Controller
 
     public function createUserInterest(Request $request)
     {
-        DB::beginTransaction();
         try {
-
             $data = $this->createUserInterestService->createUserInterest($request);
-            DB::commit();
-
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
-
         }catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
@@ -135,15 +114,10 @@ class InterestController extends Controller
 
     public function createActivityInterest(Request $request)
     {
-        DB::beginTransaction();
         try {
-
             $data = $this->createActivityInterestService->createActivityInterest($request);
-            DB::commit();
-
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
-
         }catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
@@ -153,15 +127,10 @@ class InterestController extends Controller
 
     public function createCommunityInterest(Request $request)
     {
-        DB::beginTransaction();
         try {
-
             $data = $this->createCommunityService->createCommunityInterest($request);
-            DB::commit();
-
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
-
         }catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
@@ -171,15 +140,10 @@ class InterestController extends Controller
 
     public function createEventInterest(Request $request)
     {
-        DB::beginTransaction();
         try {
-
             $data = $this->createEventInterestService->createUserInterest($request);
-            DB::commit();
-
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
-
         }catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);

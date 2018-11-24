@@ -10,6 +10,7 @@ namespace App\Services\Post;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreatePostService
 {
@@ -22,6 +23,7 @@ class CreatePostService
 
     public function createPost (Request $request)
     {
+        DB::beginTransaction();
         $data = $this->model;
         $data->name = $request->name;
         $data->title = $request->title;
@@ -29,6 +31,7 @@ class CreatePostService
         $data->community_id = $request->community_id;
         $data->created_by = auth()->user()->id;
         $data->save();
+        DB::commit();
 
         return $data;
     }

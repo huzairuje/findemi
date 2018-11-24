@@ -10,6 +10,7 @@ namespace App\Services\Interest;
 
 use App\Models\Interest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateInterestService
 {
@@ -22,12 +23,12 @@ class CreateInterestService
 
     public function createInterest(Request $request)
     {
+        DB::beginTransaction();
         $data = $this->model;
         $data->name = $request->name;
         $data->description = $request->description;
-
         $data->save();
-
+        DB::commit();
         return $data;
     }
 }

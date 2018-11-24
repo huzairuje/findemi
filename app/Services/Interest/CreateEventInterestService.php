@@ -11,6 +11,7 @@ namespace App\Services\Interest;
 use App\Models\Interest;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateEventInterestService
 {
@@ -25,11 +26,11 @@ class CreateEventInterestService
 
     public function createUserInterest(Request $request)
     {
+        DB::beginTransaction();
         $event = $this->eventModel->findOrFail($request['event_id']);
         $data = $this->model->findOrFail($request['interest_id']);
-
         $data->user()->attach($event);
-
+        DB::commit();
         return $data;
     }
 }

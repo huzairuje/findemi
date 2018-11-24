@@ -11,6 +11,7 @@ namespace App\Services\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CreateUserService {
 
@@ -23,6 +24,7 @@ class CreateUserService {
 
     public function create(Request $request)
     {
+        DB::beginTransaction();
         $data = $this->model;
         $data->username = $request->username;
         $data->full_name = $request->full_name;
@@ -33,7 +35,7 @@ class CreateUserService {
 //        $data->activation_token = str_random(60);
 
         $data->save();
-
+        DB::commit();
         return $data;
 
     }

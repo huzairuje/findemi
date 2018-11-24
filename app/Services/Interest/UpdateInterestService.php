@@ -10,6 +10,7 @@ namespace App\Services\Interest;
 
 use App\Models\Interest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateInterestService
 {
@@ -22,12 +23,12 @@ class UpdateInterestService
 
     public function updateInterest(Request $request, $id)
     {
+        DB::beginTransaction();
         $data = $this->model->find($id);
         $data->name = $request->name;
         $data->description = $request->description;
-
         $data->save();
-
+        DB::commit();
         return $data;
     }
 }

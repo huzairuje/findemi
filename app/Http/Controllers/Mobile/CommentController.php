@@ -33,27 +33,19 @@ class CommentController extends Controller
 
     public function store(Request $request)
     {
-        DB::beginTransaction();
         try {
             $validator = $this->commentValidator->validateStoreComment($request);
-
             if ($validator->fails()) {
                 $response = $this->apiLib->validationFailResponse($validator->errors());
                 return response($response, Response::HTTP_BAD_REQUEST);
-
             }
             $data = $this->createCommentService->createComment($request);
-            DB::commit();
-
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
-
-
         } catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
-
         }
     }
 

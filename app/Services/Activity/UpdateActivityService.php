@@ -10,6 +10,7 @@ namespace App\Services\Activity;
 
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateActivityService
 {
@@ -22,6 +23,7 @@ class UpdateActivityService
 
     public function updateActivity(Request $request, $id)
     {
+        DB::beginTransaction();
         $data = $this->model->find($id);
         $data->name = $request->name;
         $data->description = $request->first_name;
@@ -34,6 +36,7 @@ class UpdateActivityService
         $data->address_from_map = $request->address_from_map;
 
         $data->update();
+        DB::commit();
 
         return $data;
     }
