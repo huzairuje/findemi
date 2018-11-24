@@ -27,7 +27,7 @@ class CreateUserInterestService
     public function createUserInterest(Request $request)
     {
         DB::beginTransaction();
-        $user = $this->userModel->findOrFail($request->user()->id);
+        $user = $request->user()->id;
         $data = $this->model->findOrFail($request['interest_id']);
         $data->user()->attach($user);
         DB::commit();

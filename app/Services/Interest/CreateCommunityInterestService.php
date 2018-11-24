@@ -29,7 +29,6 @@ class CreateCommunityInterestService
         DB::beginTransaction();
         $community = $this->communityModel->findOrFail($request['community_id']);
         $data = $this->model->findOrFail($request['interest_id']);
-
         $data->user()->attach($community);
         DB::commit();
         return $data;

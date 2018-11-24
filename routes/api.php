@@ -70,19 +70,19 @@ Route::group(['prefix' => 'v1.0'], function () {
 
             //store user interest
             Route::post('user', 'Mobile\InterestController@createUserInterest');
-//            Route::post('user/{id}', 'Mobile\InterestController@update');
+            Route::post('user/{id}', 'Mobile\InterestController@update');
 
             //store Activity Interest
             Route::post('activity', 'Mobile\InterestController@createActivityInterest');
-//            Route::post('activity/{id}', 'Mobile\InterestController@updateActivityInterest');
+            Route::post('activity/{id}', 'Mobile\InterestController@updateActivityInterest');
 
             //store Community Interest
             Route::post('community', 'Mobile\InterestController@createCommunityInterest');
-//            Route::post('community/{id}', 'Mobile\InterestController@updateCommunityInterest');
+            Route::post('community/{id}', 'Mobile\InterestController@updateCommunityInterest');
 
             //store Event Interest
             Route::post('event', 'Mobile\InterestController@createEventInterest');
-//            Route::post('event/{id}', 'Mobile\InterestController@updateEventInterest');
+            Route::post('event/{id}', 'Mobile\InterestController@updateEventInterest');
 
         });
     });

@@ -2,34 +2,35 @@
 /**
  * Created by PhpStorm.
  * User: huzairuje
- * Date: 07/11/2018
- * Time: 21:23
+ * Date: 24/11/2018
+ * Time: 21:24
  */
 
 namespace App\Services\Interest;
 
 use App\Models\Interest;
-use App\Models\Event;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
-class CreateEventInterestService
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+
+class UpdateUserInterestService
 {
     protected $model;
-    protected $eventModel;
+    protected $userModel;
 
     public function __construct()
     {
         $this->model = new Interest();
-        $this->eventModel = new Event();
+        $this->userModel = new User();
     }
 
-    public function createEventInterest(Request $request)
+    public function updateUserInterest(Request $request)
     {
         DB::beginTransaction();
-        $event = $this->eventModel->findOrFail($request['event_id']);
+        $user = $request->user()->id;
         $data = $this->model->findOrFail($request['interest_id']);
-        $data->event()->attach($event);
+        $data->user()->attach($user);
         DB::commit();
         return $data;
     }

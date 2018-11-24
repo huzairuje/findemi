@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Services\Interest\UpdateUserInterestService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
-
 use App\Services\Interest\CreateInterestService;
 use App\Services\Interest\UpdateInterestService;
 use App\Services\Interest\FindInterestService;
-
 use App\Services\Interest\CreateUserInterestService;
 use App\Services\Interest\CreateActivityInterestService;
 use App\Services\Interest\CreateCommunityInterestService;
@@ -31,6 +30,7 @@ class InterestController extends Controller
     protected $createActivityInterestService;
     protected $createCommunityService;
     protected $createEventInterestService;
+    protected $updateUserInterestService;
 
     public function __construct()
     {
@@ -44,6 +44,7 @@ class InterestController extends Controller
         $this->createActivityInterestService = new CreateActivityInterestService();
         $this->createCommunityService = new CreateCommunityInterestService();
         $this->createEventInterestService = new CreateEventInterestService();
+        $this->updateUserInterestService = new UpdateUserInterestService();
 
     }
 
@@ -141,10 +142,23 @@ class InterestController extends Controller
     public function createEventInterest(Request $request)
     {
         try {
-            $data = $this->createEventInterestService->createUserInterest($request);
+            $data = $this->createEventInterestService->createEventInterest($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
         }catch (\Exception $e) {
+            DB::rollBack();
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_BAD_GATEWAY);
+        }
+    }
+
+    public function updateUserInterest(Request $request)
+    {
+        try {
+            $data = $this->updateUserInterestService->updateUserInterest($request);
+            $response = $this->apiLib->singleData($data, []);
+            return response($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_BAD_GATEWAY);
