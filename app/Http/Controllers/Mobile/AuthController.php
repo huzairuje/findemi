@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Mobile;
 use App\Models\User;
 
 use App\Services\User\LoginUserService;
+use App\Services\User\SignUpActivateService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -12,7 +13,6 @@ use App\Library\UsersResponseLibrary;
 use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use Carbon\Carbon;
 use App\Services\User\CreateUserService;
 use App\Validators\UserValidator;
 
@@ -26,6 +26,7 @@ class AuthController extends Controller
     protected $createUserService;
     protected $loginUserService;
     protected $userValidator;
+    protected $userActivateSignUp;
 
     public function __construct()
     {
@@ -36,6 +37,7 @@ class AuthController extends Controller
         $this->createUserService = new CreateUserService;
         $this->loginUserService = new LoginUserService;
         $this->userValidator = new UserValidator();
+        $this->userActivateSignUp = new SignUpActivateService();
     }
 
     /**
@@ -184,7 +186,7 @@ class AuthController extends Controller
      */
     public function signupActivate($token)
     {
-        $user = User::where('activation_token', $token)->first();
+        $user = $this->userActivateSignUp->activateUser($token);
         if (!$user) {
             $response = $this->apiLib->invalidToken($user);
             return $response($response);
@@ -211,6 +213,8 @@ class AuthController extends Controller
                 return response($response, Response::HTTP_BAD_REQUEST);
             }
             $credentials = request(['email', 'password', 'username']);
+            $credentials['active']=true;
+            $credentials['is_blocked']=false;
             if(!Auth::attempt($credentials)){
                 $response = $this->userApiLib->unauthorizedEmailAndPassword();
                 return response($response, Response::HTTP_UNAUTHORIZED);

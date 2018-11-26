@@ -12,6 +12,7 @@ namespace App\Services\User;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\SignUpActivate;
 
 class CreateUserService {
 
@@ -32,9 +33,11 @@ class CreateUserService {
         $data->email = $request->email;
         $data->phone = $request->phone;
         $data->password = bcrypt($request->password);
-//        $data->activation_token = str_random(60);
+        $data->activation_token = str_random(60);
 
         $data->save();
+//        dd($data);
+        $data->notify(new SignupActivate($data));
         DB::commit();
         return $data;
 

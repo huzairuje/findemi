@@ -19,6 +19,7 @@ Route::group(['prefix' => 'v1.0'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'Mobile\AuthController@login');
         Route::post('signup', 'Mobile\AuthController@signup');
+        Route::get('signup/activate/{token}', 'Mobile\AuthController@signupActivate');
         Route::post('check-email', 'Mobile\AuthController@checkEmailRegister');
         Route::post('check-username', 'Mobile\AuthController@checkUserNameRegister');
         Route::post('check-fullname', 'Mobile\AuthController@checkFullNameRegister');

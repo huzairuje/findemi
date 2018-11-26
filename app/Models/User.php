@@ -19,7 +19,7 @@ class User extends Authenticatable implements UserSocialAccount
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'first_name', 'last_name', 'phone' , 'gender'
+        'username', 'email', 'password', 'first_name', 'last_name', 'phone' , 'gender', 'active', 'activation_token'
     ];
 
     /**
@@ -28,7 +28,7 @@ class User extends Authenticatable implements UserSocialAccount
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'activation_token'
     ];
 
     /**
