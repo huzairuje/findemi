@@ -36,8 +36,7 @@ class CreateUserService {
         $data->activation_token = str_random(60);
 
         $data->save();
-//        dd($data);
-        $data->notify(new SignupActivate($data));
+//        $data->notify(new SignupActivate($data));
         DB::commit();
         return $data;
 
