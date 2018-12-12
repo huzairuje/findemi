@@ -18,7 +18,6 @@ class UserValidator extends Validator {
         $validator = Validator::make($request->only('email'), [
             'email' => 'required|string|email|unique:users'
         ]);
-
         return $validator;
     }
 
@@ -27,7 +26,6 @@ class UserValidator extends Validator {
         $validator = Validator::make($request->only('username'), [
             'username' => 'required|string|unique:users'
         ]);
-
         return $validator;
     }
 
@@ -36,7 +34,6 @@ class UserValidator extends Validator {
         $validator = Validator::make($request->only('full_name'), [
             'full_name' => 'required|string'
         ]);
-
         return $validator;
     }
 
@@ -45,25 +42,6 @@ class UserValidator extends Validator {
         $validator = Validator::make($request->only('phone'), [
             'phone' => 'unique:users|string'
         ]);
-
-        return $validator;
-    }
-
-    public function validateGenderRegistration(Request $request)
-    {
-        $validator = Validator::make($request->only('gender'), [
-            'gender' => 'required|in:L,P'
-        ]);
-
-        return $validator;
-    }
-
-    public function validatePasswordRegistration(Request $request)
-    {
-        $validator = Validator::make($request->only('password', 'password_confirmation'), [
-            'password' => 'required|string|confirmed'
-        ]);
-
         return $validator;
     }
 
@@ -77,7 +55,6 @@ class UserValidator extends Validator {
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|confirmed'
         ]);
-
         return $validator;
 
     }
@@ -88,7 +65,6 @@ class UserValidator extends Validator {
             'email' => 'required',
             'password' => 'required|string',
         ]);
-
         return $validator;
     }
 
@@ -101,9 +77,7 @@ class UserValidator extends Validator {
             'phone' => 'unique:users|string',
             'email' => 'string|email|unique:users',
             'password' => 'string|confirmed|min:6'
-
         ]);
-
         return $validator;
     }
 

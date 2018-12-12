@@ -74,6 +74,12 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * get all user with response on ApiResponseLibrary, using list paginate
+     * because it's on bulk data, don't confuse with query get->all. method listPaginate
+     * get list item and get collection item from query.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getAllUser()
     {
         try {

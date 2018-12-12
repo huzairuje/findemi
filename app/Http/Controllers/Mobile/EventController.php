@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Event\CreateEventRequest;
+use App\Http\Requests\Event\UpdateEventRequest;
+//use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +31,12 @@ class EventController extends Controller
         $this->findEventService = new FindEventService();
     }
 
+    /**
+     * get all event with response on ApiResponseLibrary, using list paginate
+     * because it's on bulk data, don't confuse with query get->all. method listPaginate
+     * get list item and get collection item from query.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function index()
     {
         try {
@@ -61,14 +69,14 @@ class EventController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CreateEventRequest $request)
     {
         try {
-            $validator = $this->eventValidator->validateCreate($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
+//            $validator = $this->eventValidator->validateCreate($request);
+//            if ($validator->fails()) {
+//                $response = $this->apiLib->validationFailResponse($validator->errors());
+//                return response($response, Response::HTTP_BAD_REQUEST);
+//            }
             $data = $this->createEventService->createEvent($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
@@ -79,7 +87,7 @@ class EventController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateEventRequest $request, $id)
     {
         try {
             $data = $this->findEventService->findEventById($id);
@@ -87,11 +95,11 @@ class EventController extends Controller
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $validator = $this->eventValidator->validateUpdate($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
+//            $validator = $this->eventValidator->validateUpdate($request);
+//            if ($validator->fails()) {
+//                $response = $this->apiLib->validationFailResponse($validator->errors());
+//                return response($response, Response::HTTP_BAD_REQUEST);
+//            }
             $data = $this->updateEventService->updateEvent($request, $id);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);

@@ -48,6 +48,12 @@ class InterestController extends Controller
 
     }
 
+    /**
+     * get all interest with response on ApiResponseLibrary, using list paginate
+     * because it's on bulk data, don't confuse with query get->all. method listPaginate
+     * get list item and get collection item from query.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function index()
     {
         try {

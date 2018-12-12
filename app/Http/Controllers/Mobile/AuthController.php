@@ -44,7 +44,7 @@ class AuthController extends Controller
      * method for realtime checking email and username trough form on android
      * @param Request $request
      *
-     * return
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function checkEmailRegister(Request $request)
     {
@@ -66,7 +66,7 @@ class AuthController extends Controller
      * method for realtime checking username trough form on android
      * @param Request $request
      *
-     * return
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function checkUserNameRegister(Request $request)
     {
@@ -84,6 +84,12 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Validate full name from mobile(Register User)
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function checkFullNameRegister(Request $request)
     {
         try{
@@ -100,6 +106,12 @@ class AuthController extends Controller
         }
     }
 
+    /**
+     * Validate phone number from mobile(Register User)
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function checkPhoneNumberRegister(Request $request)
     {
         try{
@@ -116,50 +128,11 @@ class AuthController extends Controller
         }
     }
 
-    public function checkGenderRegister(Request $request)
-    {
-        try{
-            $validator = $this->userValidator->validateGenderRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->userApiLib->genderIsRequired();
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
-                $response = $this->userApiLib->genderIsOk();
-                return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
-        }
-
-    }
-
-    public function checkPasswordRegister(Request $request)
-    {
-        try{
-            $validator = $this->userValidator->validatePasswordRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->userApiLib->passwordErrorResponse();
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
-            $response = $this->userApiLib->passwordOkrResponse();
-            return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
-        }
-    }
-
     /**
      * Create user(Register User)
      *
-     * @param [string] username
-     * @param [string] first_name
-     * @param [string] last_name
-     * @param [boolean] gender
-     * @param  [string] email
-     * @param  [string] password
-     * @param  [string] password_confirmation
-     * @return Response message
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function signUp(Request $request)
     {
@@ -180,9 +153,9 @@ class AuthController extends Controller
 
     /**
      * Method For Activate User Trough Email
-     * @param Request $request
+     * @param $token
      *
-     * return [string] message
+     * @return
      */
     public function signupActivate($token)
     {
@@ -200,10 +173,10 @@ class AuthController extends Controller
     /**
      * Login For User
      * @param Request $request
-     *
-     * return [string] message
+     * don't forget while registering user with email, user get notification to email,
+     * and activate user on function signUpActivate with params $token.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-
     public function login(Request $request)
     {
         try {
@@ -232,7 +205,7 @@ class AuthController extends Controller
      * Login For User Using Social Account (Facebook)
      * @param Request $request
      *
-     * return [string] message
+     * @return response
      */
     public function loginFacebook(Request $request) {
         try {
@@ -276,8 +249,8 @@ class AuthController extends Controller
 
     /**
      * Logout user (Revoke the token)
-     *
-     * @return [string] message
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function logout(Request $request)
     {

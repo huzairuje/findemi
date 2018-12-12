@@ -36,7 +36,6 @@ class ActivityValidator extends Validator
             'description' => 'max:255',
             'address' => 'max:255',
             'tag' => 'max:255',
-
         ]);
 
         return $validator;

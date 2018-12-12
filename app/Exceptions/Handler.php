@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Library\ApiResponseLibrary;
+use Symfony\Component\HttpFoundation\Response;
 
 class Handler extends ExceptionHandler
 {
@@ -38,18 +39,6 @@ class Handler extends ExceptionHandler
         parent::report($exception);
     }
 
-//    /**
-//     * Render an exception into an HTTP response.
-//     *
-//     * @param  \Illuminate\Http\Request  $request
-//     * @param  \Exception  $exception
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function render($request, Exception $exception)
-//    {
-//        return parent::render($request, $exception);
-//    }
-
     /**
      * Render an exception into an HTTP response.
      *
@@ -59,15 +48,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return response()->json(
-            [
-                'meta' => [
-                    'status' => 401,
-                    'message' => 'Unauthenticated',
-                ]
-            ], 401
-        );
+        /**
+         * Handle on Json Error
+         */
+        $data = new ApiResponseLibrary();
+        return response($data->unauthorizedResponse(), Response::HTTP_UNAUTHORIZED);
+
+        /**
+         * handle on graphical error
+         */
 //        return parent::render($request, $exception);
+
     }
 
 }

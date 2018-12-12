@@ -36,7 +36,10 @@ class CreateUserService {
         $data->activation_token = str_random(60);
 
         $data->save();
-//        $data->notify(new SignupActivate($data));
+        //commended because this method need validation domain on server.
+        /*
+         * $data->notify(new SignupActivate($data));
+         */
         DB::commit();
         return $data;
 

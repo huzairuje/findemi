@@ -1,6 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::group(['prefix' => 'v1.0'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'Mobile\AuthController@login');
@@ -24,8 +21,6 @@ Route::group(['prefix' => 'v1.0'], function () {
         Route::post('check-username', 'Mobile\AuthController@checkUserNameRegister');
         Route::post('check-fullname', 'Mobile\AuthController@checkFullNameRegister');
         Route::post('check-phone', 'Mobile\AuthController@checkPhoneNumberRegister');
-        Route::post('check-gender', 'Mobile\AuthController@checkGenderRegister');
-        Route::post('check-password', 'Mobile\AuthController@checkPasswordRegister');
     });
     Route::group([
         'middleware' => 'auth:api'

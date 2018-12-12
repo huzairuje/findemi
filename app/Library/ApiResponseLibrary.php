@@ -91,12 +91,12 @@ class ApiResponseLibrary
         return $return;
     }
 
-    public function unauthorizedResponse($errors)
+    public function unauthorizedResponse()
     {
         $return = [];
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.unauthorized');
-        $return['data'] = $errors;
+//        $return['data'] = $errors;
         return $return;
     }
 
