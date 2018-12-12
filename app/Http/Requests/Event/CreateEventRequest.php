@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests\Event;
 
+use App\Library\ApiResponseLibrary;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class CreateEventRequest extends FormRequest
 {
@@ -13,7 +18,7 @@ class CreateEventRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -34,4 +39,21 @@ class CreateEventRequest extends FormRequest
             'address_from_map' => 'required',
         ];
     }
+
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param Validator
+     * @return void
+     *
+     * @throws HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $responseLib = new ApiResponseLibrary();
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(response()->json($responseLib->validationFailResponse($errors),
+            Response::HTTP_UNPROCESSABLE_ENTITY));
+    }
+
 }

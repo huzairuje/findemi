@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\Community\CreateCommunityRequest;
+use App\Http\Requests\Community\UpdateCommunityRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -68,14 +70,9 @@ class CommunityController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CreateCommunityRequest $request)
     {
         try {
-            $validator = $this->communityValidator->validateCreate($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $data = $this->createCommunityService->createCommunity($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
@@ -86,18 +83,13 @@ class CommunityController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateCommunityRequest $request, $id)
     {
         try {
             $data = $this->findCommunityService->findCommunityById($id);
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
-            }
-            $validator = $this->communityValidator->validateUpdate($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
             }
             $data = $this->updateCommunityService->updateCommunity($request, $id);
             $return = $this->apiLib->singleData($data, []);

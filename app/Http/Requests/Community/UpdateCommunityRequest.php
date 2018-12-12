@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Event;
+namespace App\Http\Requests\Community;
 
 use App\Library\ApiResponseLibrary;
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateEventRequest extends FormRequest
+class UpdateCommunityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

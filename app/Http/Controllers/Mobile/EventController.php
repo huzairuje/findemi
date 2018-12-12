@@ -72,11 +72,6 @@ class EventController extends Controller
     public function store(CreateEventRequest $request)
     {
         try {
-//            $validator = $this->eventValidator->validateCreate($request);
-//            if ($validator->fails()) {
-//                $response = $this->apiLib->validationFailResponse($validator->errors());
-//                return response($response, Response::HTTP_BAD_REQUEST);
-//            }
             $data = $this->createEventService->createEvent($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
@@ -95,11 +90,6 @@ class EventController extends Controller
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-//            $validator = $this->eventValidator->validateUpdate($request);
-//            if ($validator->fails()) {
-//                $response = $this->apiLib->validationFailResponse($validator->errors());
-//                return response($response, Response::HTTP_BAD_REQUEST);
-//            }
             $data = $this->updateEventService->updateEvent($request, $id);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);

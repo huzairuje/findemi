@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Event;
+namespace App\Http\Requests\User;
 
 use App\Library\ApiResponseLibrary;
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateEventRequest extends FormRequest
+class CreateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,7 @@ class UpdateEventRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -29,10 +29,12 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'max:255',
-            'description' => 'max:255',
-            'address' => 'max:255',
-            'tag' => 'max:255',
+            'username' => 'required|string|unique:users',
+            'full_name' => 'required|string',
+            'phone' => 'unique:users|string',
+            'gender' => 'required',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|confirmed'
         ];
     }
 

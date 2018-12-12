@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Event;
+namespace App\Http\Requests\Community;
 
 use App\Library\ApiResponseLibrary;
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateEventRequest extends FormRequest
+class CreateCommunityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,10 +29,14 @@ class UpdateEventRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'max:255',
-            'description' => 'max:255',
-            'address' => 'max:255',
-            'tag' => 'max:255',
+            'name' => 'required|max:255',
+            'description' => 'required|max:255',
+            'image_banner_url' => 'required',
+            'base_camp_address' => 'required',
+            'tag' => 'required|max:255',
+            'lat' => 'required',
+            'lon' => 'required',
+            'address_from_map' => 'required',
         ];
     }
 

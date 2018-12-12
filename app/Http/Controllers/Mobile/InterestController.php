@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\Interest\CreateInterestRequest;
 use App\Services\Interest\UpdateUserInterestService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -87,14 +88,9 @@ class InterestController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CreateInterestRequest $request)
     {
         try {
-            $validator = $this->interestValidator->validateCreate($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $data = $this->createInterestService->createInterest($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);

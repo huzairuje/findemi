@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\LoginUserRequest;
 use App\Models\User;
-
 use App\Services\User\LoginUserService;
 use App\Services\User\SignUpActivateService;
 use Illuminate\Http\Request;
@@ -131,17 +132,12 @@ class AuthController extends Controller
     /**
      * Create user(Register User)
      *
-     * @param Request $request
+     * @param CreateUserRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function signUp(Request $request)
+    public function signUp(CreateUserRequest $request)
     {
         try {
-            $validator = $this->userValidator->validateRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $data = $this->createUserService->create($request);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
@@ -157,7 +153,7 @@ class AuthController extends Controller
      *
      * @return
      */
-    public function signupActivate($token)
+    public function signUpActivate($token)
     {
         $user = $this->userActivateSignUp->activateUser($token);
         if (!$user) {
@@ -172,19 +168,14 @@ class AuthController extends Controller
 
     /**
      * Login For User
-     * @param Request $request
+     * @param LoginUserRequest $request
      * don't forget while registering user with email, user get notification to email,
      * and activate user on function signUpActivate with params $token.
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
         try {
-            $validator = $this->userValidator->validateLogin($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $credentials = request(['email', 'password', 'username']);
             $credentials['active']=true;
             $credentials['is_blocked']=false;

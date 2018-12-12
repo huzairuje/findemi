@@ -3,6 +3,11 @@
 namespace App\Http\Requests\Activity;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Library\ApiResponseLibrary;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UpdateActivityRequest extends FormRequest
 {
@@ -30,4 +35,13 @@ class UpdateActivityRequest extends FormRequest
             'tag' => 'max:255',
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $responseLib = new ApiResponseLibrary();
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(response()->json($responseLib->validationFailResponse($errors),
+            Response::HTTP_UNPROCESSABLE_ENTITY));
+    }
+
 }

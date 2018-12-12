@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\DB;
-use App\Validators\UserValidator;
 use App\Services\User\UpdateUserService;
 use App\Services\User\FindUserService;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 class UserController extends Controller
 {
     protected $apiLib;
-    protected $userValidator;
     protected $updateUserService;
     protected $findUserService;
     protected $model;
@@ -24,15 +23,15 @@ class UserController extends Controller
     {
         $this->model = new User();
         $this->apiLib = new ApiResponseLibrary;
-        $this->userValidator = new UserValidator();
         $this->updateUserService = new UpdateUserService();
         $this->findUserService = new FindUserService();
     }
 
     /**
      * Get the authenticated User
+     * @param Request $request
      *
-     * @return [json] user object
+     * @return response
      */
     public function getAuthenticatedUser(Request $request)
     {
@@ -40,14 +39,9 @@ class UserController extends Controller
         return response($response, Response::HTTP_OK);
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile(UpdateUserRequest $request)
     {
         try {
-            $validator = $this->userValidator->validateUpdateProfile($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $data = $this->updateUserService->update($request);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);

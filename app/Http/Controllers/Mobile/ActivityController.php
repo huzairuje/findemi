@@ -6,18 +6,15 @@ use App\Http\Requests\Activity\CreateActivityRequest;
 use App\Http\Requests\Activity\UpdateActivityRequest;
 use App\Library\ApiResponseLibrary;
 use App\Http\Controllers\Controller;
-//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\Activity\CreateActivityService;
 use App\Services\Activity\UpdateActivityService;
 use App\Services\Activity\FindActivityService;
-use App\Validators\ActivityValidator;
 
 class ActivityController extends Controller
 {
     protected $apiLib;
-    protected $eventValidator;
     protected $createActivityService;
     protected $updateActivityService;
     protected $findActivityService;
@@ -25,7 +22,6 @@ class ActivityController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->eventValidator = new ActivityValidator();
         $this->createActivityService = new CreateActivityService();
         $this->updateActivityService = new UpdateActivityService();
         $this->findActivityService = new FindActivityService();
@@ -72,11 +68,6 @@ class ActivityController extends Controller
     public function store(CreateActivityRequest $request)
     {
         try {
-//            $validator = $this->eventValidator->validateCreate($request);
-//            if ($validator->fails()) {
-//                $response = $this->apiLib->validationFailResponse($validator->errors());
-//                return response($response, Response::HTTP_BAD_REQUEST);
-//            }
             $data = $this->createActivityService->createActivity($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
@@ -95,11 +86,6 @@ class ActivityController extends Controller
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-//            $validator = $this->eventValidator->validateUpdate($request);
-//            if ($validator->fails()) {
-//                $response = $this->apiLib->validationFailResponse($validator->errors());
-//                return response($response, Response::HTTP_BAD_REQUEST);
-//            }
             $data = $this->updateActivityService->updateActivity($request, $id);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);

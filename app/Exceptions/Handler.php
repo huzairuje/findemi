@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
         return response($data->unauthorizedResponse(), Response::HTTP_UNAUTHORIZED);
 
         /**
-         * handle on graphical error
+         * handle on graphical error commended because :D
          */
 //        return parent::render($request, $exception);
 

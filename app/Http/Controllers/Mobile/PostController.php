@@ -2,28 +2,25 @@
 
 namespace App\Http\Controllers\Mobile;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Post\CreatePostRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Library\ApiResponseLibrary;
 use App\Services\Post\CreatePostService;
 use App\Services\Post\FindPostService;
-use App\Validators\PostValidator;
 
 class PostController extends Controller
 {
     protected $apiLib;
     protected $createPostService;
     protected $findPostService;
-    protected $postValidator;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
         $this->createPostService = new CreatePostService();
         $this->findPostService = new FindPostService();
-        $this->postValidator = new PostValidator();
     }
 
     public function getPostPublic($id)
@@ -42,14 +39,9 @@ class PostController extends Controller
         }
     }
 
-    public function store(Request $request)
+    public function store(CreatePostRequest $request)
     {
         try {
-            $validator = $this->postValidator->validateStorePost($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $data = $this->createPostService->createPost($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
