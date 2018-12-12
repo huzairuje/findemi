@@ -90,7 +90,7 @@
                 <div class="links" style="font-size: 20px;">
                     Go Find Us on
                 </div>
-                <a href="http://play.google.com/store/apps/details?id=com.kpp_technology.foodpot.beta" target="_blank">
+                <a href="#" target="_blank">
                     <img src="{{url('/image/google_play.png')}}" width="135" height="40" alt="findemi app"/>
                 </a>
             </div>
