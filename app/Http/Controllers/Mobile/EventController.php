@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\Event\CreateEventRequest;
 use App\Http\Requests\Event\UpdateEventRequest;
-//use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\DB;
@@ -12,12 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Services\Event\CreateEventService;
 use App\Services\Event\UpdateEventService;
 use App\Services\Event\FindEventService;
-use App\Validators\EventValidator;
 
 class EventController extends Controller
 {
     protected $apiLib;
-    protected $eventValidator;
     protected $createEventService;
     protected $updateEventService;
     protected $findEventService;
@@ -25,7 +22,6 @@ class EventController extends Controller
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
-        $this->eventValidator = new EventValidator();
         $this->createEventService = new CreateEventService();
         $this->updateEventService = new UpdateEventService();
         $this->findEventService = new FindEventService();

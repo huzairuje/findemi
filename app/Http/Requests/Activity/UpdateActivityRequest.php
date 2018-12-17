@@ -36,6 +36,14 @@ class UpdateActivityRequest extends FormRequest
         ];
     }
 
+    /**
+     * Handle a failed validation attempt.
+     *
+     * @param Validator $validator
+     * @return void
+     *
+     * @throws HttpResponseException
+     */
     protected function failedValidation(Validator $validator)
     {
         $responseLib = new ApiResponseLibrary();
