@@ -20,6 +20,24 @@ class UsersResponseLibrary
         return $return;
     }
 
+    public function userIsNotActive()
+    {
+        $return = [];
+        $return['meta']['status'] = 401;
+        $return['meta']['message'] = trans('message.api.userIsNotActive');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
+    public function userIsBlocked()
+    {
+        $return = [];
+        $return['meta']['status'] = 401;
+        $return['meta']['message'] = trans('message.api.userIsBlocked');
+//        $return['data'] = $errors;
+        return $return;
+    }
+
     public function emailRegistered()
     {
         $return = [];

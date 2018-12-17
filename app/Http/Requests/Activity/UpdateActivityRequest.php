@@ -18,7 +18,7 @@ class UpdateActivityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -32,7 +32,10 @@ class UpdateActivityRequest extends FormRequest
             'name' => 'max:255',
             'description' => 'max:255',
             'address' => 'max:255',
-            'tag' => 'max:255',
+            'tag' => 'max:15',
+            'is_one_trip' => 'in:true,false',
+            'start_date' => 'date',
+            'end_date' => 'date',
         ];
     }
 
@@ -49,7 +52,7 @@ class UpdateActivityRequest extends FormRequest
         $responseLib = new ApiResponseLibrary();
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json($responseLib->validationFailResponse($errors),
-            Response::HTTP_UNPROCESSABLE_ENTITY));
+            Response::HTTP_BAD_REQUEST));
     }
 
 }

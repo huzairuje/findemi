@@ -31,8 +31,8 @@ class CreateActivityRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
             'address' => 'required|max:255',
             'tag' => 'required|max:255',
             'lat' => 'required',
@@ -54,7 +54,7 @@ class CreateActivityRequest extends FormRequest
         $responseLib = new ApiResponseLibrary();
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json($responseLib->validationFailResponse($errors),
-            Response::HTTP_UNPROCESSABLE_ENTITY));
+            Response::HTTP_BAD_REQUEST));
     }
 
 }

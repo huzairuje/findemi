@@ -118,4 +118,13 @@ class ApiResponseLibrary
         return $return;
     }
 
+    public function unProcessableEntity($errors)
+    {
+        $return = [];
+        $return['meta']['status'] = 422;
+        $return['meta']['message'] = trans('message.api.unProcessableEntity');
+        $return['data'] = $errors;
+        return $return;
+    }
+
 }

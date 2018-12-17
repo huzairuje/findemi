@@ -7,17 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
-
 use App\Services\Comment\CreateCommentService;
 use App\Services\Comment\FindCommentService;
 use App\Services\Comment\UpdateCommentService;
 
-use App\Validators\CommentValidator;
 
 class CommentController extends Controller
 {
     protected $apiLib;
-    protected $commentValidator;
     protected $createCommentService;
     protected $findCommentService;
     protected $updateCommentService;
@@ -28,7 +25,6 @@ class CommentController extends Controller
         $this->createCommentService = new CreateCommentService();
         $this->findCommentService = new FindCommentService();
         $this->updateCommentService = new UpdateCommentService();
-        $this->commentValidator = new CommentValidator();
     }
 
     public function store(Request $request)

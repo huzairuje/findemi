@@ -25,10 +25,13 @@ return [
     'api' => [
         'success' => 'Operation successfully executed',
         'badRequest' => 'Bad Request',
+        'unProcessableEntity' => 'Entity is UnProcessable',
         'notFound' => 'Not Found',
         'successLogout' => 'Successfully Logout',
         'error' => 'Error executing request',
         'unauthorizedEmailAndPassword' => 'Unauthorized, Wrong Username/Email and password combination.',
+        'userIsNotActive' => 'You are Not Activated, check your email',
+        'userIsBlocked' => 'You Are Blocked!',
         'unauthorized' => 'Unauthorized!',
         'invalidToken' => 'This activation token is invalid.',
         'emailRegistered' => 'this email address you have entered is already registered',

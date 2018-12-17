@@ -177,10 +177,18 @@ class AuthController extends Controller
     {
         try {
             $credentials = request(['email', 'password', 'username']);
-            $credentials['active']=true;
-            $credentials['is_blocked']=false;
             if(!Auth::attempt($credentials)){
                 $response = $this->userApiLib->unauthorizedEmailAndPassword();
+                return response($response, Response::HTTP_UNAUTHORIZED);
+            }
+            $credentials['active']=false;
+            if(!Auth::attempt($credentials)){
+                $response = $this->userApiLib->userIsNotActive();
+                return response($response, Response::HTTP_UNAUTHORIZED);
+            }
+            $credentials['is_blocked']=false;
+            if(!Auth::attempt($credentials)){
+                $response = $this->userApiLib->userIsBlocked();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $data = $this->loginUserService->loginUser($request);

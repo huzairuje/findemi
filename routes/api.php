@@ -37,13 +37,13 @@ Route::group(['prefix' => 'v1.0'], function () {
             Route::get('index', 'Mobile\ActivityController@index');
             Route::get('{id}', 'Mobile\ActivityController@getActivityPublic');
             Route::post('create', 'Mobile\ActivityController@store');
-            Route::post('update', 'Mobile\ActivityController@update');
+            Route::post('update/{id}', 'Mobile\ActivityController@update');
         });
         Route::group(['prefix' => 'community'], function () {
             Route::get('index', 'Mobile\CommunityController@index');
             Route::get('{id}', 'Mobile\CommunityController@getCommunityPublic');
             Route::post('create', 'Mobile\CommunityController@store');
-            Route::post('update', 'Mobile\CommunityController@update');
+            Route::post('update/{id}', 'Mobile\CommunityController@update');
 
             Route::group(['prefix' => 'post'], function () {
                 Route::post('create-post', 'Mobile\PostController@store');
@@ -55,7 +55,7 @@ Route::group(['prefix' => 'v1.0'], function () {
             Route::get('index', 'Mobile\EventController@index');
             Route::get('{id}', 'Mobile\EventController@getEventPublic');
             Route::post('create', 'Mobile\EventController@store');
-            Route::post('update', 'Mobile\EventController@update');
+            Route::post('update/{id}', 'Mobile\EventController@update');
         });
 
 

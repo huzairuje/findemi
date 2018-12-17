@@ -48,7 +48,7 @@ class CreateCommentRequest extends FormRequest
         $responseLib = new ApiResponseLibrary();
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json($responseLib->validationFailResponse($errors),
-            Response::HTTP_UNPROCESSABLE_ENTITY));
+            Response::HTTP_BAD_REQUEST));
     }
 
 }

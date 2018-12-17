@@ -10,6 +10,7 @@ namespace App\Services\Activity;
 
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class UpdateActivityService
@@ -26,15 +27,14 @@ class UpdateActivityService
         DB::beginTransaction();
         $data = $this->model->find($id);
         $data->name = $request->name;
-        $data->description = $request->first_name;
-        $data->start_date = $request->start_date;
-        $data->end_date = $request->end_date;
+        $data->description = $request->description;
+        $data->start_date = new Carbon($request->get('start_date'));
+        $data->end_date = new Carbon($request->get('end_date'));
         $data->address = $request->address;
         $data->tag = $request->tag;
         $data->lat = $request->lat;
         $data->lon = $request->lon;
         $data->address_from_map = $request->address_from_map;
-
         $data->update();
         DB::commit();
 
