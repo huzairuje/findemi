@@ -42,7 +42,7 @@ class AuthController extends Controller
     }
 
     /**
-     * method for realtime checking email and username trough form on android
+     * method for real time checking email and username trough form on android
      * @param Request $request
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
@@ -64,7 +64,7 @@ class AuthController extends Controller
     }
 
     /**
-     * method for realtime checking username trough form on android
+     * method for real time checking username trough form on android
      * @param Request $request
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\Community\CreateCommunityRequest;
 use App\Http\Requests\Community\UpdateCommunityRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Community\CreateCommunityService;
 use App\Services\Community\UpdateCommunityService;
 use App\Services\Community\FindCommunityService;
-use App\Validators\CommunityValidator;
 
 class CommunityController extends Controller
 {
@@ -20,7 +18,6 @@ class CommunityController extends Controller
     protected $createCommunityService;
     protected $updateCommunityService;
     protected $findCommunityService;
-    protected $communityValidator;
 
     public function __construct()
     {
@@ -28,7 +25,6 @@ class CommunityController extends Controller
         $this->createCommunityService = new CreateCommunityService();
         $this->updateCommunityService = new UpdateCommunityService();
         $this->findCommunityService = new FindCommunityService();
-        $this->communityValidator = new CommunityValidator();
     }
 
     /**

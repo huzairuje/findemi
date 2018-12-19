@@ -17,11 +17,9 @@ class UserController extends Controller
     protected $apiLib;
     protected $updateUserService;
     protected $findUserService;
-    protected $model;
 
     public function __construct()
     {
-        $this->model = new User();
         $this->apiLib = new ApiResponseLibrary;
         $this->updateUserService = new UpdateUserService();
         $this->findUserService = new FindUserService();

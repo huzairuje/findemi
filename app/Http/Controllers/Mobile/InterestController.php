@@ -17,7 +17,6 @@ use App\Services\Interest\CreateActivityInterestService;
 use App\Services\Interest\CreateCommunityInterestService;
 use App\Services\Interest\CreateEventInterestService;
 
-use App\Validators\InterestValidator;
 
 class InterestController extends Controller
 {
@@ -25,7 +24,6 @@ class InterestController extends Controller
     protected $createInterestService;
     protected $updateInterestService;
     protected $findInterestService;
-    protected $interestValidator;
 
     protected $createUserInterestService;
     protected $createActivityInterestService;
@@ -39,7 +37,6 @@ class InterestController extends Controller
         $this->createInterestService = new CreateInterestService();
         $this->updateInterestService = new UpdateInterestService();
         $this->findInterestService = new FindInterestService();
-        $this->interestValidator = new InterestValidator();
 
         $this->createUserInterestService = new CreateUserInterestService();
         $this->createActivityInterestService = new CreateActivityInterestService();

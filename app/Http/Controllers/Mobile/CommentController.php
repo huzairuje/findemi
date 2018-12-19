@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\Comment\CreateCommentRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -27,14 +28,9 @@ class CommentController extends Controller
         $this->updateCommentService = new UpdateCommentService();
     }
 
-    public function store(Request $request)
+    public function store(CreateCommentRequest $request)
     {
         try {
-            $validator = $this->commentValidator->validateStoreComment($request);
-            if ($validator->fails()) {
-                $response = $this->apiLib->validationFailResponse($validator->errors());
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
             $data = $this->createCommentService->createComment($request);
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
