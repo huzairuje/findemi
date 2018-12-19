@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'v1.0'], function () {
+    /**
+     * this Block Route For Testing without middleware
+     */
+    Route::get('all-interest', 'Mobile\InterestController@index');
+    Route::get('all-user', 'Mobile\UserController@getAllUser');
+    Route::get('all-activity', 'Mobile\ActivityController@index');
+    Route::get('all-community', 'Mobile\CommunityController@index');
+    Route::get('all-event', 'Mobile\EventController@index');
+
     Route::group(['prefix' => 'auth'], function () {
         Route::post('login', 'Mobile\AuthController@login');
         Route::post('signup', 'Mobile\AuthController@signup');
@@ -21,6 +30,7 @@ Route::group(['prefix' => 'v1.0'], function () {
         Route::post('check-username', 'Mobile\AuthController@checkUserNameRegister');
         Route::post('check-fullname', 'Mobile\AuthController@checkFullNameRegister');
         Route::post('check-phone', 'Mobile\AuthController@checkPhoneNumberRegister');
+
     });
     Route::group([
         'middleware' => 'auth:api'
