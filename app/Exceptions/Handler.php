@@ -51,13 +51,13 @@ class Handler extends ExceptionHandler
         /**
          * Handle on Json Error
          */
-//        $data = new ApiResponseLibrary();
-//        return response($data->unauthorizedResponse(), Response::HTTP_UNAUTHORIZED);
+        $data = new ApiResponseLibrary();
+        return response($data->unauthorizedResponse(), Response::HTTP_UNAUTHORIZED);
 
         /**
          * handle on graphical error commended because :D
          */
-        return parent::render($request, $exception);
+//        return parent::render($request, $exception);
 
     }
 
