@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\Comment\CreateCommentRequest;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
 use Symfony\Component\HttpFoundation\Response;

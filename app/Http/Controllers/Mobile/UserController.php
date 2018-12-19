@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\User\UpdateUserRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
