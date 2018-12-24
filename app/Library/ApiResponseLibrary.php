@@ -12,10 +12,10 @@ namespace App\Library;
 class ApiResponseLibrary
 {
     protected $LIMIT = 10;
-    public function listPaginate($collection)
+    public function listPaginate($collection, $limit)
     {
         $return = [];
-        $paginated = $collection->paginate($this->LIMIT);
+        $paginated = $collection->paginate($limit);
         $return['meta']['error'] = 0;
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.success');

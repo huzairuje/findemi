@@ -42,11 +42,11 @@ class CommunityController extends Controller
                 return response($response, Response::HTTP_NOT_FOUND);
             }
             $data = $this->findCommunityService->getAllCommunity();
-            $response = $this->apiLib->listPaginate($data);
+            $response = $this->apiLib->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -62,7 +62,7 @@ class CommunityController extends Controller
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -75,7 +75,7 @@ class CommunityController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -93,7 +93,7 @@ class CommunityController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

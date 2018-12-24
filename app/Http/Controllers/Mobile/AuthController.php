@@ -59,7 +59,7 @@ class AuthController extends Controller
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -81,7 +81,7 @@ class AuthController extends Controller
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -103,7 +103,7 @@ class AuthController extends Controller
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -125,7 +125,7 @@ class AuthController extends Controller
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -143,7 +143,7 @@ class AuthController extends Controller
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -196,7 +196,7 @@ class AuthController extends Controller
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -258,7 +258,7 @@ class AuthController extends Controller
             return response($this->userApiLib->successLogout(), Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
-            return response($response, Response::HTTP_BAD_GATEWAY);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
