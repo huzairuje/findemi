@@ -78,7 +78,6 @@ class ApiResponseLibrary
         $return = [];
         $return['meta']['status'] = 404;
         $return['meta']['message'] = trans('message.api.notFound');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -96,7 +95,14 @@ class ApiResponseLibrary
         $return = [];
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.unauthorized');
-//        $return['data'] = $errors;
+        return $return;
+    }
+
+    public function whereDoYouGo()
+    {
+        $return = [];
+        $return['meta']['status'] = 401;
+        $return['meta']['message'] = trans('message.api.whereDoYouGo');
         return $return;
     }
 

@@ -20,7 +20,7 @@ return [
     'leave_blank_password' => 'Leave blank if you don\'t to change password',
     'login' => 'You successfully login',
     'register' => 'Congratulation(s) your account has been registered',
-    'reset_password' => 'Password your account has been reseted',
+    'reset_password' => 'Password your account has been reset',
 
     'api' => [
         'success' => 'Operation successfully executed',
@@ -33,6 +33,7 @@ return [
         'userIsNotActive' => 'You are Not Activated, check your email',
         'userIsBlocked' => 'You Are Blocked!',
         'unauthorized' => 'Unauthorized!',
+        'whereDoYouGo' => 'where do you go? where are we?',
         'invalidToken' => 'This activation token is invalid.',
         'emailRegistered' => 'this email address you have entered is already registered',
         'fullNameIsWrongFormat' => 'full name is wrong format',
@@ -47,6 +48,8 @@ return [
         'emailIsAvailable' => 'email is available',
         'userNameRegistered' => 'this username you have entered is already registered',
         'userNameIsAvailable' => 'username is available'
-
     ]
+
+
+
 ];

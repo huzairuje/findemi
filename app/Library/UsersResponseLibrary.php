@@ -16,7 +16,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.unauthorizedEmailAndPassword');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -25,7 +24,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.userIsNotActive');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -34,7 +32,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 401;
         $return['meta']['message'] = trans('message.api.userIsBlocked');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -43,7 +40,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.emailRegistered');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -52,7 +48,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.emailIsAvailable');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -61,7 +56,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.userNameRegistered');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -70,7 +64,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.userNameIsAvailable');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -79,7 +72,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.fullNameIsWrongFormat');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -88,7 +80,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.fullNameIsOk');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -97,7 +88,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.phoneIsWrongFormat');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -106,7 +96,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.phoneIsRegistered');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -115,7 +104,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.phoneIsOk');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -124,7 +112,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.genderIsRequired');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -133,7 +120,6 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.genderIsOk');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -142,16 +128,14 @@ class UsersResponseLibrary
         $return = [];
         $return['meta']['status'] = 400;
         $return['meta']['message'] = trans('message.api.passwordErrorResponse');
-//        $return['data'] = $errors;
         return $return;
     }
 
-    public function passwordOkrResponse()
+    public function passwordOkeResponse()
     {
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.passwordOkResponse');
-//        $return['data'] = $errors;
         return $return;
     }
 
@@ -163,5 +147,22 @@ class UsersResponseLibrary
         return $return;
     }
 
+    public function successLogin($data)
+    {
+        $return = [];
+        $return['meta']['status'] = 200;
+        $return['meta']['message'] = trans('message.login');
+        $return['data'] = $data;
+        return $return;
+    }
+
+    public function successRegister($data)
+    {
+        $return = [];
+        $return['meta']['status'] = 200;
+        $return['meta']['message'] = trans('message.register');
+        $return['data'] = $data;
+        return $return;
+    }
 
 }

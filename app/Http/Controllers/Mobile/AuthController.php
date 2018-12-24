@@ -139,7 +139,7 @@ class AuthController extends Controller
     {
         try {
             $data = $this->createUserService->create($request);
-            $return = $this->apiLib->singleData($data, []);
+            $return = $this->userApiLib->successRegister($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
@@ -192,7 +192,7 @@ class AuthController extends Controller
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $data = $this->loginUserService->loginUser($request);
-            $return = $this->apiLib->singleData($data, []);
+            $return = $this->userApiLib->successLogin($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
