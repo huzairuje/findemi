@@ -14,7 +14,7 @@ class InterestController extends Controller
      */
     public function index()
     {
-        //
+        //TODO
     }
 
     /**
@@ -24,7 +24,7 @@ class InterestController extends Controller
      */
     public function create()
     {
-        //
+        //TODO
     }
 
     /**
@@ -35,7 +35,7 @@ class InterestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //TODO
     }
 
     /**
@@ -46,7 +46,7 @@ class InterestController extends Controller
      */
     public function show($id)
     {
-        //
+        //TODO
     }
 
     /**
@@ -57,7 +57,7 @@ class InterestController extends Controller
      */
     public function edit($id)
     {
-        //
+        //TODO
     }
 
     /**
@@ -69,7 +69,7 @@ class InterestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //TODO
     }
 
     /**
@@ -80,6 +80,6 @@ class InterestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //TODO
     }
 }
