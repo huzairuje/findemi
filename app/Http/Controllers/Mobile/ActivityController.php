@@ -49,6 +49,11 @@ class ActivityController extends Controller
         }
     }
 
+    /**
+     * get Activity (Public because all user can see detail of the activity)
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getActivityPublic($id)
     {
         try {
@@ -65,6 +70,10 @@ class ActivityController extends Controller
         }
     }
 
+    /**
+     * get All Activity created by user login using Auth::id() facade.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getAllActivityByUser()
     {
         try {
@@ -81,6 +90,11 @@ class ActivityController extends Controller
         }
     }
 
+    /**
+     * Save Activity by user Login.
+     * @param CreateActivityRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function store(CreateActivityRequest $request)
     {
         try {
@@ -94,6 +108,14 @@ class ActivityController extends Controller
         }
     }
 
+    /**
+     * Update Activity. this method can't handle whose user going to update the activity (Handle By Android),
+     * and get data which activity gonna be updated by method getAllActivityByUser().
+     * because user could have many activity (and other feature Event and Community)
+     * @param UpdateActivityRequest $request
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function update(UpdateActivityRequest $request, $id)
     {
         try {

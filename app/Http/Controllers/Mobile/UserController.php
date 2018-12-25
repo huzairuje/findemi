@@ -36,6 +36,12 @@ class UserController extends Controller
         return response($response, Response::HTTP_OK);
     }
 
+    /**
+     * Update Bio Profile User. some method in update profile user is different, like update interest,
+     * it's on InterestController@updateUserInterest
+     * @param UpdateUserRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function updateProfile(UpdateUserRequest $request)
     {
         try {
@@ -49,6 +55,11 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * Get Detail User Public when user searching for another user.
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getUserProfilePublic($id)
     {
         try {

@@ -69,6 +69,11 @@ class InterestController extends Controller
         }
     }
 
+    /**
+     * get Interest (Public because all user can see Interest)
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getInterestPublic($id)
     {
         try {
@@ -85,6 +90,11 @@ class InterestController extends Controller
         }
     }
 
+    /**
+     * Save Interest.
+     * @param CreateInterestRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function store(CreateInterestRequest $request)
     {
         try {
@@ -99,6 +109,11 @@ class InterestController extends Controller
 
     }
 
+    /**
+     * save Interest when user first time login and choosing interest after login form.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function createUserInterest(Request $request)
     {
         try {
@@ -112,6 +127,11 @@ class InterestController extends Controller
         }
     }
 
+    /**
+     * save Interest when user create Activity and choosing interest.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function createActivityInterest(Request $request)
     {
         try {
@@ -125,6 +145,11 @@ class InterestController extends Controller
         }
     }
 
+    /**
+     * save Interest when user create Community and choosing interest.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function createCommunityInterest(Request $request)
     {
         try {
@@ -138,6 +163,11 @@ class InterestController extends Controller
         }
     }
 
+    /**
+     * save Interest when user create Event and choosing interest.
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function createEventInterest(Request $request)
     {
         try {
@@ -151,6 +181,11 @@ class InterestController extends Controller
         }
     }
 
+    /**
+     * update Interest when user update on her bio (account detail).
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function updateUserInterest(Request $request)
     {
         try {

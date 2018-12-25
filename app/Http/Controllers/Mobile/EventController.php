@@ -49,6 +49,11 @@ class EventController extends Controller
         }
     }
 
+    /**
+     * get Event (Public because all user can see detail of the Event)
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getEventPublic($id)
     {
         try {
@@ -65,6 +70,10 @@ class EventController extends Controller
         }
     }
 
+    /**
+     * get All Event created by user login using Auth::id() facade.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getAllEventByUser()
     {
         try {
@@ -81,6 +90,11 @@ class EventController extends Controller
         }
     }
 
+    /**
+     * Save Event by user Login.
+     * @param CreateEventRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function store(CreateEventRequest $request)
     {
         try {
@@ -94,6 +108,14 @@ class EventController extends Controller
         }
     }
 
+    /**
+     * Update Event. this method can't handle whose user going to update the event (Handle By Android),
+     * and get data which event gonna be updated by method getAllEventByUser().
+     * because user could have many event (and other feature Activity and Community)
+     * @param UpdateEventRequest $request
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function update(UpdateEventRequest $request, $id)
     {
         try {

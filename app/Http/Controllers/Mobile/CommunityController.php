@@ -50,6 +50,11 @@ class CommunityController extends Controller
         }
     }
 
+    /**
+     * get Community (Public because all user can see detail of the community)
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getCommunityPublic($id)
     {
         try {
@@ -66,6 +71,10 @@ class CommunityController extends Controller
         }
     }
 
+    /**
+     * get All Community created by user login using Auth::id() facade.
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getAllCommunityByUser()
     {
         try {
@@ -82,6 +91,11 @@ class CommunityController extends Controller
         }
     }
 
+    /**
+     * Save Community by user Login.
+     * @param CreateCommunityRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function store(CreateCommunityRequest $request)
     {
         try {
@@ -95,6 +109,15 @@ class CommunityController extends Controller
         }
     }
 
+    /**
+     * Update Community. this method can't handle whose user going to update the community (Handle By Android),
+     * and get data which community and get list by method getAllCommunityByUser().
+     * gonna be updated by this method.
+     * because user could have many community (and other feature Activity and Event)
+     * @param UpdateCommunityRequest $request
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function update(UpdateCommunityRequest $request, $id)
     {
         try {

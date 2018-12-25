@@ -23,6 +23,11 @@ class PostController extends Controller
         $this->findPostService = new FindPostService();
     }
 
+    /**
+     * Get Detail Post Public when user searching on timeline.
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function getPostPublic($id)
     {
         try {

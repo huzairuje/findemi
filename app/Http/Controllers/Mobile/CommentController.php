@@ -27,6 +27,11 @@ class CommentController extends Controller
         $this->updateCommentService = new UpdateCommentService();
     }
 
+    /**
+     * Save user and get created by using Auth::id() facade.
+     * @param CreateCommentRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function store(CreateCommentRequest $request)
     {
         try {
