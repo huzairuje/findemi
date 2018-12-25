@@ -9,8 +9,8 @@
 
 namespace App\Services\User;
 
+use App\Http\Requests\User\CreateUserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SignUpActivate;
 
@@ -23,7 +23,7 @@ class CreateUserService {
         $this->model = new User();
     }
 
-    public function create(Request $request)
+    public function create(CreateUserRequest $request)
     {
         DB::beginTransaction();
         $data = $this->model;
