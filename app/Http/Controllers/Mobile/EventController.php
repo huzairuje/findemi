@@ -65,6 +65,22 @@ class EventController extends Controller
         }
     }
 
+    public function getAllEventByUser()
+    {
+        try {
+            $data = $this->findEventService->findAllEventByUser();
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+            }
+            $response = $this->apiLib->listPaginate($data, 10);
+            return response($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function store(CreateEventRequest $request)
     {
         try {

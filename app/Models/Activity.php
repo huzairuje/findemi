@@ -34,6 +34,11 @@ class Activity extends Model
         'end_date',
     ];
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
+
     public function user()
     {
         return $this->belongsToMany(User::class, 'user_activity')

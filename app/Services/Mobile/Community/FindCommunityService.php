@@ -9,7 +9,7 @@
 namespace App\Services\Community;
 
 use App\Models\Community;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FindCommunityService
 {
@@ -29,6 +29,13 @@ class FindCommunityService
     public function getAllCommunity()
     {
         $data = $this->model;
+        return $data;
+    }
+
+    public function findAllCommunityByUser()
+    {
+        $user = Auth::id();
+        $data = $this->model->where('created_by', $user);
         return $data;
     }
 

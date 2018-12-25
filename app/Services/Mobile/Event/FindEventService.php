@@ -9,6 +9,7 @@
 namespace App\Services\Event;
 
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 
 class FindEventService
 {
@@ -28,6 +29,13 @@ class FindEventService
     public function getAllEvent()
     {
         $data = $this->model;
+        return $data;
+    }
+
+    public function findAllEventByUser()
+    {
+        $user = Auth::id();
+        $data = $this->model->where('created_by', $user);
         return $data;
     }
 

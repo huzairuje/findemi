@@ -44,7 +44,7 @@ class CreateEventService
         $data->lon = $request->lon;
         $data->address_from_map = $request->address_from_map;
 
-        $data->created_by = $user;
+        $data->created_by = (int)$user;
         $data->save();
         DB::commit();
 

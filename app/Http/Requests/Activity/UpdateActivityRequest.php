@@ -32,8 +32,8 @@ class UpdateActivityRequest extends FormRequest
             'name' => 'max:255',
             'description' => 'max:255',
             'address' => 'max:255',
-            'tag' => 'max:15',
-            'is_one_trip' => 'in:true,false',
+            'tag' => 'max:25',
+            'is_one_trip' => 'boolean',
             'start_date' => 'date',
             'end_date' => 'date',
         ];

@@ -27,15 +27,15 @@ class Community extends Model
         'is_public' => 'boolean'
     ];
 
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
     public function user()
     {
         return $this->belongsToMany(User::class, 'user_community')
             ->withTimestamps();
-    }
-
-    public function createdBy()
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function interest()

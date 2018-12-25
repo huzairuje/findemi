@@ -23,7 +23,7 @@ class Post extends Model
         'is_one_trip' => 'boolean'
     ];
 
-    public function user()
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }

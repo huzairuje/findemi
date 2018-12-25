@@ -65,6 +65,22 @@ class ActivityController extends Controller
         }
     }
 
+    public function getAllActivityByUser()
+    {
+        try {
+            $data = $this->findActivityService->findAllActivityByUser();
+            if (is_null($data)) {
+                $response = $this->apiLib->notFoundResponse();
+                return response($response, Response::HTTP_NOT_FOUND);
+            }
+            $response = $this->apiLib->listPaginate($data, 10);
+            return response($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function store(CreateActivityRequest $request)
     {
         try {
@@ -82,9 +98,9 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->findActivityService->findActivityById($id);
-            if (is_null($data)){
-                $response = $this->apiLib->notFoundResponse();
-                return response($response, Response::HTTP_NOT_FOUND);
+            if (is_null($data)) {
+                $return = $this->apiLib->notFoundResponse();
+                return response($return, Response::HTTP_NOT_FOUND);
             }
             $data = $this->updateActivityService->updateActivity($request, $id);
             $return = $this->apiLib->singleData($data, []);

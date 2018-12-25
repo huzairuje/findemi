@@ -27,10 +27,9 @@ class UpdateEventService
         DB::beginTransaction();
         $data = $this->model->find($id);
         $data->name = $request->name;
-        $data->description = $request->first_name;
+        $data->description = $request->description;
         $data->start_date = new Carbon($request->get('start_date'));
         $data->end_date = new Carbon($request->get('end_date'));
-        $data->address = $request->address;
         $data->tag = $request->tag;
         $data->lat = $request->lat;
         $data->lon = $request->lon;

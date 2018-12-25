@@ -8,9 +8,9 @@
 
 namespace App\Services\Activity;
 
+use App\Http\Requests\Activity\CreateActivityRequest;
 use App\Models\Activity;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +23,7 @@ class CreateActivityService
         $this->model = new Activity();
     }
 
-    public function createActivity(Request $request)
+    public function createActivity(CreateActivityRequest $request)
     {
         DB::beginTransaction();
 
@@ -40,7 +40,7 @@ class CreateActivityService
         $data->lon = $request->lon;
         $data->address_from_map = $request->address_from_map;
 
-        $data->created_by = $user;
+        $data->created_by = (int)$user;
         $data->save();
         DB::commit();
 
