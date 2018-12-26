@@ -44,6 +44,11 @@ class PostController extends Controller
         }
     }
 
+    /**
+     * store post on specific community.
+     * @param CreatePostRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function store(CreatePostRequest $request)
     {
         try {
