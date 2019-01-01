@@ -20,9 +20,9 @@ class FindEventService
         $this->model = new Event();
     }
 
-    public function findEventById($id)
+    public function findEventById($event_id)
     {
-        $data = $this->model->find($id);
+        $data = $this->model->find($event_id);
         return $data;
     }
 

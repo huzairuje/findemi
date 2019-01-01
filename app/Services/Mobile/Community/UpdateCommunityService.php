@@ -8,6 +8,7 @@
 
 namespace App\Services\Community;
 
+use App\Http\Requests\Community\UpdateCommunityRequest;
 use App\Models\Community;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,10 +22,10 @@ class UpdateCommunityService
         $this->model = new Community();
     }
 
-    public function updateCommunity(Request $request, $id)
+    public function updateCommunity(UpdateCommunityRequest $request)
     {
         DB::beginTransaction();
-        $data = $this->model->find($id);
+        $data = $this->model->find($request->input('community_id'));
         $data->name = $request->name;
         $data->description = $request->description;
         $data->address_from_map = $request->address_from_map;

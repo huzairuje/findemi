@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\Community\CreateCommunityRequest;
+use App\Http\Requests\Community\FindCommunityRequest;
 use App\Http\Requests\Community\UpdateCommunityRequest;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -52,13 +53,13 @@ class CommunityController extends Controller
 
     /**
      * get Community (Public because all user can see detail of the community)
-     * @param $id
+     * @param $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function getCommunityPublic($id)
+    public function getCommunityPublic(FindCommunityRequest $request)
     {
         try {
-            $data = $this->findCommunityService->findCommunityById($id);
+            $data = $this->findCommunityService->findCommunityById($request->community_id);
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -118,15 +119,15 @@ class CommunityController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function update(UpdateCommunityRequest $request, $id)
+    public function update(UpdateCommunityRequest $request)
     {
         try {
-            $data = $this->findCommunityService->findCommunityById($id);
+            $data = $this->findCommunityService->findCommunityById($request->community_id);
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $data = $this->updateCommunityService->updateCommunity($request, $id);
+            $data = $this->updateCommunityService->updateCommunity($request);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {

@@ -43,38 +43,38 @@ Route::group(['prefix' => 'v1.0'], function () {
     ], function() {
         Route::group(['prefix' => 'user'], function () {
             Route::get('index', 'Mobile\UserController@getAllUser');
-            Route::get('logout', 'Mobile\AuthController@logout');
+            Route::post('logout', 'Mobile\AuthController@logout');
             Route::get('profile', 'Mobile\UserController@getAuthenticatedUser');
-            Route::post('account/{id}', 'Mobile\UserController@getUserProfilePublic');
+            Route::post('find-user-by-id', 'Mobile\UserController@getUserProfilePublic');
             Route::put('update-profile', 'Mobile\UserController@updateProfile');
 
         });
         Route::group(['prefix' => 'activity'], function () {
             Route::get('index', 'Mobile\ActivityController@index');
             Route::post('create', 'Mobile\ActivityController@store');
-            Route::put('{id}/update', 'Mobile\ActivityController@update');
+            Route::put('update', 'Mobile\ActivityController@update');
             Route::get('all-activity-by-user', 'Mobile\ActivityController@getAllActivityByUser');
-            Route::get('{id}', 'Mobile\ActivityController@getActivityPublic');
+            Route::post('find-activity-by-id', 'Mobile\ActivityController@getActivityPublic');
         });
         Route::group(['prefix' => 'community'], function () {
             Route::get('index', 'Mobile\CommunityController@index');
-            Route::post('create', 'Mobile\CommunityController@store');
             Route::get('all-community-by-user', 'Mobile\CommunityController@getAllCommunityByUser');
-            Route::put('{id}/update', 'Mobile\CommunityController@update');
-            Route::get('{id}', 'Mobile\CommunityController@getCommunityPublic');
+            Route::post('create', 'Mobile\CommunityController@store');
+            Route::put('update', 'Mobile\CommunityController@update');
+            Route::post('find-community-by-id', 'Mobile\CommunityController@getCommunityPublic');
 
             Route::group(['prefix' => 'post'], function () {
                 Route::post('create-post', 'Mobile\PostController@store');
-                Route::get('{id}', 'Mobile\PostController@getPostPublic');
+                Route::get('find-post-by-id', 'Mobile\PostController@getPostPublic');
                 Route::post('create-comment', 'Mobile\CommentController@store');
             });
         });
         Route::group(['prefix' => 'event'], function () {
             Route::get('index', 'Mobile\EventController@index');
             Route::post('create', 'Mobile\EventController@store');
-            Route::put('{id}/update', 'Mobile\EventController@update');
+            Route::put('update', 'Mobile\EventController@update');
             Route::get('all-event-by-user', 'Mobile\EventController@getAllEventByUser');
-            Route::get('{id}', 'Mobile\EventController@getEventPublic');
+            Route::post('find-event-by-id', 'Mobile\EventController@getEventPublic');
         });
 
 

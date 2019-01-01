@@ -24,6 +24,9 @@ return [
 
     'api' => [
         'success' => 'Operation successfully executed',
+        'successDeletePost' => 'The Post Has Been Deleted',
+        'successDeleteActivity' => 'The Post Has Been Deleted',
+        'successPost' => 'The Post Has Been Posted',
         'badRequest' => 'Bad Request',
         'unProcessableEntity' => 'Entity is UnProcessable',
         'notFound' => 'Not Found',

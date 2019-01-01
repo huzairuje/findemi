@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\Event\CreateEventRequest;
+use App\Http\Requests\Event\FindEventRequest;
 use App\Http\Requests\Event\UpdateEventRequest;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -51,13 +52,13 @@ class EventController extends Controller
 
     /**
      * get Event (Public because all user can see detail of the Event)
-     * @param $id
+     * @param $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function getEventPublic($id)
+    public function getEventPublic(FindEventRequest $request)
     {
         try {
-            $data = $this->findEventService->findEventById($id);
+            $data = $this->findEventService->findEventById($request->event_id);
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -116,15 +117,15 @@ class EventController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function update(UpdateEventRequest $request, $id)
+    public function update(UpdateEventRequest $request)
     {
         try {
-            $data = $this->findEventService->findEventById($id);
+            $data = $this->findEventService->findEventById($request->event_id);
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $data = $this->updateEventService->updateEvent($request, $id);
+            $data = $this->updateEventService->updateEvent($request);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {

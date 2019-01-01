@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\User\FindUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -57,13 +58,13 @@ class UserController extends Controller
 
     /**
      * Get Detail User Public when user searching for another user.
-     * @param $id
+     * @param $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function getUserProfilePublic($id)
+    public function getUserProfilePublic(FindUserRequest $request)
     {
         try {
-            $data = $this->findUserService->findUserById($id);
+            $data = $this->findUserService->findUserById($request->user_id);
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);

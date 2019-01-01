@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateCommunityRequest extends FormRequest
+class FindCommunityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,10 +30,6 @@ class UpdateCommunityRequest extends FormRequest
     {
         return [
             'community_id' => 'integer',
-            'name' => 'max:255',
-            'description' => 'max:255',
-            'address' => 'max:255',
-            'tag' => 'max:255',
         ];
     }
 
@@ -52,5 +48,4 @@ class UpdateCommunityRequest extends FormRequest
         throw new HttpResponseException(response()->json($responseLib->validationFailResponse($errors),
             Response::HTTP_BAD_REQUEST));
     }
-
 }

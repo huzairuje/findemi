@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\Activity\CreateActivityRequest;
+use App\Http\Requests\Activity\FindActivityRequest;
 use App\Http\Requests\Activity\UpdateActivityRequest;
+use App\Library\ActivitiesResponseLibrary;
 use App\Library\ApiResponseLibrary;
 use App\Http\Controllers\Controller;
+use App\Services\Mobile\Activity\DeleteActivityService;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\Activity\CreateActivityService;
@@ -15,16 +18,20 @@ use App\Services\Activity\FindActivityService;
 class ActivityController extends Controller
 {
     protected $apiLib;
+    protected $activityApiLib;
     protected $createActivityService;
     protected $updateActivityService;
     protected $findActivityService;
+    protected $deleteActivityService;
 
     public function __construct()
     {
         $this->apiLib = new ApiResponseLibrary;
+        $this->activityApiLib = new ActivitiesResponseLibrary();
         $this->createActivityService = new CreateActivityService();
         $this->updateActivityService = new UpdateActivityService();
         $this->findActivityService = new FindActivityService();
+        $this->deleteActivityService = new DeleteActivityService();
     }
 
     /**
@@ -51,13 +58,13 @@ class ActivityController extends Controller
 
     /**
      * get Activity (Public because all user can see detail of the activity)
-     * @param $id
+     * @param $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function getActivityPublic($id)
+    public function getActivityPublic(FindActivityRequest $request)
     {
         try {
-            $data = $this->findActivityService->findActivityById($id);
+            $data = $this->findActivityService->findActivityById($request->activity_id);
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -116,15 +123,15 @@ class ActivityController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function update(UpdateActivityRequest $request, $id)
+    public function update(UpdateActivityRequest $request)
     {
         try {
-            $data = $this->findActivityService->findActivityById($id);
+            $data = $this->findActivityService->findActivityById($request->activity_id);
             if (is_null($data)) {
                 $return = $this->apiLib->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
             }
-            $data = $this->updateActivityService->updateActivity($request, $id);
+            $data = $this->updateActivityService->updateActivity($request);
             $return = $this->apiLib->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
@@ -133,4 +140,23 @@ class ActivityController extends Controller
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function delete(FindActivityRequest $request)
+    {
+        try {
+            $data = $this->findActivityService->findActivityById($request->activity_id);
+            if (is_null($data)) {
+                $return = $this->apiLib->notFoundResponse();
+                return response($return, Response::HTTP_NOT_FOUND);
+            }
+            $this->deleteActivityService->deleteActivity($request->activity_id);
+            $response = $this->activityApiLib->successDeleteActivity();
+            return response($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $response = $this->apiLib->errorResponse($e);
+            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

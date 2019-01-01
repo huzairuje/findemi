@@ -8,8 +8,8 @@
 
 namespace App\Services\Event;
 
+use App\Http\Requests\Event\UpdateEventRequest;
 use App\Models\Event;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -22,10 +22,10 @@ class UpdateEventService
         $this->model = new Event();
     }
 
-    public function updateEvent(Request $request, $id)
+    public function updateEvent(UpdateEventRequest $request)
     {
         DB::beginTransaction();
-        $data = $this->model->find($id);
+        $data = $this->model->find($request->input('event_id'));
         $data->name = $request->name;
         $data->description = $request->description;
         $data->start_date = new Carbon($request->get('start_date'));

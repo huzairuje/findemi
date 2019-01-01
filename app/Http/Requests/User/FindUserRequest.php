@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Community;
+namespace App\Http\Requests\User;
 
 use App\Library\ApiResponseLibrary;
 use Illuminate\Foundation\Http\FormRequest;
@@ -9,7 +9,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateCommunityRequest extends FormRequest
+class FindUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,11 +29,7 @@ class UpdateCommunityRequest extends FormRequest
     public function rules()
     {
         return [
-            'community_id' => 'integer',
-            'name' => 'max:255',
-            'description' => 'max:255',
-            'address' => 'max:255',
-            'tag' => 'max:255',
+            'user_id' => 'integer'
         ];
     }
 

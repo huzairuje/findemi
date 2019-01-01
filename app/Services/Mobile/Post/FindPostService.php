@@ -9,6 +9,7 @@
 namespace App\Services\Post;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class FindPostService
@@ -20,9 +21,9 @@ class FindPostService
         $this->model = new Post();
     }
 
-    public function findPostById($id)
+    public function findPostById($post_id)
     {
-        $data = $this->model->find($id);
+        $data = $this->model->find($post_id);
         return $data;
     }
 
@@ -31,4 +32,12 @@ class FindPostService
         $data = $this->model;
         return $data;
     }
+
+    public function findAllPostByUser()
+    {
+        $user = Auth::id();
+        $data = $this->model->where('created_by', $user);
+        return $data;
+    }
+
 }

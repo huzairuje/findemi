@@ -11,5 +11,11 @@ namespace App\Library;
 
 class ActivitiesResponseLibrary
 {
-
+    public function successDeleteActivity()
+    {
+        $return = [];
+        $return['meta']['status'] = 200;
+        $return['meta']['message'] = trans('message.api.successDeletePost');
+        return $return;
+    }
 }

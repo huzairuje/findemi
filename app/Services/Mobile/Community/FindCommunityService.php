@@ -8,6 +8,7 @@
 
 namespace App\Services\Community;
 
+use App\Http\Requests\Community\FindCommunityRequest;
 use App\Models\Community;
 use Illuminate\Support\Facades\Auth;
 
@@ -20,9 +21,9 @@ class FindCommunityService
         $this->model = new Community();
     }
 
-    public function findCommunityById($id)
+    public function findCommunityById($community_id)
     {
-        $data = $this->model->find($id);
+        $data = $this->model->find($community_id);
         return $data;
     }
 

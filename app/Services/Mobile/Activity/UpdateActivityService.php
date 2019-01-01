@@ -22,10 +22,10 @@ class UpdateActivityService
         $this->model = new Activity();
     }
 
-    public function updateActivity(UpdateActivityRequest $request, $id)
+    public function updateActivity(UpdateActivityRequest $request)
     {
         DB::beginTransaction();
-        $data = $this->model->find($id);
+        $data = $this->model->find($request->input('activity_id'));
         $data->name = $request->name;
         $data->description = $request->description;
         $data->is_one_trip = $request->is_one_trip;
