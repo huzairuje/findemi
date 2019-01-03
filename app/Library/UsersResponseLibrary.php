@@ -43,11 +43,12 @@ class UsersResponseLibrary
         return $return;
     }
 
-    public function emailIsAvailable()
+    public function emailIsAvailable($data)
     {
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.emailIsAvailable');
+        $return['data'] = $data;
         return $return;
     }
 
@@ -59,11 +60,12 @@ class UsersResponseLibrary
         return $return;
     }
 
-    public function usernameIsAvailable()
+    public function usernameIsAvailable($data)
     {
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.userNameIsAvailable');
+        $return['data'] = $data;
         return $return;
     }
 
@@ -75,11 +77,12 @@ class UsersResponseLibrary
         return $return;
     }
 
-    public function fullNameIsOk()
+    public function fullNameIsOk($data)
     {
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.fullNameIsOk');
+        $return['data'] = $data;
         return $return;
     }
 
@@ -99,11 +102,12 @@ class UsersResponseLibrary
         return $return;
     }
 
-    public function phoneIsOk()
+    public function phoneIsOk($data)
     {
         $return = [];
         $return['meta']['status'] = 200;
         $return['meta']['message'] = trans('message.api.phoneIsOk');
+        $return['data'] = $data;
         return $return;
     }
 

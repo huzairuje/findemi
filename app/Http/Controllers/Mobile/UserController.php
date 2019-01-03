@@ -64,7 +64,7 @@ class UserController extends Controller
     public function getUserProfilePublic(FindUserRequest $request)
     {
         try {
-            $data = $this->findUserService->findUserById($request->user_id);
+            $data = $this->findUserService->findUserById($request->input('user_id'));
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);

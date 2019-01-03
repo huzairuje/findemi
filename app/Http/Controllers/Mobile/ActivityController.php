@@ -64,7 +64,7 @@ class ActivityController extends Controller
     public function getActivityPublic(FindActivityRequest $request)
     {
         try {
-            $data = $this->findActivityService->findActivityById($request->activity_id);
+            $data = $this->findActivityService->findActivityById($request->input('activity_id'));
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -120,13 +120,12 @@ class ActivityController extends Controller
      * and get data which activity gonna be updated by method getAllActivityByUser().
      * because user could have many activity (and other feature Event and Community)
      * @param UpdateActivityRequest $request
-     * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function update(UpdateActivityRequest $request)
     {
         try {
-            $data = $this->findActivityService->findActivityById($request->activity_id);
+            $data = $this->findActivityService->findActivityById($request->input('activity_id'));
             if (is_null($data)) {
                 $return = $this->apiLib->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
@@ -144,12 +143,12 @@ class ActivityController extends Controller
     public function delete(FindActivityRequest $request)
     {
         try {
-            $data = $this->findActivityService->findActivityById($request->activity_id);
+            $data = $this->findActivityService->findActivityById($request->input('activity_id'));
             if (is_null($data)) {
                 $return = $this->apiLib->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
             }
-            $this->deleteActivityService->deleteActivity($request->activity_id);
+            $this->deleteActivityService->deleteActivity($request);
             $response = $this->activityApiLib->successDeleteActivity();
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {

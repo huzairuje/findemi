@@ -58,7 +58,7 @@ class EventController extends Controller
     public function getEventPublic(FindEventRequest $request)
     {
         try {
-            $data = $this->findEventService->findEventById($request->event_id);
+            $data = $this->findEventService->findEventById($request->input('event_id'));
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -114,13 +114,12 @@ class EventController extends Controller
      * and get data which event gonna be updated by method getAllEventByUser().
      * because user could have many event (and other feature Activity and Community)
      * @param UpdateEventRequest $request
-     * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function update(UpdateEventRequest $request)
     {
         try {
-            $data = $this->findEventService->findEventById($request->event_id);
+            $data = $this->findEventService->findEventById($request->input('event_id'));
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);

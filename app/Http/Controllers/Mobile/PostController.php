@@ -38,7 +38,7 @@ class PostController extends Controller
     public function getPostPublic(FindPostRequest $request)
     {
         try {
-            $data = $this->findPostService->findPostById($request->post_id);
+            $data = $this->findPostService->findPostById($request->input('post_id'));
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -76,12 +76,12 @@ class PostController extends Controller
     public function delete(FindPostRequest $request)
     {
         try {
-            $data = $this->findPostService->findPostById($request->post_id);
+            $data = $this->findPostService->findPostById($request->input('post_id'));
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $this->deletePostService->deletePost($request->post_id);
+            $this->deletePostService->deletePost($request);
             $response = $this->postApiLib->successDeletePost();
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {

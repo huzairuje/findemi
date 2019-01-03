@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Mobile;
 
+use App\Http\Requests\User\CheckEmailUserRequest;
+use App\Http\Requests\User\CheckFullNameUserRequest;
+use App\Http\Requests\User\CheckPhoneNumberUserRequest;
+use App\Http\Requests\User\CheckUsernameUserRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\LoginUserRequest;
 use App\Models\User;
@@ -15,7 +19,6 @@ use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\User\CreateUserService;
-use App\Validators\UserValidator;
 
 class AuthController extends Controller
 {
@@ -37,25 +40,20 @@ class AuthController extends Controller
         $this->notificationUser = new SignUpActivate;
         $this->createUserService = new CreateUserService;
         $this->loginUserService = new LoginUserService;
-        $this->userValidator = new UserValidator();
         $this->userActivateSignUp = new SignUpActivateService();
     }
 
     /**
      * method for real time checking email and username trough form on android
-     * @param Request $request
+     * @param CheckEmailUserRequest $request
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function checkEmailRegister(Request $request)
+    public function checkEmailRegister(CheckEmailUserRequest $request)
     {
         try {
-            $validator = $this->userValidator->validateEmailRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->userApiLib->emailRegistered();
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
-            $response = $this->userApiLib->emailIsAvailable();
+            $data = $request->input('email');
+            $response = $this->userApiLib->emailIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
@@ -65,19 +63,15 @@ class AuthController extends Controller
 
     /**
      * method for real time checking username trough form on android
-     * @param Request $request
+     * @param CheckUsernameUserRequest $request
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function checkUserNameRegister(Request $request)
+    public function checkUserNameRegister(CheckUsernameUserRequest $request)
     {
         try {
-            $validator = $this->userValidator->validateUsernameRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->userApiLib->usernameRegistered();
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
-            $response = $this->userApiLib->usernameIsAvailable();
+            $data = $request->input('username');
+            $response = $this->userApiLib->usernameIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
@@ -88,18 +82,14 @@ class AuthController extends Controller
     /**
      * Validate full name from mobile(Register User)
      *
-     * @param Request $request
+     * @param CheckFullNameUserRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function checkFullNameRegister(Request $request)
+    public function checkFullNameRegister(CheckFullNameUserRequest $request)
     {
         try{
-            $validator = $this->userValidator->validateFullNameRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->userApiLib->fullNameIsWrongFormat();
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
-            $response = $this->userApiLib->fullNameIsOk();
+            $data = $request->input('full_name');
+            $response = $this->userApiLib->fullNameIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);
@@ -110,18 +100,14 @@ class AuthController extends Controller
     /**
      * Validate phone number from mobile(Register User)
      *
-     * @param Request $request
+     * @param CheckPhoneNumberUserRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
-    public function checkPhoneNumberRegister(Request $request)
+    public function checkPhoneNumberRegister(CheckPhoneNumberUserRequest $request)
     {
         try{
-            $validator = $this->userValidator->validatePhoneRegistration($request);
-            if ($validator->fails()) {
-                $response = $this->userApiLib->phoneIsRegistered();
-                return response($response, Response::HTTP_BAD_REQUEST);
-            }
-            $response = $this->userApiLib->phoneIsOk();
+            $data = $request->input('phone');
+            $response = $this->userApiLib->phoneIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);

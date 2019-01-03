@@ -59,7 +59,7 @@ class CommunityController extends Controller
     public function getCommunityPublic(FindCommunityRequest $request)
     {
         try {
-            $data = $this->findCommunityService->findCommunityById($request->community_id);
+            $data = $this->findCommunityService->findCommunityById($request->input('community_id'));
             if (is_null($data)) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
@@ -116,13 +116,12 @@ class CommunityController extends Controller
      * gonna be updated by this method.
      * because user could have many community (and other feature Activity and Event)
      * @param UpdateCommunityRequest $request
-     * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function update(UpdateCommunityRequest $request)
     {
         try {
-            $data = $this->findCommunityService->findCommunityById($request->community_id);
+            $data = $this->findCommunityService->findCommunityById($request->input('community_id'));
             if (is_null($data)){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
