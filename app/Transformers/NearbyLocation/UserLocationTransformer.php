@@ -26,4 +26,14 @@ class UserLocationTransformer extends TransformerAbstract
             'lon' => (float)$user->lon
         ];
     }
+
+    public function transformWithIdAndLocation(User $user)
+    {
+        return [
+            'user_id' => (integer)$user->id,
+            'lat' => (float)$user->lat,
+            'lon' => (float)$user->lon
+        ];
+    }
+
 }

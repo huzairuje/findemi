@@ -12,16 +12,19 @@ namespace App\Services\Mobile\NearbyLocation;
 use App\Http\Requests\NearbyLocation\SubmitNearbyLocationRequest;
 use App\Library\ApiResponseLibrary;
 use App\Models\User;
+use App\Transformers\NearbyLocation\UserLocationTransformer;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
 class SubmitUserLocationService
 {
     protected $model;
+    protected $userLocationTransformer;
 
     public function __construct()
     {
         $this->model = new User();
+        $this->userLocationTransformer = new UserLocationTransformer();
     }
 
 //    /** this method just save lat lon to existing user. not been calculate by method under below
@@ -49,7 +52,9 @@ class SubmitUserLocationService
             $data->lon = (float)$request->lon;
             $data->update();
             DB::commit();
-            return $data;
+
+            $encodeData = $this->userLocationTransformer->transformWithIdAndLocation($data);
+            return $encodeData;
         }
     }
 
