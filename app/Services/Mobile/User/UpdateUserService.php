@@ -11,6 +11,7 @@ use App\Models\User;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UpdateUserService
 {
@@ -23,8 +24,8 @@ class UpdateUserService
 
     public function update(Request $request)
     {
+        DB::beginTransaction();
         $data = $this->model->findOrFail($request->user()->id);
-
         $data->username = $request->username;
         $data->full_name = $request->full_name;
         $data->gender = $request->gender;
@@ -33,9 +34,9 @@ class UpdateUserService
         $data->password = bcrypt($request->password);
 
         $data->update();
+        DB::commit();
 
         return $data;
-
     }
 
 }

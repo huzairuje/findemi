@@ -19,7 +19,7 @@ class User extends Authenticatable implements UserSocialAccount
      * @var array
      */
     protected $fillable = [
-        'username', 'email', 'password', 'first_name', 'last_name', 'phone' , 'gender', 'active', 'activation_token'
+        'username', 'email', 'password', 'full_name', 'phone' , 'gender', 'active', 'activation_token'
     ];
 
     /**

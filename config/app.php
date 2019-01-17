@@ -187,6 +187,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Schedula\Laravel\PassportSocialite\PassportSocialiteServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
+        Spatie\Fractal\FractalServiceProvider::class,
 
     ],
 
@@ -238,6 +239,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
+        'Fractal' => Spatie\Fractal\FractalFacade::class,
 
     ],
 

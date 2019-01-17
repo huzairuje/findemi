@@ -100,6 +100,12 @@ Route::group(['prefix' => 'v1.0'], function () {
             Route::post('event/{id}', 'Mobile\InterestController@updateEventInterest');
 
         });
+
+        Route::group(['prefix' => 'nearby-location'], function () {
+            Route::get('', 'Mobile\NearbyLocationController@getLocationUser');
+            Route::post('submit', 'Mobile\NearbyLocationController@submitLocationUser');
+        });
+
     });
 });
 
