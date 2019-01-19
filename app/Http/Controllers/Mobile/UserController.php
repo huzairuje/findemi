@@ -29,7 +29,7 @@ class UserController extends Controller
      * Get the authenticated User
      * @param Request $request
      *
-     * @return response
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
     public function getAuthenticatedUser(Request $request)
     {
@@ -65,7 +65,7 @@ class UserController extends Controller
     {
         try {
             $data = $this->findUserService->findUserById($request->input('user_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -87,7 +87,7 @@ class UserController extends Controller
     {
         try {
             $data = $this->findUserService->getAllUser();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }

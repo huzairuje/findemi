@@ -11,16 +11,20 @@ namespace App\Services\User;
 
 use App\Http\Requests\User\CreateUserRequest;
 use App\Models\User;
+use App\Transformers\User\UserTransformer;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SignUpActivate;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class CreateUserService {
 
     protected $model;
+    protected $userTransformer;
 
     public function __construct()
     {
         $this->model = new User();
+        $this->userTransformer = new UserTransformer();
     }
 
     public function create(CreateUserRequest $request)
@@ -32,6 +36,7 @@ class CreateUserService {
         $data->gender = $request->gender;
         $data->email = $request->email;
         $data->phone = $request->phone;
+        $data->active = false;
         $data->password = bcrypt($request->password);
         $data->activation_token = str_random(60);
 
@@ -40,10 +45,9 @@ class CreateUserService {
          * commended because this method need validation domain on server.
          */
 //        $data->notify(new SignupActivate($data));
-
         DB::commit();
-        return $data;
-
+        $encodeData = $this->userTransformer->standarTransformer($data);
+        return $encodeData;
     }
 
 }

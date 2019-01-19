@@ -56,7 +56,7 @@ class InterestController extends Controller
     {
         try {
             $data = $this->findInterestService->getAllInterest();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -78,7 +78,7 @@ class InterestController extends Controller
     {
         try {
             $data = $this->findInterestService->findInterestById($id);
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }

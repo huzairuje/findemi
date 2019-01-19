@@ -146,7 +146,6 @@ class AuthController extends Controller
             $response = $this->apiLib->invalidToken($user);
             return $response($response);
         }
-        $user->active = true;
         $user->activation_token = '';
         $user->save();
         return $user;

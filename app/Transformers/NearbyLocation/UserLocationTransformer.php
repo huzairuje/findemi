@@ -7,17 +7,24 @@ use League\Fractal\TransformerAbstract;
 
 class UserLocationTransformer extends TransformerAbstract
 {
+    protected $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new User();
+    }
+
     /**
      * A Fractal transformer.
      *
      * @return array
      */
-    public function transform(User $user)
-    {
-        return [
-//
-        ];
-    }
+//    public function transform(User $user)
+//    {
+//        return [
+////
+//        ];
+//    }
 
     public function transformWithLocation(User $user)
     {

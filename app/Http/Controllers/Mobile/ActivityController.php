@@ -44,7 +44,7 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->findActivityService->getAllActivity();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -65,7 +65,7 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->findActivityService->findActivityById($request->input('activity_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -85,7 +85,7 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->findActivityService->findAllActivityByUser();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -126,7 +126,7 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->findActivityService->findActivityById($request->input('activity_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $return = $this->apiLib->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
             }
@@ -144,7 +144,7 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->findActivityService->findActivityById($request->input('activity_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $return = $this->apiLib->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
             }

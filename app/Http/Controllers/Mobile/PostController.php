@@ -39,7 +39,7 @@ class PostController extends Controller
     {
         try {
             $data = $this->findPostService->findPostById($request->input('post_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -77,7 +77,7 @@ class PostController extends Controller
     {
         try {
             $data = $this->findPostService->findPostById($request->input('post_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }

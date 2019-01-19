@@ -15,6 +15,8 @@ class SignUpActivateService
     public function activateUser($token)
     {
         $user = User::where('activation_token', $token)->first();
+        $user->active = true;
+
         return $user;
     }
 }

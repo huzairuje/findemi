@@ -38,7 +38,7 @@ class EventController extends Controller
     {
         try {
             $data = $this->findEventService->getAllEvent();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -59,7 +59,7 @@ class EventController extends Controller
     {
         try {
             $data = $this->findEventService->findEventById($request->input('event_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -79,7 +79,7 @@ class EventController extends Controller
     {
         try {
             $data = $this->findEventService->findAllEventByUser();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -120,7 +120,7 @@ class EventController extends Controller
     {
         try {
             $data = $this->findEventService->findEventById($request->input('event_id'));
-            if (is_null($data)){
+            if ($data === null){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }

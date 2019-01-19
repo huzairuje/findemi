@@ -38,7 +38,7 @@ class CommunityController extends Controller
     {
         try {
             $data = $this->findCommunityService->getAllCommunity();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -60,7 +60,7 @@ class CommunityController extends Controller
     {
         try {
             $data = $this->findCommunityService->findCommunityById($request->input('community_id'));
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -80,7 +80,7 @@ class CommunityController extends Controller
     {
         try {
             $data = $this->findCommunityService->findAllCommunityByUser();
-            if (is_null($data)) {
+            if ($data === null) {
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
@@ -104,7 +104,7 @@ class CommunityController extends Controller
             $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            DB::rollback();
+            DB::rollBack();
             $response = $this->apiLib->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -122,7 +122,7 @@ class CommunityController extends Controller
     {
         try {
             $data = $this->findCommunityService->findCommunityById($request->input('community_id'));
-            if (is_null($data)){
+            if ($data === null){
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
