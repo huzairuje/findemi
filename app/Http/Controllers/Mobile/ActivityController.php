@@ -15,6 +15,7 @@ use App\Services\Activity\CreateActivityService;
 use App\Services\Activity\UpdateActivityService;
 use App\Services\Activity\FindActivityService;
 
+
 class ActivityController extends Controller
 {
     protected $apiLib;
@@ -48,7 +49,7 @@ class ActivityController extends Controller
                 $response = $this->apiLib->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->listPaginate($data, 10);
+            $response = $this->apiLib->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiLib->errorResponse($e);

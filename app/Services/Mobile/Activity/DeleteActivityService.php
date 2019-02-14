@@ -10,7 +10,6 @@ namespace App\Services\Mobile\Activity;
 
 use App\Http\Requests\Activity\FindActivityRequest;
 use App\Models\Activity;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DeleteActivityService

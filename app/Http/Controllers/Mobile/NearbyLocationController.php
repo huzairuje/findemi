@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\NearbyLocation\SubmitNearbyLocationRequest;
 use App\Library\ApiResponseLibrary;
+use App\Models\Community;
 use App\Services\Mobile\NearbyLocation\GetUserLocationService;
 use App\Services\Mobile\NearbyLocation\SubmitUserLocationService;
 use App\Http\Controllers\Controller;
@@ -24,7 +25,7 @@ class NearbyLocationController extends Controller
         $this->getUserLocation = new GetUserLocationService();
     }
 //
-//    /** submit Location User and save it (With Authorization / USer Must Login)
+//    /** submit Location User and save it (With No Authorization / Anyone can access this method)
 //     * @param SubmitNearbyLocationRequest $request
 //     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
 //     */
@@ -41,7 +42,7 @@ class NearbyLocationController extends Controller
 //        }
 //    }
 
-    /** submit Location User and save it (With Authorization / USer Must Login)
+    /** submit Location User and save it (With Authorization / User Must Login)
      * @param SubmitNearbyLocationRequest $request
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
      */
@@ -69,4 +70,18 @@ class NearbyLocationController extends Controller
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function checkNearby()
+    {
+       try {
+           $data = $this->submitUserLocation->getNearbyUser();
+//           dd($data);
+           $return = $this->apiLib->listPaginate($data, 10);
+           return response($return, Response::HTTP_OK);
+       } catch (\Exception $e) {
+           $response = $this->apiLib->errorResponse($e);
+           return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
+       }
+    }
+
 }
