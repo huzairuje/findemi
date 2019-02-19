@@ -22,9 +22,9 @@ use App\Services\User\CreateUserService;
 
 class AuthController extends Controller
 {
-    protected $apiLib;
+    protected $apiResponseLibrary;
     protected $userApiLib;
-    protected $model;
+    protected $users;
     protected $notificationUser;
     protected $username = 'username';
     protected $createUserService;
@@ -32,15 +32,21 @@ class AuthController extends Controller
     protected $userValidator;
     protected $userActivateSignUp;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                UsersResponseLibrary $usersResponseLibrary,
+                                User $users,
+                                SignUpActivate $signUpActivate,
+                                CreateUserService $createUserService,
+                                LoginUserService $loginUserService,
+                                SignUpActivateService $signUpActivateService)
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->userApiLib = new UsersResponseLibrary;
-        $this->model = new User();
-        $this->notificationUser = new SignUpActivate;
-        $this->createUserService = new CreateUserService;
-        $this->loginUserService = new LoginUserService;
-        $this->userActivateSignUp = new SignUpActivateService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->userApiLib = $usersResponseLibrary;
+        $this->users = $users;
+        $this->notificationUser = $signUpActivate;
+        $this->createUserService = $createUserService;
+        $this->loginUserService = $loginUserService;
+        $this->userActivateSignUp = $signUpActivateService;
     }
 
     /**
@@ -56,7 +62,7 @@ class AuthController extends Controller
             $response = $this->userApiLib->emailIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -74,7 +80,7 @@ class AuthController extends Controller
             $response = $this->userApiLib->usernameIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -92,7 +98,7 @@ class AuthController extends Controller
             $response = $this->userApiLib->fullNameIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -110,7 +116,7 @@ class AuthController extends Controller
             $response = $this->userApiLib->phoneIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -128,7 +134,7 @@ class AuthController extends Controller
             $return = $this->userApiLib->successRegister($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -143,7 +149,7 @@ class AuthController extends Controller
     {
         $user = $this->userActivateSignUp->activateUser($token);
         if (!$user) {
-            $response = $this->apiLib->invalidToken($user);
+            $response = $this->apiResponseLibrary->invalidToken($user);
             return $response($response);
         }
         $user->activation_token = '';
@@ -180,7 +186,7 @@ class AuthController extends Controller
             $return = $this->userApiLib->successLogin($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -242,7 +248,7 @@ class AuthController extends Controller
             $request->user()->token()->revoke();
             return response($this->userApiLib->successLogout(), Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

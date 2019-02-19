@@ -25,14 +25,19 @@ class ActivityController extends Controller
     protected $findActivityService;
     protected $deleteActivityService;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiLib,
+                                ActivitiesResponseLibrary $activitiesResponseLibrary,
+                                CreateActivityService $createActivityService,
+                                UpdateActivityService $updateActivityService,
+                                FindActivityService $findActivityService,
+                                DeleteActivityService $deleteActivityService)
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->activityApiLib = new ActivitiesResponseLibrary();
-        $this->createActivityService = new CreateActivityService();
-        $this->updateActivityService = new UpdateActivityService();
-        $this->findActivityService = new FindActivityService();
-        $this->deleteActivityService = new DeleteActivityService();
+        $this->apiLib = $apiLib;
+        $this->activityApiLib = $activitiesResponseLibrary;
+        $this->createActivityService = $createActivityService;
+        $this->updateActivityService = $updateActivityService;
+        $this->findActivityService = $findActivityService;
+        $this->deleteActivityService = $deleteActivityService;
     }
 
     /**
