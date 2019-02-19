@@ -14,15 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NearbyLocationController extends Controller
 {
-    protected $apiLib;
+    protected $apiResponseLibrary;
     protected $submitUserLocation;
     protected $getUserLocation;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                SubmitUserLocationService $submitUserLocationService,
+                                GetUserLocationService $getUserLocationService)
     {
-        $this->apiLib = new ApiResponseLibrary();
-        $this->submitUserLocation = new SubmitUserLocationService();
-        $this->getUserLocation = new GetUserLocationService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->submitUserLocation = $submitUserLocationService;
+        $this->getUserLocation = $getUserLocationService;
     }
 //
 //    /** submit Location User and save it (With No Authorization / Anyone can access this method)
@@ -33,11 +35,11 @@ class NearbyLocationController extends Controller
 //    {
 //        try {
 //            $data = $this->submitUserLocation->submitLocationUserWithoutLogin($request);
-//            $return = $this->apiLib->singleData($data, []);
+//            $return = $this->apiResponseLibrary->singleData($data, []);
 //            return response($return, Response::HTTP_OK);
 //        } catch (\Exception $e) {
 //            DB::rollBack();
-//            $response = $this->apiLib->errorResponse($e);
+//            $response = $this->apiResponseLibrary->errorResponse($e);
 //            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
 //        }
 //    }
@@ -50,11 +52,11 @@ class NearbyLocationController extends Controller
     {
         try {
             $data = $this->submitUserLocation->submitLocation($request);
-            $return = $this->apiLib->singleData($data, []);
+            $return = $this->apiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -63,10 +65,10 @@ class NearbyLocationController extends Controller
     {
         try {
             $data = $this->getUserLocation->getUserLocation($request);
-            $return = $this->apiLib->singleData($data, []);
+            $return = $this->apiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -76,10 +78,10 @@ class NearbyLocationController extends Controller
        try {
            $data = $this->submitUserLocation->getNearbyUser();
 //           dd($data);
-           $return = $this->apiLib->listPaginate($data, 10);
+           $return = $this->apiResponseLibrary->listPaginate($data, 10);
            return response($return, Response::HTTP_OK);
        } catch (\Exception $e) {
-           $response = $this->apiLib->errorResponse($e);
+           $response = $this->apiResponseLibrary->errorResponse($e);
            return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
        }
     }
