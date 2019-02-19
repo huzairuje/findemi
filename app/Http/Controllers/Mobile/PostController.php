@@ -86,7 +86,7 @@ class PostController extends Controller
                 return response($response, Response::HTTP_NOT_FOUND);
             }
             $this->deletePostService->deletePost($request);
-            $response = $this->postapiResponseLibrary->successDeletePost();
+            $response = $this->postResponseLibrary->successDeletePost();
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
