@@ -27,7 +27,6 @@ Route::group(['prefix' => 'v1.0'], function () {
     Route::get('all-activity', 'Mobile\ActivityController@index');
     Route::get('all-community', 'Mobile\CommunityController@index');
     Route::get('all-event', 'Mobile\EventController@index');
-//    Route::get('check-formula', 'Mobile\NearbyLocationController@checkSQL');
     Route::post('check-nearby', 'Mobile\NearbyLocationController@checkNearby');
 
     Route::group(['prefix' => 'auth'], function () {
@@ -103,10 +102,10 @@ Route::group(['prefix' => 'v1.0'], function () {
 
         });
 
-        Route::group(['prefix' => 'nearby-location'], function () {
-            Route::get('', 'Mobile\NearbyLocationController@getLocationUser');
-            Route::post('submit', 'Mobile\NearbyLocationController@submitLocationUser');
-        });
+//        Route::group(['prefix' => 'nearby-location'], function () {
+//            Route::get('', 'Mobile\NearbyLocationController@getLocationUser');
+//            Route::post('submit', 'Mobile\NearbyLocationController@submitLocationUser');
+//        });
 
     });
 });
