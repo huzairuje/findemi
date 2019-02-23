@@ -33,8 +33,8 @@ class UpdateActivityService
         $data->end_date = new Carbon($request->get('end_date'));
         $data->address = $request->address;
         $data->tag = $request->tag;
-        $data->lat = $request->lat;
-        $data->lon = $request->lon;
+        $data->lat = (float)$request->lat;
+        $data->lon = (float)$request->lon;
         $data->address_from_map = $request->address_from_map;
 
         $data->update();

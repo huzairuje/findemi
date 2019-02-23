@@ -40,9 +40,10 @@ class CreateEventService
         $data->end_date = new Carbon($request->get('end_date'));
         $data->image_banner_url = $request->image_banner_url;
         $data->tag = $request->tag;
-        $data->lat = $request->lat;
-        $data->lon = $request->lon;
+        $data->lat = (float)$request->lat;
+        $data->lon = (float)$request->lon;
         $data->address_from_map = $request->address_from_map;
+        $data->type = "event";
 
         $data->created_by = (int)$user;
         $data->save();

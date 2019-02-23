@@ -31,8 +31,7 @@ class SubmitNearbyLocationRequest extends FormRequest
         return [
             'lat' => 'required|numeric',
             'lon' => 'required|numeric',
-            'radius' => 'required|numeric',
-            'unit' => 'in:M,KM'
+            'distance' => 'required|numeric',
         ];
     }
 

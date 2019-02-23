@@ -10,121 +10,91 @@ namespace App\Services\Mobile\NearbyLocation;
 
 
 use App\Http\Requests\NearbyLocation\SubmitNearbyLocationRequest;
-use App\Library\ApiResponseLibrary;
 use App\Models\Activity;
 use App\Models\Community;
 use App\Models\Event;
 use App\Models\User;
 use App\Transformers\NearbyLocation\AllModuleNearbyLocationTransformer;
 use App\Transformers\NearbyLocation\UserLocationTransformer;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\HttpFoundation\Response;
 
 class SubmitUserLocationService
 {
-    protected $model;
-    protected $communityModel;
+    protected $userModel;
+    protected $communitiesModel;
+    protected $activitiesModel;
+    protected $eventsModel;
     protected $allModuleNearbyLocationTransformer;
     protected $userLocationTransformer;
 
-    public function __construct()
+    public function __construct(User $userModel,
+                                Community $communitiesModel,
+                                Activity $activitiesModel,
+                                Event $eventsModel,
+                                AllModuleNearbyLocationTransformer $allModuleNearbyLocationTransformer,
+                                UserLocationTransformer $userLocationTransformer)
     {
-        $this->model = new User();
-        $this->communityModel = new Community();
-        $this->allModuleNearbyLocationTransformer = new AllModuleNearbyLocationTransformer();
-        $this->userLocationTransformer = new UserLocationTransformer();
-    }
-
-//    /** this method just save lat lon to existing user. not been calculate by method under below
-//     * @param SubmitNearbyLocationRequest $request
-//     * @return ApiResponseLibrary|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-//     */
-//    public function submitLocationUserWithoutLogin(SubmitNearbyLocationRequest $request)
-//    {
-//
-//    }
-
-    /** this method just save lat lon to existing user. not been calculate by method under below
-     * @param SubmitNearbyLocationRequest $request
-     * @return ApiResponseLibrary|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
-     */
-    public function submitLocation(SubmitNearbyLocationRequest $request)
-    {
-        DB::beginTransaction();
-        $data = $this->model->findOrFail($request->user()->id);
-        if ($data == null) {
-            $data = new ApiResponseLibrary();
-            return response($data->unauthorizedResponse(), Response::HTTP_UNAUTHORIZED);
-        } else {
-            $data->lat = (float)$request->lat;
-            $data->lon = (float)$request->lon;
-            $data->update();
-            DB::commit();
-
-            $encodeData = $this->userLocationTransformer->transformWithIdAndLocation($data);
-            return $encodeData;
-        }
+        $this->userModel = $userModel;
+        $this->communitiesModel = $communitiesModel;
+        $this->activitiesModel = $activitiesModel;
+        $this->eventsModel = $eventsModel;
+        $this->allModuleNearbyLocationTransformer = $allModuleNearbyLocationTransformer;
+        $this->userLocationTransformer = $userLocationTransformer;
     }
 
     /**this method calculate user Location and what's on nearby
      * @param SubmitNearbyLocationRequest $request
-     * @return $dataResult
+     * @return $queryEvent
      */
-//    public function getNearbyUser(SubmitNearbyLocationRequest $request)
-    public function getNearbyUser()
+    public function getNearbyUser(SubmitNearbyLocationRequest $request)
     {
-//        $dataLat = (float)$request->input(['lat']);
-//        $dataLon = (float)$request->input(['lon']);
-//        $dataRadius = (float)$request->input(['radius']);
-//        $dataUnit = $request->input(['unit']);
-//
-//        $dataUnitMeter = (float)['3961'];
-//        $dataUnitKiloMeter = (float)['6372.797'];
+        $dataLat = (float)$request->input(['lat']);
+        $dataLon = (float)$request->input(['lon']);
+        $dataDistance = (float)$request->input(['distance']);
 
-//        if ($dataUnit === "M") {
-//            $dataUnit =  $dataUnitMeter;
-//        } elseif($dataUnit === "KM") {
-//            $dataUnit =  $dataUnitKiloMeter;
-//        }
+        $queryCommunity = $this->communitiesModel->select(
+            'type',
+            'id',
+            'name',
+            'description',
+            'tag',
+            'lat',
+            'lon',
+            DB::raw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+                 - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) as distance'))
+            ->whereRaw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+                 - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) < '.$dataDistance.'');
 
-        $dataLat = (float)['33.72775'];
-        $dataLon = (float)['150.8261'];
-        $dataRadius = (float)['780000'];
+        $queryActivity = $this->activitiesModel->select(
+            'type',
+            'id',
+            'name',
+            'description',
+            'tag',
+            'lat',
+            'lon',
+            DB::raw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+                 - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) as distance'))
+            ->whereRaw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+                 - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) < '.$dataDistance.'')
+            ->unionAll($queryCommunity);
 
+        $queryEvent = $this->eventsModel->select(
+            'type',
+            'id',
+            'name',
+            'description',
+            'tag',
+            'lat',
+            'lon',
+            DB::raw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+                 - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) as distance'))
+            ->whereRaw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+                 - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) < '.$dataDistance.'')
+            ->unionAll($queryActivity);
 
-        $communityModel = new Community();
-        $communityModel->select(
-                DB::raw('(3961 * acos( cos( radians(-6.919188) ) * cos( radians( lat ) ) * cos( radians( lon )
-                 - radians(107.614911) ) + sin( radians(-6.919188) ) * sin( radians( lat ) ) ) ) as distance')
-            )
-            ->where('distance', '<', 100)
+        return $queryEvent
             ->orderBy('distance', 'asc');
-
-        $eventModel = new Event();
-        $eventModel
-            ->select(
-                DB::raw('(3961 * acos( cos( radians(-6.919188) ) * cos( radians( lat ) ) * cos( radians( lon )
-                 - radians(107.614911) ) + sin( radians(-6.919188) ) * sin( radians( lat ) ) ) ) as distance')
-            )
-            ->where('distance', '<', 100)
-            ->orderBy('distance', 'asc');
-
-        $activityModel = new Activity();
-        $activityModel
-            ->select(
-                DB::raw('(3961 * acos( cos( radians(-6.919188) ) * cos( radians( lat ) ) * cos( radians( lon )
-                 - radians(107.614911) ) + sin( radians(-6.919188) ) * sin( radians( lat ) ) ) ) as distance')
-            )
-            ->where('distance', '<', 100)
-            ->orderBy('distance', 'asc');
-
-
-        return $communityModel;
-//        return $communityModel
-//            ->union($eventModel)
-//            ->union($activityModel)
-//            ->get();
 
     }
 

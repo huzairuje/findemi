@@ -15,7 +15,7 @@ class FindEventService
 {
     protected $model;
 
-    public function __construct()
+    public function __construct(Event $event)
     {
         $this->model = new Event();
     }
