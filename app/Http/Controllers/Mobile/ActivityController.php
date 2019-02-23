@@ -19,21 +19,21 @@ use App\Services\Activity\FindActivityService;
 class ActivityController extends Controller
 {
     protected $apiResponseLibrary;
-    protected $activityapiResponseLibrary;
+    protected $activityApiResponseLibrary;
     protected $createActivityService;
     protected $updateActivityService;
     protected $findActivityService;
     protected $deleteActivityService;
 
     public function __construct(ApiResponseLibrary $apiResponseLibrary,
-                                ActivitiesResponseLibrary $activitiesResponseLibrary,
+                                ActivitiesResponseLibrary $activityApiResponseLibrary,
                                 CreateActivityService $createActivityService,
                                 UpdateActivityService $updateActivityService,
                                 FindActivityService $findActivityService,
                                 DeleteActivityService $deleteActivityService)
     {
         $this->apiResponseLibrary = $apiResponseLibrary;
-        $this->activityapiResponseLibrary = $activitiesResponseLibrary;
+        $this->activityApiResponseLibrary = $activityApiResponseLibrary;
         $this->createActivityService = $createActivityService;
         $this->updateActivityService = $updateActivityService;
         $this->findActivityService = $findActivityService;
@@ -155,7 +155,7 @@ class ActivityController extends Controller
                 return response($return, Response::HTTP_NOT_FOUND);
             }
             $this->deleteActivityService->deleteActivity($request);
-            $response = $this->activityapiResponseLibrary->successDeleteActivity();
+            $response = $this->activityApiResponseLibrary->successDeleteActivity();
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();

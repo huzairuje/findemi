@@ -23,7 +23,7 @@ use App\Services\User\CreateUserService;
 class AuthController extends Controller
 {
     protected $apiResponseLibrary;
-    protected $userApiLib;
+    protected $usersResponseLibrary;
     protected $users;
     protected $notificationUser;
     protected $username = 'username';
@@ -41,7 +41,7 @@ class AuthController extends Controller
                                 SignUpActivateService $signUpActivateService)
     {
         $this->apiResponseLibrary = $apiResponseLibrary;
-        $this->userApiLib = $usersResponseLibrary;
+        $this->usersResponseLibrary = $usersResponseLibrary;
         $this->users = $users;
         $this->notificationUser = $signUpActivate;
         $this->createUserService = $createUserService;
@@ -59,7 +59,7 @@ class AuthController extends Controller
     {
         try {
             $data = $request->input('email');
-            $response = $this->userApiLib->emailIsAvailable($data);
+            $response = $this->usersResponseLibrary->emailIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
@@ -77,7 +77,7 @@ class AuthController extends Controller
     {
         try {
             $data = $request->input('username');
-            $response = $this->userApiLib->usernameIsAvailable($data);
+            $response = $this->usersResponseLibrary->usernameIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
@@ -95,7 +95,7 @@ class AuthController extends Controller
     {
         try{
             $data = $request->input('full_name');
-            $response = $this->userApiLib->fullNameIsOk($data);
+            $response = $this->usersResponseLibrary->fullNameIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
@@ -113,7 +113,7 @@ class AuthController extends Controller
     {
         try{
             $data = $request->input('phone');
-            $response = $this->userApiLib->phoneIsOk($data);
+            $response = $this->usersResponseLibrary->phoneIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
@@ -131,7 +131,7 @@ class AuthController extends Controller
     {
         try {
             $data = $this->createUserService->create($request);
-            $return = $this->userApiLib->successRegister($data);
+            $return = $this->usersResponseLibrary->successRegister($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
@@ -169,21 +169,21 @@ class AuthController extends Controller
         try {
             $credentials = request(['email', 'password', 'username']);
             if(!Auth::attempt($credentials)){
-                $response = $this->userApiLib->unauthorizedEmailAndPassword();
+                $response = $this->usersResponseLibrary->unauthorizedEmailAndPassword();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $credentials['active']=false;
             if(!Auth::attempt($credentials)){
-                $response = $this->userApiLib->userIsNotActive();
+                $response = $this->usersResponseLibrary->userIsNotActive();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $credentials['is_blocked']=false;
             if(!Auth::attempt($credentials)){
-                $response = $this->userApiLib->userIsBlocked();
+                $response = $this->usersResponseLibrary->userIsBlocked();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $data = $this->loginUserService->loginUser($request);
-            $return = $this->userApiLib->successLogin($data);
+            $return = $this->usersResponseLibrary->successLogin($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
@@ -246,7 +246,7 @@ class AuthController extends Controller
     {
         try {
             $request->user()->token()->revoke();
-            return response($this->userApiLib->successLogout(), Response::HTTP_OK);
+            return response($this->usersResponseLibrary->successLogout(), Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
