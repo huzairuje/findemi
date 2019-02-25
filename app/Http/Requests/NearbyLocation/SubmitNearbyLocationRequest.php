@@ -29,8 +29,9 @@ class SubmitNearbyLocationRequest extends FormRequest
     public function rules()
     {
         return [
-            'lat' => 'required',
-            'lon' => 'required',
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric',
+            'distance' => 'required|numeric',
         ];
     }
 

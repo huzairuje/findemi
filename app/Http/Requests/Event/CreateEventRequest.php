@@ -34,8 +34,8 @@ class CreateEventRequest extends FormRequest
             'start_date' => 'required',
             'end_date' => 'required',
             'tag' => 'required|max:255',
-            'lat' => 'required',
-            'lon' => 'required',
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric',
             'address_from_map' => 'required',
         ];
     }

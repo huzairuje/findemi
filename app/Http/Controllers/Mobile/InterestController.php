@@ -20,29 +20,35 @@ use App\Services\Interest\CreateEventInterestService;
 
 class InterestController extends Controller
 {
-    protected $apiLib;
+    protected $apiResponseLibrary;
     protected $createInterestService;
     protected $updateInterestService;
     protected $findInterestService;
-
     protected $createUserInterestService;
     protected $createActivityInterestService;
     protected $createCommunityService;
     protected $createEventInterestService;
     protected $updateUserInterestService;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                CreateInterestService $createInterestService,
+                                UpdateInterestService $updateInterestService,
+                                FindInterestService $findInterestService,
+                                CreateUserInterestService $createUserInterestService,
+                                CreateCommunityInterestService $createCommunityInterestService,
+                                CreateActivityInterestService $createActivityInterestService,
+                                CreateEventInterestService $createEventInterestService,
+                                UpdateUserInterestService $updateUserInterestService)
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->createInterestService = new CreateInterestService();
-        $this->updateInterestService = new UpdateInterestService();
-        $this->findInterestService = new FindInterestService();
-
-        $this->createUserInterestService = new CreateUserInterestService();
-        $this->createActivityInterestService = new CreateActivityInterestService();
-        $this->createCommunityService = new CreateCommunityInterestService();
-        $this->createEventInterestService = new CreateEventInterestService();
-        $this->updateUserInterestService = new UpdateUserInterestService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->createInterestService = $createInterestService;
+        $this->updateInterestService = $updateInterestService;
+        $this->findInterestService = $findInterestService;
+        $this->createUserInterestService = $createUserInterestService;
+        $this->createActivityInterestService = $createActivityInterestService;
+        $this->createCommunityService = $createCommunityInterestService;
+        $this->createEventInterestService = $createEventInterestService;
+        $this->updateUserInterestService = $updateUserInterestService;
 
     }
 
@@ -57,13 +63,13 @@ class InterestController extends Controller
         try {
             $data = $this->findInterestService->getAllInterest();
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->listPaginate($data, 10);
+            $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
 
         }
@@ -79,13 +85,13 @@ class InterestController extends Controller
         try {
             $data = $this->findInterestService->findInterestById($id);
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -99,11 +105,11 @@ class InterestController extends Controller
     {
         try {
             $data = $this->createInterestService->createInterest($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
@@ -118,11 +124,11 @@ class InterestController extends Controller
     {
         try {
             $data = $this->createUserInterestService->createUserInterest($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         }catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -136,11 +142,11 @@ class InterestController extends Controller
     {
         try {
             $data = $this->createActivityInterestService->createActivityInterest($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         }catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -154,11 +160,11 @@ class InterestController extends Controller
     {
         try {
             $data = $this->createCommunityService->createCommunityInterest($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         }catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -172,11 +178,11 @@ class InterestController extends Controller
     {
         try {
             $data = $this->createEventInterestService->createEventInterest($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         }catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -190,11 +196,11 @@ class InterestController extends Controller
     {
         try {
             $data = $this->updateUserInterestService->updateUserInterest($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

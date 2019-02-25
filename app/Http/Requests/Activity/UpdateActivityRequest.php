@@ -33,6 +33,8 @@ class UpdateActivityRequest extends FormRequest
             'description' => 'max:255',
             'address' => 'max:255',
             'tag' => 'max:25',
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric',
             'is_one_trip' => 'boolean',
             'start_date' => 'date',
             'end_date' => 'date',

@@ -14,15 +14,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    protected $apiLib;
+    protected $apiResponseLibrary;
     protected $updateUserService;
     protected $findUserService;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                UpdateUserService $updateUserService,
+                                FindUserService $findUserService)
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->updateUserService = new UpdateUserService();
-        $this->findUserService = new FindUserService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->updateUserService = $updateUserService;
+        $this->findUserService = $findUserService;
     }
 
     /**
@@ -33,7 +35,7 @@ class UserController extends Controller
      */
     public function getAuthenticatedUser(Request $request)
     {
-        $response = $this->apiLib->singleData($request->user(), []);
+        $response = $this->apiResponseLibrary->singleData($request->user(), []);
         return response($response, Response::HTTP_OK);
     }
 
@@ -47,11 +49,11 @@ class UserController extends Controller
     {
         try {
             $data = $this->updateUserService->update($request);
-            $return = $this->apiLib->singleData($data, []);
+            $return = $this->apiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -66,13 +68,13 @@ class UserController extends Controller
         try {
             $data = $this->findUserService->findUserById($request->input('user_id'));
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -88,13 +90,13 @@ class UserController extends Controller
         try {
             $data = $this->findUserService->getAllUser();
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->listPaginate($data, 10);
+            $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

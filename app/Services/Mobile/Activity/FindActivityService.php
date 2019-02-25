@@ -15,10 +15,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class FindActivityService
 {
     protected $model;
+    protected $activityTransformer;
 
-    public function __construct()
+    public function __construct(Activity $activity)
     {
-        $this->model = new Activity();
+        $this->model = $activity;
     }
 
     public function findActivityById($activity_id)

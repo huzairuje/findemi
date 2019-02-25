@@ -34,8 +34,8 @@ class CreateCommunityRequest extends FormRequest
             'image_banner_url' => 'required',
             'base_camp_address' => 'required',
             'tag' => 'required|max:255',
-            'lat' => 'required',
-            'lon' => 'required',
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric',
             'address_from_map' => 'required',
         ];
     }

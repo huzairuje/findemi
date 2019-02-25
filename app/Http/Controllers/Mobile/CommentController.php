@@ -14,17 +14,20 @@ use App\Services\Comment\UpdateCommentService;
 
 class CommentController extends Controller
 {
-    protected $apiLib;
+    protected $apiResponseLibrary;
     protected $createCommentService;
     protected $findCommentService;
     protected $updateCommentService;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                CreateCommentService $createCommentService,
+                                FindCommentService $findCommentService,
+                                UpdateCommentService $updateCommentService)
     {
-        $this->apiLib = new ApiResponseLibrary();
-        $this->createCommentService = new CreateCommentService();
-        $this->findCommentService = new FindCommentService();
-        $this->updateCommentService = new UpdateCommentService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->createCommentService = $createCommentService;
+        $this->findCommentService = $findCommentService;
+        $this->updateCommentService = $updateCommentService;
     }
 
     /**
@@ -36,11 +39,11 @@ class CommentController extends Controller
     {
         try {
             $data = $this->createCommentService->createComment($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

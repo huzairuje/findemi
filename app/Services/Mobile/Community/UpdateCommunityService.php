@@ -31,8 +31,8 @@ class UpdateCommunityService
         $data->address_from_map = $request->address_from_map;
         $data->is_public = $request->is_public;
         $data->tag = $request->tag;
-        $data->lat = $request->lat;
-        $data->lon = $request->lon;
+        $data->lat = (float)$request->lat;
+        $data->lon = (float)$request->lon;
         $data->address_from_map = $request->address_from_map;
         $data->update();
         DB::commit();

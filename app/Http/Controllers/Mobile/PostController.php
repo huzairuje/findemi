@@ -15,19 +15,23 @@ use App\Services\Post\FindPostService;
 
 class PostController extends Controller
 {
-    protected $apiLib;
-    protected $postApiLib;
+    protected $apiResponseLibrary;
+    protected $postResponseLibrary;
     protected $createPostService;
     protected $findPostService;
     protected $deletePostService;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                PostResponseLibrary $postResponseLibrary,
+                                CreatePostService $createPostService,
+                                FindPostService $findPostService,
+                                DeletePostService $deletePostService)
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->postApiLib = new PostResponseLibrary();
-        $this->createPostService = new CreatePostService();
-        $this->findPostService = new FindPostService();
-        $this->deletePostService = new DeletePostService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->postResponseLibrary = $postResponseLibrary;
+        $this->createPostService = $createPostService;
+        $this->findPostService = $findPostService;
+        $this->deletePostService = $deletePostService;
     }
 
     /**
@@ -40,13 +44,13 @@ class PostController extends Controller
         try {
             $data = $this->findPostService->findPostById($request->input('post_id'));
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -60,11 +64,11 @@ class PostController extends Controller
     {
         try {
             $data = $this->createPostService->createPost($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -78,15 +82,15 @@ class PostController extends Controller
         try {
             $data = $this->findPostService->findPostById($request->input('post_id'));
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
             $this->deletePostService->deletePost($request);
-            $response = $this->postApiLib->successDeletePost();
+            $response = $this->postResponseLibrary->successDeletePost();
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

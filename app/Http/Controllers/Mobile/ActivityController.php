@@ -15,23 +15,29 @@ use App\Services\Activity\CreateActivityService;
 use App\Services\Activity\UpdateActivityService;
 use App\Services\Activity\FindActivityService;
 
+
 class ActivityController extends Controller
 {
-    protected $apiLib;
-    protected $activityApiLib;
+    protected $apiResponseLibrary;
+    protected $activityApiResponseLibrary;
     protected $createActivityService;
     protected $updateActivityService;
     protected $findActivityService;
     protected $deleteActivityService;
 
-    public function __construct()
+    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+                                ActivitiesResponseLibrary $activityApiResponseLibrary,
+                                CreateActivityService $createActivityService,
+                                UpdateActivityService $updateActivityService,
+                                FindActivityService $findActivityService,
+                                DeleteActivityService $deleteActivityService)
     {
-        $this->apiLib = new ApiResponseLibrary;
-        $this->activityApiLib = new ActivitiesResponseLibrary();
-        $this->createActivityService = new CreateActivityService();
-        $this->updateActivityService = new UpdateActivityService();
-        $this->findActivityService = new FindActivityService();
-        $this->deleteActivityService = new DeleteActivityService();
+        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->activityApiResponseLibrary = $activityApiResponseLibrary;
+        $this->createActivityService = $createActivityService;
+        $this->updateActivityService = $updateActivityService;
+        $this->findActivityService = $findActivityService;
+        $this->deleteActivityService = $deleteActivityService;
     }
 
     /**
@@ -45,13 +51,13 @@ class ActivityController extends Controller
         try {
             $data = $this->findActivityService->getAllActivity();
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->listPaginate($data, 10);
+            $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -66,13 +72,13 @@ class ActivityController extends Controller
         try {
             $data = $this->findActivityService->findActivityById($request->input('activity_id'));
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -86,13 +92,13 @@ class ActivityController extends Controller
         try {
             $data = $this->findActivityService->findAllActivityByUser();
             if ($data === null) {
-                $response = $this->apiLib->notFoundResponse();
+                $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiLib->listPaginate($data, 10);
+            $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -106,11 +112,11 @@ class ActivityController extends Controller
     {
         try {
             $data = $this->createActivityService->createActivity($request);
-            $response = $this->apiLib->singleData($data, []);
+            $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -127,15 +133,15 @@ class ActivityController extends Controller
         try {
             $data = $this->findActivityService->findActivityById($request->input('activity_id'));
             if ($data === null) {
-                $return = $this->apiLib->notFoundResponse();
+                $return = $this->apiResponseLibrary->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
             }
             $data = $this->updateActivityService->updateActivity($request);
-            $return = $this->apiLib->singleData($data, []);
+            $return = $this->apiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -145,15 +151,15 @@ class ActivityController extends Controller
         try {
             $data = $this->findActivityService->findActivityById($request->input('activity_id'));
             if ($data === null) {
-                $return = $this->apiLib->notFoundResponse();
+                $return = $this->apiResponseLibrary->notFoundResponse();
                 return response($return, Response::HTTP_NOT_FOUND);
             }
             $this->deleteActivityService->deleteActivity($request);
-            $response = $this->activityApiLib->successDeleteActivity();
+            $response = $this->activityApiResponseLibrary->successDeleteActivity();
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiLib->errorResponse($e);
+            $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
