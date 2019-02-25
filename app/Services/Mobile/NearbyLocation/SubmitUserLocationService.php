@@ -43,6 +43,13 @@ class SubmitUserLocationService
     }
 
     /**this method calculate user Location and what's on nearby
+     * DON'T TOUCH IF NECESSARY, THIS IS THE CORE OF NEARBY DEFAULT
+     * IF NEEDED TO ADD ANOTHER MODULE ASK huzairuje.
+     * 6371 is unit on KM
+     * 3959 is unit on Miles
+     * see Haversine Formula https://en.wikipedia.org/wiki/Haversine_formula
+     * or this implementation Store Locator on Google Maps Platform
+     * https://developers.google.com/maps/solutions/store-locator/clothing-store-locator
      * @param SubmitNearbyLocationRequest $request
      * @return $queryEvent
      */
@@ -60,9 +67,9 @@ class SubmitUserLocationService
             'tag',
             'lat',
             'lon',
-            DB::raw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+            DB::raw('(6371 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
                  - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) as distance'))
-            ->whereRaw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+            ->whereRaw('(6371 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
                  - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) < '.$dataDistance.'');
 
         $queryActivity = $this->activitiesModel->select(
@@ -73,9 +80,9 @@ class SubmitUserLocationService
             'tag',
             'lat',
             'lon',
-            DB::raw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+            DB::raw('(6371 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
                  - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) as distance'))
-            ->whereRaw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+            ->whereRaw('(6371 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
                  - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) < '.$dataDistance.'')
             ->unionAll($queryCommunity);
 
@@ -87,9 +94,9 @@ class SubmitUserLocationService
             'tag',
             'lat',
             'lon',
-            DB::raw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+            DB::raw('(6371 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
                  - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) as distance'))
-            ->whereRaw('(3961 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
+            ->whereRaw('(6371 * acos( cos( radians('.$dataLat.') ) * cos( radians( lat ) ) * cos( radians( lon )
                  - radians('.$dataLon.') ) + sin( radians('.$dataLat.') ) * sin( radians( lat ) ) ) ) < '.$dataDistance.'')
             ->unionAll($queryActivity);
 

@@ -54,7 +54,7 @@ class ActivityController extends Controller
                 $response = $this->apiResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiResponseLibrary->singleData($data, []);
+            $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);

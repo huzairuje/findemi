@@ -31,7 +31,7 @@ class CreateActivityService
         $data = $this->model;
         $data->name = $request->name;
         $data->description = $request->description;
-        $data->is_one_trip = $request->is_one_trip;
+        $data->is_one_trip = (boolean)$request->is_one_trip;
         $data->start_date = new Carbon($request->get('start_date'));
         $data->end_date = new Carbon($request->get('end_date'));
         $data->address = $request->address;

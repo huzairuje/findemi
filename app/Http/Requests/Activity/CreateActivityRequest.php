@@ -35,8 +35,8 @@ class CreateActivityRequest extends FormRequest
             'end_date' => 'required|date',
             'address' => 'required|max:255',
             'tag' => 'required|max:255',
-            'lat' => 'required',
-            'lon' => 'required',
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric',
             'address_from_map' => 'required',
         ];
     }

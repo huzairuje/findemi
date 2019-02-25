@@ -33,6 +33,8 @@ class UpdateEventRequest extends FormRequest
             'description' => 'max:255',
             'address' => 'max:255',
             'tag' => 'max:255',
+            'lat' => 'required|numeric',
+            'lon' => 'required|numeric',
         ];
     }
 
