@@ -9,7 +9,7 @@
 namespace App\Library;
 
 
-class PostResponseLibrary
+class PostResponseLibrary extends ApiResponseLibrary
 {
     public function successDeletePost()
     {

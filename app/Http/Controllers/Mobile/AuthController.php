@@ -13,8 +13,7 @@ use App\Services\User\LoginUserService;
 use App\Services\User\SignUpActivateService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Library\ApiResponseLibrary;
-use App\Library\UsersResponseLibrary;
+use App\Library\userResponseLibrary;
 use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,8 +21,7 @@ use App\Services\User\CreateUserService;
 
 class AuthController extends Controller
 {
-    protected $apiResponseLibrary;
-    protected $usersResponseLibrary;
+    protected $userResponseLibrary;
     protected $users;
     protected $notificationUser;
     protected $username = 'username';
@@ -32,16 +30,14 @@ class AuthController extends Controller
     protected $userValidator;
     protected $userActivateSignUp;
 
-    public function __construct(ApiResponseLibrary $apiResponseLibrary,
-                                UsersResponseLibrary $usersResponseLibrary,
+    public function __construct(UserResponseLibrary $userResponseLibrary,
                                 User $users,
                                 SignUpActivate $signUpActivate,
                                 CreateUserService $createUserService,
                                 LoginUserService $loginUserService,
                                 SignUpActivateService $signUpActivateService)
     {
-        $this->apiResponseLibrary = $apiResponseLibrary;
-        $this->usersResponseLibrary = $usersResponseLibrary;
+        $this->userResponseLibrary = $userResponseLibrary;
         $this->users = $users;
         $this->notificationUser = $signUpActivate;
         $this->createUserService = $createUserService;
@@ -59,10 +55,10 @@ class AuthController extends Controller
     {
         try {
             $data = $request->input('email');
-            $response = $this->usersResponseLibrary->emailIsAvailable($data);
+            $response = $this->userResponseLibrary->emailIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -77,10 +73,10 @@ class AuthController extends Controller
     {
         try {
             $data = $request->input('username');
-            $response = $this->usersResponseLibrary->usernameIsAvailable($data);
+            $response = $this->userResponseLibrary->usernameIsAvailable($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -95,10 +91,10 @@ class AuthController extends Controller
     {
         try{
             $data = $request->input('full_name');
-            $response = $this->usersResponseLibrary->fullNameIsOk($data);
+            $response = $this->userResponseLibrary->fullNameIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -113,10 +109,10 @@ class AuthController extends Controller
     {
         try{
             $data = $request->input('phone');
-            $response = $this->usersResponseLibrary->phoneIsOk($data);
+            $response = $this->userResponseLibrary->phoneIsOk($data);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -131,10 +127,10 @@ class AuthController extends Controller
     {
         try {
             $data = $this->createUserService->create($request);
-            $return = $this->usersResponseLibrary->successRegister($data);
+            $return = $this->userResponseLibrary->successRegister($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -149,7 +145,7 @@ class AuthController extends Controller
     {
         $user = $this->userActivateSignUp->activateUser($token);
         if (!$user) {
-            $response = $this->apiResponseLibrary->invalidToken($user);
+            $response = $this->userResponseLibrary->invalidToken($user);
             return $response($response);
         }
         $user->activation_token = '';
@@ -169,24 +165,24 @@ class AuthController extends Controller
         try {
             $credentials = request(['email', 'password', 'username']);
             if(!Auth::attempt($credentials)){
-                $response = $this->usersResponseLibrary->unauthorizedEmailAndPassword();
+                $response = $this->userResponseLibrary->unauthorizedEmailAndPassword();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $credentials['active']=false;
             if(!Auth::attempt($credentials)){
-                $response = $this->usersResponseLibrary->userIsNotActive();
+                $response = $this->userResponseLibrary->userIsNotActive();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $credentials['is_blocked']=false;
             if(!Auth::attempt($credentials)){
-                $response = $this->usersResponseLibrary->userIsBlocked();
+                $response = $this->userResponseLibrary->userIsBlocked();
                 return response($response, Response::HTTP_UNAUTHORIZED);
             }
             $data = $this->loginUserService->loginUser($request);
-            $return = $this->usersResponseLibrary->successLogin($data);
+            $return = $this->userResponseLibrary->successLogin($data);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -246,9 +242,9 @@ class AuthController extends Controller
     {
         try {
             $request->user()->token()->revoke();
-            return response($this->usersResponseLibrary->successLogout(), Response::HTTP_OK);
+            return response($this->userResponseLibrary->successLogout(), Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

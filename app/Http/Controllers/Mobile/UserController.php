@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Mobile;
 
 use App\Http\Requests\User\FindUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Library\UserResponseLibrary;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Library\ApiResponseLibrary;
@@ -14,15 +15,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    protected $apiResponseLibrary;
+    protected $userResponseLibrary;
     protected $updateUserService;
     protected $findUserService;
 
-    public function __construct(ApiResponseLibrary $apiResponseLibrary,
+    public function __construct(UserResponseLibrary $userResponseLibrary,
                                 UpdateUserService $updateUserService,
                                 FindUserService $findUserService)
     {
-        $this->apiResponseLibrary = $apiResponseLibrary;
+        $this->userResponseLibrary = $userResponseLibrary;
         $this->updateUserService = $updateUserService;
         $this->findUserService = $findUserService;
     }
@@ -35,7 +36,7 @@ class UserController extends Controller
      */
     public function getAuthenticatedUser(Request $request)
     {
-        $response = $this->apiResponseLibrary->singleData($request->user(), []);
+        $response = $this->userResponseLibrary->singleData($request->user(), []);
         return response($response, Response::HTTP_OK);
     }
 
@@ -49,11 +50,11 @@ class UserController extends Controller
     {
         try {
             $data = $this->updateUserService->update($request);
-            $return = $this->apiResponseLibrary->singleData($data, []);
+            $return = $this->userResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
         } catch (\Exception $e) {
             DB::rollBack();
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -68,13 +69,13 @@ class UserController extends Controller
         try {
             $data = $this->findUserService->findUserById($request->input('user_id'));
             if ($data === null) {
-                $response = $this->apiResponseLibrary->notFoundResponse();
+                $response = $this->userResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiResponseLibrary->singleData($data, []);
+            $response = $this->userResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -90,13 +91,13 @@ class UserController extends Controller
         try {
             $data = $this->findUserService->getAllUser();
             if ($data === null) {
-                $response = $this->apiResponseLibrary->notFoundResponse();
+                $response = $this->userResponseLibrary->notFoundResponse();
                 return response($response, Response::HTTP_NOT_FOUND);
             }
-            $response = $this->apiResponseLibrary->listPaginate($data, 10);
+            $response = $this->userResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
         } catch (\Exception $e) {
-            $response = $this->apiResponseLibrary->errorResponse($e);
+            $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

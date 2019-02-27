@@ -7,7 +7,7 @@
  */
 namespace App\Library;
 
-class UsersResponseLibrary
+class UserResponseLibrary extends ApiResponseLibrary
 {
     protected $LIMIT = 10;
 

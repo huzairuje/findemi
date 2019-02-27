@@ -9,7 +9,7 @@
 namespace App\Library;
 
 
-class ActivitiesResponseLibrary
+class ActivityResponseLibrary extends ApiResponseLibrary
 {
     public function successDeleteActivity()
     {
