@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Services\Activity\CreateActivityService;
 use App\Services\Activity\UpdateActivityService;
 use App\Services\Activity\FindActivityService;
-
+use Exception;
 
 class ActivityController extends Controller
 {
@@ -40,7 +40,7 @@ class ActivityController extends Controller
      * get all activity with response on ApiResponseLibrary, using list paginate
      * because it's on bulk data, don't confuse with query get->all. method listPaginate
      * get list item and get collection item from query.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function index()
     {
@@ -52,7 +52,7 @@ class ActivityController extends Controller
             }
             $response = $this->activityApiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->activityApiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -61,7 +61,7 @@ class ActivityController extends Controller
     /**
      * get Activity (Public because all user can see detail of the activity)
      * @param $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getActivityPublic(FindActivityRequest $request)
     {
@@ -73,7 +73,7 @@ class ActivityController extends Controller
             }
             $response = $this->activityApiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->activityApiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -81,7 +81,7 @@ class ActivityController extends Controller
 
     /**
      * get All Activity created by user login using Auth::id() facade.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getAllActivityByUser()
     {
@@ -93,7 +93,7 @@ class ActivityController extends Controller
             }
             $response = $this->activityApiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->activityApiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -102,7 +102,7 @@ class ActivityController extends Controller
     /**
      * Save Activity by user Login.
      * @param CreateActivityRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function store(CreateActivityRequest $request)
     {
@@ -110,7 +110,7 @@ class ActivityController extends Controller
             $data = $this->createActivityService->createActivity($request);
             $response = $this->activityApiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->activityApiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -122,7 +122,7 @@ class ActivityController extends Controller
      * and get data which activity gonna be updated by method getAllActivityByUser().
      * because user could have many activity (and other feature Event and Community)
      * @param UpdateActivityRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function update(UpdateActivityRequest $request)
     {
@@ -135,7 +135,7 @@ class ActivityController extends Controller
             $data = $this->updateActivityService->updateActivity($request);
             $return = $this->activityApiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->activityApiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -153,7 +153,7 @@ class ActivityController extends Controller
             $this->deleteActivityService->deleteActivity($request);
             $response = $this->activityApiResponseLibrary->successDeleteActivity();
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->activityApiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);

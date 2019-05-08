@@ -7,11 +7,11 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Library\UserResponseLibrary;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Library\ApiResponseLibrary;
 use Illuminate\Support\Facades\DB;
 use App\Services\User\UpdateUserService;
 use App\Services\User\FindUserService;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 class UserController extends Controller
 {
@@ -32,7 +32,7 @@ class UserController extends Controller
      * Get the authenticated User
      * @param Request $request
      *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getAuthenticatedUser(Request $request)
     {
@@ -44,7 +44,7 @@ class UserController extends Controller
      * Update Bio Profile User. some method in update profile user is different, like update interest,
      * it's on InterestController@updateUserInterest
      * @param UpdateUserRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function updateProfile(UpdateUserRequest $request)
     {
@@ -52,7 +52,7 @@ class UserController extends Controller
             $data = $this->updateUserService->update($request);
             $return = $this->userResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -62,7 +62,7 @@ class UserController extends Controller
     /**
      * Get Detail User Public when user searching for another user.
      * @param $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getUserProfilePublic(FindUserRequest $request)
     {
@@ -74,7 +74,7 @@ class UserController extends Controller
             }
             $response = $this->userResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -84,7 +84,7 @@ class UserController extends Controller
      * get all user with response on ApiResponseLibrary, using list paginate
      * because it's on bulk data, don't confuse with query get->all. method listPaginate
      * get list item and get collection item from query.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getAllUser()
     {
@@ -96,7 +96,7 @@ class UserController extends Controller
             }
             $response = $this->userResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }

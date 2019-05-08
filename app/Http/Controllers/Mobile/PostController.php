@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Library\ApiResponseLibrary;
 use App\Services\Post\CreatePostService;
 use App\Services\Post\FindPostService;
+use Exception;
 
 class PostController extends Controller
 {
@@ -37,7 +38,7 @@ class PostController extends Controller
     /**
      * Get Detail Post Public when user searching on timeline.
      * @param $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getPostPublic(FindPostRequest $request)
     {
@@ -49,7 +50,7 @@ class PostController extends Controller
             }
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -58,7 +59,7 @@ class PostController extends Controller
     /**
      * store post on specific community.
      * @param CreatePostRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function store(CreatePostRequest $request)
     {
@@ -66,7 +67,7 @@ class PostController extends Controller
             $data = $this->createPostService->createPost($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -75,7 +76,7 @@ class PostController extends Controller
 
     /** Delete Post
      * @param FindPostRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function delete(FindPostRequest $request)
     {
@@ -88,7 +89,7 @@ class PostController extends Controller
             $this->deletePostService->deletePost($request);
             $response = $this->postResponseLibrary->successDeletePost();
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);

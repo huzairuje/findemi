@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Community\CreateCommunityService;
 use App\Services\Community\UpdateCommunityService;
 use App\Services\Community\FindCommunityService;
+use Exception;
 
 class CommunityController extends Controller
 {
@@ -35,7 +36,7 @@ class CommunityController extends Controller
      * get all community with response on ApiResponseLibrary, using list paginate
      * because it's on bulk data, don't confuse with query get->all. method listPaginate
      * get list item and get collection item from query.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function index()
     {
@@ -48,7 +49,7 @@ class CommunityController extends Controller
             $data = $this->findCommunityService->getAllCommunity();
             $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -57,7 +58,7 @@ class CommunityController extends Controller
     /**
      * get Community (Public because all user can see detail of the community)
      * @param $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getCommunityPublic(FindCommunityRequest $request)
     {
@@ -69,7 +70,7 @@ class CommunityController extends Controller
             }
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -77,7 +78,7 @@ class CommunityController extends Controller
 
     /**
      * get All Community created by user login using Auth::id() facade.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getAllCommunityByUser()
     {
@@ -89,7 +90,7 @@ class CommunityController extends Controller
             }
             $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -98,7 +99,7 @@ class CommunityController extends Controller
     /**
      * Save Community by user Login.
      * @param CreateCommunityRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function store(CreateCommunityRequest $request)
     {
@@ -106,7 +107,7 @@ class CommunityController extends Controller
             $data = $this->createCommunityService->createCommunity($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -119,7 +120,7 @@ class CommunityController extends Controller
      * gonna be updated by this method.
      * because user could have many community (and other feature Activity and Event)
      * @param UpdateCommunityRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function update(UpdateCommunityRequest $request)
     {
@@ -132,7 +133,7 @@ class CommunityController extends Controller
             $data = $this->updateCommunityService->updateCommunity($request);
             $return = $this->apiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);

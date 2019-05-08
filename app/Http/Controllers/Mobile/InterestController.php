@@ -16,7 +16,7 @@ use App\Services\Interest\CreateUserInterestService;
 use App\Services\Interest\CreateActivityInterestService;
 use App\Services\Interest\CreateCommunityInterestService;
 use App\Services\Interest\CreateEventInterestService;
-
+use Exception;
 
 class InterestController extends Controller
 {
@@ -56,7 +56,7 @@ class InterestController extends Controller
      * get all interest with response on ApiResponseLibrary, using list paginate
      * because it's on bulk data, don't confuse with query get->all. method listPaginate
      * get list item and get collection item from query.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function index()
     {
@@ -68,7 +68,7 @@ class InterestController extends Controller
             }
             $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
 
@@ -78,7 +78,7 @@ class InterestController extends Controller
     /**
      * get Interest (Public because all user can see Interest)
      * @param $id
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getInterestPublic($id)
     {
@@ -90,7 +90,7 @@ class InterestController extends Controller
             }
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -99,7 +99,7 @@ class InterestController extends Controller
     /**
      * Save Interest.
      * @param CreateInterestRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function store(CreateInterestRequest $request)
     {
@@ -107,7 +107,7 @@ class InterestController extends Controller
             $data = $this->createInterestService->createInterest($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -118,7 +118,7 @@ class InterestController extends Controller
     /**
      * save Interest when user first time login and choosing interest after login form.
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function createUserInterest(Request $request)
     {
@@ -126,7 +126,7 @@ class InterestController extends Controller
             $data = $this->createUserInterestService->createUserInterest($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -136,7 +136,7 @@ class InterestController extends Controller
     /**
      * save Interest when user create Activity and choosing interest.
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function createActivityInterest(Request $request)
     {
@@ -144,7 +144,7 @@ class InterestController extends Controller
             $data = $this->createActivityInterestService->createActivityInterest($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -154,7 +154,7 @@ class InterestController extends Controller
     /**
      * save Interest when user create Community and choosing interest.
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function createCommunityInterest(Request $request)
     {
@@ -162,7 +162,7 @@ class InterestController extends Controller
             $data = $this->createCommunityService->createCommunityInterest($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -172,7 +172,7 @@ class InterestController extends Controller
     /**
      * save Interest when user create Event and choosing interest.
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function createEventInterest(Request $request)
     {
@@ -180,7 +180,7 @@ class InterestController extends Controller
             $data = $this->createEventInterestService->createEventInterest($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        }catch (\Exception $e) {
+        }catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -190,7 +190,7 @@ class InterestController extends Controller
     /**
      * update Interest when user update on her bio (account detail).
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function updateUserInterest(Request $request)
     {
@@ -198,7 +198,7 @@ class InterestController extends Controller
             $data = $this->updateUserInterestService->updateUserInterest($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);

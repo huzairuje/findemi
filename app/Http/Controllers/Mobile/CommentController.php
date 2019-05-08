@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\Comment\CreateCommentService;
 use App\Services\Comment\FindCommentService;
 use App\Services\Comment\UpdateCommentService;
-
+use Exception;
 
 class CommentController extends Controller
 {
@@ -33,7 +33,7 @@ class CommentController extends Controller
     /**
      * Save user and get created by using Auth::id() facade.
      * @param CreateCommentRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function store(CreateCommentRequest $request)
     {
@@ -41,7 +41,7 @@ class CommentController extends Controller
             $data = $this->createCommentService->createComment($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);

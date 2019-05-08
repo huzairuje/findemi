@@ -8,6 +8,7 @@ use App\Services\Mobile\NearbyLocation\GetUserLocationService;
 use App\Services\Mobile\NearbyLocation\SubmitUserLocationService;
 use App\Http\Controllers\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
 
 class NearbyLocationController extends Controller
 {
@@ -26,7 +27,7 @@ class NearbyLocationController extends Controller
 
     /** submit Location User and save it (Without Authorization / Anyone can access this method)
      * @param SubmitNearbyLocationRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
 
     public function checkNearby(SubmitNearbyLocationRequest $request)
@@ -35,7 +36,7 @@ class NearbyLocationController extends Controller
             $data = $this->submitUserLocation->getNearbyUser($request);
             $return = $this->apiResponseLibrary->listPaginate($data, 50);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }

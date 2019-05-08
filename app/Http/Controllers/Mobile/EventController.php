@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Services\Event\CreateEventService;
 use App\Services\Event\UpdateEventService;
 use App\Services\Event\FindEventService;
+use Exception;
 
 class EventController extends Controller
 {
@@ -35,7 +36,7 @@ class EventController extends Controller
      * get all event with response on ApiResponseLibrary, using list paginate
      * because it's on bulk data, don't confuse with query get->all. method listPaginate
      * get list item and get collection item from query.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function index()
     {
@@ -47,7 +48,7 @@ class EventController extends Controller
             }
             $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -56,7 +57,7 @@ class EventController extends Controller
     /**
      * get Event (Public because all user can see detail of the Event)
      * @param $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getEventPublic(FindEventRequest $request)
     {
@@ -68,7 +69,7 @@ class EventController extends Controller
             }
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -76,7 +77,7 @@ class EventController extends Controller
 
     /**
      * get All Event created by user login using Auth::id() facade.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function getAllEventByUser()
     {
@@ -88,7 +89,7 @@ class EventController extends Controller
             }
             $response = $this->apiResponseLibrary->listPaginate($data, 10);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -97,7 +98,7 @@ class EventController extends Controller
     /**
      * Save Event by user Login.
      * @param CreateEventRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function store(CreateEventRequest $request)
     {
@@ -105,7 +106,7 @@ class EventController extends Controller
             $data = $this->createEventService->createEvent($request);
             $response = $this->apiResponseLibrary->singleData($data, []);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -117,7 +118,7 @@ class EventController extends Controller
      * and get data which event gonna be updated by method getAllEventByUser().
      * because user could have many event (and other feature Activity and Community)
      * @param UpdateEventRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function update(UpdateEventRequest $request)
     {
@@ -130,7 +131,7 @@ class EventController extends Controller
             $data = $this->updateEventService->updateEvent($request);
             $return = $this->apiResponseLibrary->singleData($data, []);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->apiResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
