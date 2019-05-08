@@ -18,6 +18,7 @@ use App\Notifications\SignUpActivate;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Services\User\CreateUserService;
+use Exception;
 
 class AuthController extends Controller
 {
@@ -49,7 +50,7 @@ class AuthController extends Controller
      * method for real time checking email and username trough form on android
      * @param CheckEmailUserRequest $request
      *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function checkEmailRegister(CheckEmailUserRequest $request)
     {
@@ -57,7 +58,7 @@ class AuthController extends Controller
             $data = $request->input('email');
             $response = $this->userResponseLibrary->emailIsAvailable($data);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -67,7 +68,7 @@ class AuthController extends Controller
      * method for real time checking username trough form on android
      * @param CheckUsernameUserRequest $request
      *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function checkUserNameRegister(CheckUsernameUserRequest $request)
     {
@@ -75,7 +76,7 @@ class AuthController extends Controller
             $data = $request->input('username');
             $response = $this->userResponseLibrary->usernameIsAvailable($data);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -85,7 +86,7 @@ class AuthController extends Controller
      * Validate full name from mobile(Register User)
      *
      * @param CheckFullNameUserRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function checkFullNameRegister(CheckFullNameUserRequest $request)
     {
@@ -93,7 +94,7 @@ class AuthController extends Controller
             $data = $request->input('full_name');
             $response = $this->userResponseLibrary->fullNameIsOk($data);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -103,7 +104,7 @@ class AuthController extends Controller
      * Validate phone number from mobile(Register User)
      *
      * @param CheckPhoneNumberUserRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function checkPhoneNumberRegister(CheckPhoneNumberUserRequest $request)
     {
@@ -111,7 +112,7 @@ class AuthController extends Controller
             $data = $request->input('phone');
             $response = $this->userResponseLibrary->phoneIsOk($data);
             return response($response, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -121,7 +122,7 @@ class AuthController extends Controller
      * Create user(Register User)
      *
      * @param CreateUserRequest $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function signUp(CreateUserRequest $request)
     {
@@ -129,7 +130,7 @@ class AuthController extends Controller
             $data = $this->createUserService->create($request);
             $return = $this->userResponseLibrary->successRegister($data);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -139,7 +140,7 @@ class AuthController extends Controller
      * Method For Activate User Trough Email
      * @param $token
      *
-     * @return
+     * @return $user
      */
     public function signUpActivate($token)
     {
@@ -158,7 +159,7 @@ class AuthController extends Controller
      * @param LoginUserRequest $request
      * don't forget while registering user with email, user get notification to email,
      * and activate user on function signUpActivate with params $token.
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function login(LoginUserRequest $request)
     {
@@ -181,7 +182,7 @@ class AuthController extends Controller
             $data = $this->loginUserService->loginUser($request);
             $return = $this->userResponseLibrary->successLogin($data);
             return response($return, Response::HTTP_OK);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = $this->userResponseLibrary->errorResponse($e);
             return response($response, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -236,7 +237,7 @@ class AuthController extends Controller
     /**
      * Logout user (Revoke the token)
      * @param Request $request
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     * @return response
      */
     public function logout(Request $request)
     {
