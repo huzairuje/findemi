@@ -15,7 +15,6 @@ class LoginUserService
 {
     public function loginUser(Request $request)
     {
-
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;

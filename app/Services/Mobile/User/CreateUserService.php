@@ -6,7 +6,6 @@
  * Time: 17:35
  */
 
-
 namespace App\Services\User;
 
 use App\Http\Requests\User\CreateUserRequest;
@@ -14,17 +13,17 @@ use App\Models\User;
 use App\Transformers\User\UserTransformer;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\SignUpActivate;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class CreateUserService {
 
     protected $model;
     protected $userTransformer;
 
-    public function __construct()
+    public function __construct(User $user,
+                                UserTransformer $userTransformer)
     {
-        $this->model = new User();
-        $this->userTransformer = new UserTransformer();
+        $this->model = $user;
+        $this->userTransformer = $userTransformer;
     }
 
     public function create(CreateUserRequest $request)

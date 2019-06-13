@@ -18,9 +18,9 @@ class CreateActivityService
 {
     protected $model;
 
-    public function __construct()
+    public function __construct(Activity $activity)
     {
-        $this->model = new Activity();
+        $this->model = $activity;
     }
 
     public function createActivity(CreateActivityRequest $request)

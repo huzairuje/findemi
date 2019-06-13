@@ -15,9 +15,9 @@ class FindUserService
 {
     protected $model;
 
-    public function __construct()
+    public function __construct(User $user)
     {
-        $this->model = new User();
+        $this->model = $user;
     }
 
     public function findUserById($user_id)

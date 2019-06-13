@@ -16,9 +16,9 @@ class FindPostService
 {
     protected $model;
 
-    public function __construct()
+    public function __construct(Post $post)
     {
-        $this->model = new Post();
+        $this->model = $post;
     }
 
     public function findPostById($post_id)
